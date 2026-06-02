@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats: Data Driven Development",
   "short_name": "Goalie Stats",
-  "description": "Hockey goalie statistics, heat maps, match outcomes, and JSON database syncing.",
+  "description": "Hockey goalie statistics app using local storage with JSON backup and restore. Version 2.10.",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#141414",
