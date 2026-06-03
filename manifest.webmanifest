@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats: Data Driven Development",
   "short_name": "Goalie Stats",
-  "description": "Hockey goalie stats with match edit/delete tools, live game history and dated JSON backups.",
+  "description": "Hockey goalie stats with game history removed, match edit tools, dated backups, SVG heat maps and print reports.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

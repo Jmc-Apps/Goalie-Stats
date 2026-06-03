@@ -1,13 +1,10 @@
 Hockey Goalie Stats: Data Driven Development
-Version 3.22 Full PWA Package
+Version 3.25 Full PWA Package
 
-Built from Version 3.21.
+Built from Version 3.24.
 
-Changes:
-- JSON backup filename now includes date and time.
-- Added Edit / Delete Match section to Match tab.
-- Delete match requires typing DELETE.
-- Added live Game History to Match tab:
-  S = Save
-  G = Goal
-  A = Angle Closed Off
+Change:
+- Removed Game History / histogram feature from Match tab.
+- Kept dated JSON backups.
+- Kept Edit / Delete Match tools.
+- Kept all other Version 3.24 functionality.

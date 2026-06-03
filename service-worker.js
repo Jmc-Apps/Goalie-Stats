@@ -1,6 +1,6 @@
-const CACHE_NAME = 'hockey-goalie-stats-v3-22-match-tools-history';
+const CACHE_NAME = 'hockey-goalie-stats-v3-25-no-game-history';
 const FILES_TO_CACHE = [
-  './','./index.html','./goalie_stats_app_v3_22.html','./manifest.webmanifest','./manifest.json','./service-worker.js',
+  './','./index.html','./goalie_stats_app_v3_25.html','./manifest.webmanifest','./manifest.json','./service-worker.js',
   './assets/title-logo.png','./assets/home-logo.png','./assets/d.svg','./assets/box.svg',
   './icons/icon-180.png','./icons/icon-192.png','./icons/icon-512.png','./icons/favicon-32.png','./icons/apple-touch-icon.png',
   './apple-touch-icon.png','./icon-192.png','./icon-512.png','./favicon-32.png'
