@@ -1,8 +1,13 @@
 Hockey Goalie Stats: Data Driven Development
-Version 3.21 Full PWA Package
+Version 3.22 Full PWA Package
 
-Built from Version 3.20.
+Built from Version 3.21.
 
-Change:
-- Under Out Numbered, changed "1 vs 1" to "Not Out Numbered".
-- Existing old saved value "1 vs 1" is normalized to "Not Out Numbered" when used.
+Changes:
+- JSON backup filename now includes date and time.
+- Added Edit / Delete Match section to Match tab.
+- Delete match requires typing DELETE.
+- Added live Game History to Match tab:
+  S = Save
+  G = Goal
+  A = Angle Closed Off
