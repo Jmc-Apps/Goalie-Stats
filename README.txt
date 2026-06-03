@@ -1,11 +1,11 @@
 Hockey Goalie Stats: Data Driven Development
-Version 3.18 Full PWA Package
+Version 3.19 Full PWA Package
 
-Built from Version 3.17.
+Built from Version 3.18.
 
 Changes:
-- Uses uploaded SVG files as heat map backgrounds:
-  - assets/d.svg for the D heat map
-  - assets/box.svg for the goal-box heat map
-- Existing dot plotting and app controls retained.
-- Angle Closed Off remains D-map only and is excluded from goal-box heat maps.
+- Match lists in Stats now include Save % and Defence % columns.
+- Match lists in Reports now include Save % and Defence % columns.
+- Stats cards now include Average Save % and Average Defence %.
+- Save % = Saves / (Saves + Goals).
+- Defence % = (Saves + Angle Closed Off) / (Saves + Goals + Angle Closed Off).
