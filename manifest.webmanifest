@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats: Data Driven Development",
   "short_name": "Goalie Stats",
-  "description": "Hockey goalie stats with goalie history rates, two-level shot categories, N/C rate display, SVG heat maps and print reports.",
+  "description": "Hockey goalie stats with updated Out Numbered labels, goalie history rates, SVG heat maps and print reports.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

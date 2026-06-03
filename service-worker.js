@@ -1,6 +1,6 @@
-const CACHE_NAME = 'hockey-goalie-stats-v3-20-shot-categories-rates';
+const CACHE_NAME = 'hockey-goalie-stats-v3-21-outnumbered-label';
 const FILES_TO_CACHE = [
-  './','./index.html','./goalie_stats_app_v3_20.html','./manifest.webmanifest','./manifest.json','./service-worker.js',
+  './','./index.html','./goalie_stats_app_v3_21.html','./manifest.webmanifest','./manifest.json','./service-worker.js',
   './assets/title-logo.png','./assets/home-logo.png','./assets/d.svg','./assets/box.svg',
   './icons/icon-180.png','./icons/icon-192.png','./icons/icon-512.png','./icons/favicon-32.png','./icons/apple-touch-icon.png',
   './apple-touch-icon.png','./icon-192.png','./icon-512.png','./favicon-32.png'
