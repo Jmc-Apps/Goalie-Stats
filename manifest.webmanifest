@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats: Data Driven Development",
   "short_name": "Goalie Stats",
-  "description": "Hockey Goalie Stats v4.04 with separate Heat Maps and Heat Map Editor tabs.",
+  "description": "Hockey Goalie Stats v4.05 import fix for Goalie Stats Recorder files.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
