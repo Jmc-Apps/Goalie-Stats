@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats: Data Driven Development",
   "short_name": "Goalie Stats",
-  "description": "Hockey Goalie Stats v4.05 import fix for Goalie Stats Recorder files.",
+  "description": "Hockey Goalie Stats v4.08 with N/C applied directly in core Stats calculations.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
