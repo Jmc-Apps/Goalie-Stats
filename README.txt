@@ -1,10 +1,3 @@
-Hockey Goalie Stats: Data Driven Development
-Version 3.25 Full PWA Package
+Hockey Goalie Stats Version 3.26
 
-Built from Version 3.24.
-
-Change:
-- Removed Game History / histogram feature from Match tab.
-- Kept dated JSON backups.
-- Kept Edit / Delete Match tools.
-- Kept all other Version 3.24 functionality.
+Adds Import Match From Goalie Stats Recorder in Backup tab.

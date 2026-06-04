@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats: Data Driven Development",
   "short_name": "Goalie Stats",
-  "description": "Hockey goalie stats with game history removed, match edit tools, dated backups, SVG heat maps and print reports.",
+  "description": "Main Hockey Goalie Stats app version 3 with Goalie Stats Recorder import.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
