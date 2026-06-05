@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats: Data Driven Development",
   "short_name": "Goalie Stats",
-  "description": "Hockey Goalie Stats v4.08 with N/C applied directly in core Stats calculations.",
+  "description": "Hockey Goalie Stats v4.09 with corrected outnumbered attempts-at-goal rate.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
