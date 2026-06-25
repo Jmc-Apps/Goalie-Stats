@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats: Data Driven Development",
   "short_name": "Goalie Stats",
-  "description": "Hockey Goalie Stats v4.09 with corrected outnumbered attempts-at-goal rate.",
+  "description": "Hockey Goalie Stats v4.13 restores Match Timeline above Match Outcome.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
