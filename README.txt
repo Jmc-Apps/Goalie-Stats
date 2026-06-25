@@ -1,3 +1,7 @@
-Hockey Goalie Stats Version 3.26
+Hockey Goalie Stats v4.13
 
-Adds Import Match From Goalie Stats Recorder in Backup tab.
+Fix:
+- Restores the Match Timeline section that disappeared in v4.12.
+- Places Match Timeline above the Match Outcome section.
+- Keeps End of Period manual marker.
+- Keeps Game Timeline Report in the Reports tab.
