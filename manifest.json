@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats: Data Driven Development",
   "short_name": "Goalie Stats",
-  "description": "Hockey Goalie Stats v4.14 adds Defence Rate after Save Rate in reports.",
+  "description": "Hockey Goalie Stats v4.15 fixes Defence Rate report card formatting.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
