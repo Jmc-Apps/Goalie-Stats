@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats: Data Driven Development",
   "short_name": "Goalie Stats",
-  "description": "Hockey Goalie Stats v4.19 adds Defence Rate as a normal uniformly formatted report stat card.",
+  "description": "Hockey Goalie Stats v4.20 adds Match Editor with ordered shot list and full shot editing.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

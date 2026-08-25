@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Hockey Goalie Stats: Data Driven Development v4.19</title>
+<title>Hockey Goalie Stats: Data Driven Development v4.20</title>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#1f1f1f">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -53,61 +53,65 @@ table{width:100%;border-collapse:collapse;font-size:13px} th,td{border-bottom:1p
 </style>
 
 <style>
-/* v4.19: uniform report summary stat cards */
-.reportDoc .statgrid{
-  display:grid!important;
-  grid-template-columns:repeat(4, minmax(0, 1fr))!important;
-  gap:8px!important;
-  align-items:stretch!important;
+/* v4.20 Match Editor */
+.matchShotList{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
 }
-.reportDoc .stat{
-  box-sizing:border-box!important;
-  display:flex!important;
-  flex-direction:column!important;
-  align-items:flex-start!important;
-  justify-content:center!important;
-  gap:4px!important;
-  min-height:54px!important;
-  border:1px solid #bfc5ca!important;
-  border-radius:10px!important;
-  padding:10px!important;
-  background:#f8f8f8!important;
-  color:#111!important;
-  overflow:hidden!important;
-  break-inside:avoid!important;
-  page-break-inside:avoid!important;
+.matchShotItem{
+  width:100%;
+  text-align:left;
+  border:1px solid var(--border,#2d3a43);
+  border-radius:12px;
+  padding:10px;
+  background:rgba(255,255,255,.04);
+  color:inherit;
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  gap:10px;
+  align-items:center;
+  cursor:pointer;
 }
-.reportDoc .stat b{
-  display:block!important;
-  margin:0!important;
-  padding:0!important;
-  font-size:18px!important;
-  line-height:1.05!important;
-  font-weight:900!important;
-  color:#111!important;
+.matchShotItem:hover,
+.matchShotItem.active{
+  border-color:#2d7ff9;
+  box-shadow:0 0 0 2px rgba(45,127,249,.18);
 }
-.reportDoc .stat span{
-  display:block!important;
-  margin:0!important;
-  padding:0!important;
-  font-size:10.5px!important;
-  line-height:1.15!important;
-  font-weight:700!important;
-  color:#333!important;
-  overflow-wrap:anywhere!important;
+.matchShotNum{
+  min-width:34px;
+  height:34px;
+  border-radius:50%;
+  background:#1f2933;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
 }
-@media print{
-  .reportDoc .statgrid{
-    grid-template-columns:repeat(4, minmax(0, 1fr))!important;
-    gap:8px!important;
-  }
-  .reportDoc .stat{
-    background:#f8f8f8!important;
-    color:#111!important;
-    border-color:#bfc5ca!important;
-    -webkit-print-color-adjust:exact;
-    print-color-adjust:exact;
-  }
+.matchShotBadge{
+  padding:5px 8px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:900;
+}
+.matchShotBadge.Save{background:#1f7a38;color:white;}
+.matchShotBadge.Goal{background:#b3261e;color:white;}
+.matchShotBadge.Angle{background:#b38b00;color:#111;}
+.matchShotMeta{
+  font-size:12px;
+  color:#8b98a5;
+}
+.matchEditorEmpty{
+  padding:12px;
+  border:1px dashed #8b98a5;
+  border-radius:12px;
+  color:#8b98a5;
+}
+#matchEditorEditCard .chip.on{
+  box-shadow:0 0 0 2px #2d7ff9 inset;
+}
+#matchEditorSelectedInfo{
+  margin-bottom:8px;
 }
 </style>
 
@@ -120,7 +124,7 @@ table{width:100%;border-collapse:collapse;font-size:13px} th,td{border-bottom:1p
 </header>
 <main>
 <nav class="tabs noPrint">
-<button class="tab active" data-tab="home">Home</button><button class="tab" data-tab="goalies">Goalies</button><button class="tab" data-tab="match">Match</button><button class="tab" data-tab="stats">Stats</button><button class="tab" data-tab="heat">Heat Maps</button><button class="tab" data-tab="editor">Heat Map Editor</button><button class="tab" data-tab="reports">Reports</button><button class="tab" data-tab="backup">Backup</button>
+<button class="tab active" data-tab="home">Home</button><button class="tab" data-tab="goalies">Goalies</button><button class="tab" data-tab="match">Match</button><button class="tab" data-tab="matchEditor">Match Editor</button><button class="tab" data-tab="stats">Stats</button><button class="tab" data-tab="heat">Heat Maps</button><button class="tab" data-tab="editor">Heat Map Editor</button><button class="tab" data-tab="reports">Reports</button><button class="tab" data-tab="backup">Backup</button>
 </nav>
 
 <section id="home" class="panel active">
@@ -129,7 +133,7 @@ table{width:100%;border-collapse:collapse;font-size:13px} th,td{border-bottom:1p
       <img src="assets/home-logo.png" alt="Hockey Goalie Stats Data Driven Development" class="homeLogo">
     </div>
     <div class="versionBox">
-      <b>Version 4.19</b>
+      <b>Version 4.20</b>
       <div class="small">Build Date: 2026-06-03</div>
     </div>
     <div id="homeSummary" class="hiddenHomeSummary"></div>
@@ -170,6 +174,63 @@ table{width:100%;border-collapse:collapse;font-size:13px} th,td{border-bottom:1p
 </div>
 </section>
 
+
+<section id="matchEditor" class="panel">
+  <div class="card">
+    <h2>Match Editor</h2>
+    <p class="muted">Select a match, then choose any shot in the order it was recorded. Editing a shot loads the saved details so you can correct it like recording the shot again.</p>
+    <div class="grid2">
+      <div><label>Goalie</label><select id="matchEditorGoalie"></select></div>
+      <div><label>Match</label><select id="matchEditorMatch"></select></div>
+    </div>
+    <button class="btn secondary" onclick="renderMatchEditor()">Load Match Shots</button>
+    <div id="matchEditorSummary" class="small"></div>
+  </div>
+
+  <div class="card">
+    <h2>Shots In Recorded Order</h2>
+    <div id="matchEditorShotList"></div>
+  </div>
+
+  <div class="card" id="matchEditorEditCard" style="display:none">
+    <h2>Edit Selected Shot</h2>
+    <div id="matchEditorSelectedInfo" class="small"></div>
+
+    <label>Shot Outcome</label>
+    <div id="matchEditorOutcomeButtons" class="chiprow"></div>
+
+    <label>Shot Type</label>
+    <div id="matchEditorTypeButtons" class="chiprow"></div>
+
+    <label>Out Numbered</label>
+    <div id="matchEditorOutnumberedButtons" class="chiprow"></div>
+
+    <label>Rebound Result</label>
+    <div id="matchEditorReboundButtons" class="chiprow"></div>
+
+    <label>Notes</label>
+    <input id="matchEditorNote">
+
+    <div class="grid2">
+      <div>
+        <h3>D Heat Map</h3>
+        <div class="mapBox" id="matchEditorDMap"></div>
+      </div>
+      <div>
+        <h3>Goal Box Heat Map</h3>
+        <div class="mapBox" id="matchEditorGoalMap"></div>
+        <div class="small">Angle Closed Off only uses the D heat map.</div>
+        <label><input id="matchEditorMirrorGoal" type="checkbox" style="width:auto"> Mirror goal-box point when saving</label>
+      </div>
+    </div>
+
+    <button class="btn good" onclick="saveMatchEditorShot()">Save Shot Changes</button>
+    <button class="btn secondary" onclick="closeMatchEditorShot()">Close Editor</button>
+    <button class="btn danger" onclick="deleteMatchEditorShot()">Delete This Shot</button>
+    <div id="matchEditorStatus" class="small"></div>
+  </div>
+</section>
+
 <section id="stats" class="panel"><div class="card"><h2>Stats</h2><div class="grid3"><div><label>Goalie</label><select id="statsGoalie"></select></div><div><label>Home Team</label><select id="statsHome"></select></div><div><label>Opponent</label><select id="statsOpp"></select></div></div><div class="grid3"><div><label>Period</label><select id="statsPeriod"><option value="match">Match</option><option value="year">Year</option><option value="last5">Last 5 Games</option><option value="all">All Matches</option></select></div><div><label>Calendar Year</label><select id="statsYear"></select></div><div><label>Match</label><select id="statsMatch"></select></div></div><button class="btn secondary" onclick="renderStats()">Update Stats</button></div><div class="card"><div id="statsOutput"></div></div></section>
 
 <section id="heat" class="panel"><div class="card"><h2>Select Heat Map</h2><div class="grid3"><div><label>Goalie</label><select id="heatGoalie"></select></div><div><label>View</label><select id="heatView"><option value="match">Match</option><option value="last5">Last 5 Games</option><option value="year">Year</option></select></div><div><label>Year</label><select id="heatYear"></select></div></div><label>Match</label><select id="heatMatch"></select><button class="btn secondary" onclick="renderHeatMaps()">Update Heat Map Editor</button></div><div class="card"><div class="grid2"><div><h3>D Heat Map</h3><div class="mapBox" id="dHeat"></div></div><div><h3>Goal Box Heat Map</h3><div class="mapBox" id="goalHeat"></div></div></div><div class="legend"><span><span class="dot" style="background:#2fd17c"></span> Save</span><span><span class="dot" style="background:#ef5350"></span> Goal</span><span><span class="dot" style="background:#ffca28"></span> Angle Closed Off</span></div></div></section>
@@ -188,7 +249,7 @@ table{width:100%;border-collapse:collapse;font-size:13px} th,td{border-bottom:1p
   <div id="matchImportStatus" class="small"></div>
 </div>
 <div class="card"><h2>Export Goalies & Teams</h2><button class="btn good" onclick="exportGoaliesTeams()">Export Goalies & Teams</button><div id="masterExportStatus" class="small"></div></div></section>
-<div class="footer">Hockey Goalie Stats: Data Driven Development • Version 4.19</div>
+<div class="footer">Hockey Goalie Stats: Data Driven Development • Version 4.20</div>
 </main>
 
 <script>
@@ -343,7 +404,7 @@ matchDate.value=today();renderAll();
 </script>
 <script>
 
-/* v4.19 safe heat placement layer */
+/* v4.20 safe heat placement layer */
 let heatEditOutcome = 'Save';
 let pendingHeatD = null;
 
@@ -611,7 +672,7 @@ document.addEventListener('change', function(e){
 </script>
 <script>
 
-/* v4.19: Angle Closed Off D-map-only fix and plain shot type buttons */
+/* v4.20: Angle Closed Off D-map-only fix and plain shot type buttons */
 (function(){
   function isAngle(outcome){ return outcome === 'Angle Closed Off'; }
 
@@ -845,14 +906,14 @@ document.addEventListener('change', function(e){
     renderHeatMaps();
     if(typeof renderHeatPlacementEditor === 'function') renderHeatPlacementEditor();
   }catch(e){
-    console.warn('v4.19 refresh warning', e);
+    console.warn('v4.20 refresh warning', e);
   }
 })();
 
 </script>
 <script>
 
-/* v4.19: separate D heat-map points from goal-box points */
+/* v4.20: separate D heat-map points from goal-box points */
 (function(){
   function matchHeatPlacements(m){
     return (m && m.heatPlacements) ? m.heatPlacements : [];
@@ -898,13 +959,13 @@ document.addEventListener('change', function(e){
     };
   }
 
-  try { renderHeatMaps(); } catch(e) { console.warn('v4.19 heat map refresh warning', e); }
+  try { renderHeatMaps(); } catch(e) { console.warn('v4.20 heat map refresh warning', e); }
 })();
 
 </script>
 <script>
 
-/* v4.19: use uploaded SVG files as heat map backgrounds */
+/* v4.20: use uploaded SVG files as heat map backgrounds */
 (function(){
   const D_BG = './assets/d.svg';
   const GOAL_BG = './assets/box.svg';
@@ -950,14 +1011,14 @@ document.addEventListener('change', function(e){
     renderHeatMaps();
     if(typeof renderHeatPlacementEditor === 'function') renderHeatPlacementEditor();
   }catch(e){
-    console.warn('v4.19 heat map background refresh warning', e);
+    console.warn('v4.20 heat map background refresh warning', e);
   }
 })();
 
 </script>
 <script>
 
-/* v4.19: match list Save Rate and Defence Rate columns */
+/* v4.20: match list Save Rate and Defence Rate columns */
 (function(){
   function matchOutcomeCounts(m){
     const shots = m?.shots || [];
@@ -1024,14 +1085,14 @@ document.addEventListener('change', function(e){
   try{
     if(typeof renderStats === 'function') renderStats();
   }catch(e){
-    console.warn('v4.19 stats refresh warning', e);
+    console.warn('v4.20 stats refresh warning', e);
   }
 })();
 
 </script>
 <script>
 
-/* v4.19: goalie history rates, primary/situation shot categories, and N/C rate display */
+/* v4.20: goalie history rates, primary/situation shot categories, and N/C rate display */
 (function(){
   const primaryShotTypes = ['1st Shot','Rebound'];
   const shotSituations = ['None','Penalty Corner','Penalty Stroke','In Game 1v1','8 Second 1v1','Own Goal','Other'];
@@ -1279,14 +1340,14 @@ document.addEventListener('change', function(e){
     renderGoalieForm();
     renderStats();
   }catch(e){
-    console.warn('v4.19 refresh warning', e);
+    console.warn('v4.20 refresh warning', e);
   }
 })();
 
 </script>
 <script>
 
-/* v4.19: normalize old 1 vs 1 outnumbered value to Not Out Numbered */
+/* v4.20: normalize old 1 vs 1 outnumbered value to Not Out Numbered */
 (function(){
   function normalizeOutnumberedValue(v){
     return v === '1 vs 1' ? 'Not Out Numbered' : v;
@@ -1335,14 +1396,14 @@ document.addEventListener('change', function(e){
   try{
     renderShotButtons();
   }catch(e){
-    console.warn('v4.19 outnumbered refresh warning', e);
+    console.warn('v4.20 outnumbered refresh warning', e);
   }
 })();
 
 </script>
 <script>
 
-/* v4.19: integrated game history, dated backups, edit/delete match */
+/* v4.20: integrated game history, dated backups, edit/delete match */
 (function(){
   function pad(n){ return String(n).padStart(2,'0'); }
   function backupStamp(){
@@ -1586,14 +1647,14 @@ document.addEventListener('change', function(e){
     renderGameHistory();
     populateMatchTools();
   }catch(e){
-    console.warn('v4.19 setup warning', e);
+    console.warn('v4.20 setup warning', e);
   }
 })();
 
 </script>
 <script>
 
-/* v4.19: Game History / histogram feature removed */
+/* v4.20: Game History / histogram feature removed */
 (function(){
   window.renderGameHistory = function(){};
   const oldRenderAll325 = window.renderAll;
@@ -1614,7 +1675,7 @@ document.addEventListener('change', function(e){
 </script>
 <script>
 
-/* v4.19: Import match JSON exported by Goalie Stats Recorder */
+/* v4.20: Import match JSON exported by Goalie Stats Recorder */
 (function(){
   function normalizeImportedShot(s){
     return {
@@ -1732,15 +1793,15 @@ function exportGoaliesTeams(){
 }
 </script>
 <script>
-/* v4.19: version display and Heat Map Editor display improvements */
+/* v4.20: version display and Heat Map Editor display improvements */
 (function(){
-  window.APP_VERSION = "4.19";
+  window.APP_VERSION = "4.20";
 
   function setTextIfVersionish(el){
     if(!el) return;
     const txt = (el.textContent || "").trim();
     if(/Version\s+\d+\.\d+|v\d+\.\d+/i.test(txt)){
-      el.textContent = txt.replace(/Version\s+\d+\.\d+/i, "Version 4.19").replace(/v\d+\.\d+/i, "v4.19");
+      el.textContent = txt.replace(/Version\s+\d+\.\d+/i, "Version 4.20").replace(/v\d+\.\d+/i, "v4.20");
     }
   }
 
@@ -1879,9 +1940,9 @@ function exportGoaliesTeams(){
 
 
 <script>
-/* v4.19: Heat Maps tab wording update */
+/* v4.20: Heat Maps tab wording update */
 (function(){
-  window.APP_VERSION = "4.19";
+  window.APP_VERSION = "4.20";
 
   function updateHeatMapLabels(){
     let changedTab = false;
@@ -1905,8 +1966,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.19")
-          .replace(/v4\.\d+/i, "v4.19");
+          .replace(/Version\s+4\.\d+/i, "Version 4.20")
+          .replace(/v4\.\d+/i, "v4.20");
       }
     });
   }
@@ -1926,9 +1987,9 @@ function exportGoaliesTeams(){
 
 
 <script>
-/* v4.19: separate Heat Maps view tab from Heat Map Editor tab */
+/* v4.20: separate Heat Maps view tab from Heat Map Editor tab */
 (function(){
-  window.APP_VERSION = "4.19";
+  window.APP_VERSION = "4.20";
 
   function normalizeHeatTabs(){
     const candidates = Array.from(document.querySelectorAll("button,a,.tab,span,div"))
@@ -1978,8 +2039,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.19")
-          .replace(/v4\.\d+/i, "v4.19");
+          .replace(/Version\s+4\.\d+/i, "Version 4.20")
+          .replace(/v4\.\d+/i, "v4.20");
       }
     });
   }
@@ -2009,9 +2070,9 @@ function exportGoaliesTeams(){
 
 
 <script>
-/* v4.19: fix Recorder import failure caused by editShot global reference */
+/* v4.20: fix Recorder import failure caused by editShot global reference */
 (function(){
-  window.APP_VERSION = "4.19";
+  window.APP_VERSION = "4.20";
 
   function safeEl(id){ return document.getElementById(id); }
 
@@ -2136,8 +2197,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.19")
-          .replace(/v4\.\d+/i, "v4.19");
+          .replace(/Version\s+4\.\d+/i, "Version 4.20")
+          .replace(/v4\.\d+/i, "v4.20");
       }
     });
   },0);
@@ -2146,9 +2207,9 @@ function exportGoaliesTeams(){
 
 
 <script>
-/* v4.19: show N/C for percentage stats with no attempts */
+/* v4.20: show N/C for percentage stats with no attempts */
 (function(){
-  window.APP_VERSION = "4.19";
+  window.APP_VERSION = "4.20";
 
   function pctNC(success, attempts){
     attempts = Number(attempts || 0);
@@ -2276,8 +2337,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.19")
-          .replace(/v4\.\d+/i, "v4.19");
+          .replace(/Version\s+4\.\d+/i, "Version 4.20")
+          .replace(/v4\.\d+/i, "v4.20");
       }
     });
   },0);
@@ -2286,9 +2347,9 @@ function exportGoaliesTeams(){
 
 
 <script>
-/* v4.19: correct N/C display inside existing Stats cards */
+/* v4.20: correct N/C display inside existing Stats cards */
 (function(){
-  window.APP_VERSION = "4.19";
+  window.APP_VERSION = "4.20";
 
   const zeroAttemptRateLabels = [
     "Save Rate",
@@ -2398,8 +2459,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.19")
-          .replace(/v4\.\d+/i, "v4.19");
+          .replace(/Version\s+4\.\d+/i, "Version 4.20")
+          .replace(/v4\.\d+/i, "v4.20");
       }
     });
   },0);
@@ -2408,9 +2469,9 @@ function exportGoaliesTeams(){
 
 
 <script>
-/* v4.19: core Stats calculation uses N/C for zero-attempt rate cards */
+/* v4.20: core Stats calculation uses N/C for zero-attempt rate cards */
 (function(){
-  window.APP_VERSION = "4.19";
+  window.APP_VERSION = "4.20";
 
   function pctText(success, attempts){
     attempts = Number(attempts || 0);
@@ -2571,7 +2632,7 @@ function exportGoaliesTeams(){
       const ms = typeof filterMatches === "function" ? filterMatches(g, period, year, home, opp) : [];
       out.innerHTML = '<div class="statgrid">' + statCards(calcStats(ms)) + '</div>' + matchTable(ms);
     }catch(e){
-      console.warn("v4.19 stats rerender warning", e);
+      console.warn("v4.20 stats rerender warning", e);
     }
   }
 
@@ -2605,8 +2666,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.19")
-          .replace(/v4\.\d+/i, "v4.19");
+          .replace(/Version\s+4\.\d+/i, "Version 4.20")
+          .replace(/v4\.\d+/i, "v4.20");
       }
     });
   }, 0);
@@ -2615,9 +2676,9 @@ function exportGoaliesTeams(){
 
 
 <script>
-/* v4.19: corrected Rate of Attempts at Goals Out Numbered */
+/* v4.20: corrected Rate of Attempts at Goals Out Numbered */
 (function(){
-  window.APP_VERSION = "4.19";
+  window.APP_VERSION = "4.20";
 
   function pctText(success, attempts){
     attempts = Number(attempts || 0);
@@ -2756,7 +2817,7 @@ function exportGoaliesTeams(){
         out.innerHTML = '<div class="statgrid">' + statCards(calcStats(ms)) + '</div>' + matchTable(ms);
       }
     } catch(e) {
-      console.warn("v4.19 stats rerender warning", e);
+      console.warn("v4.20 stats rerender warning", e);
     }
   }
 
@@ -2777,8 +2838,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.19")
-          .replace(/v4\.\d+/i, "v4.19");
+          .replace(/Version\s+4\.\d+/i, "Version 4.20")
+          .replace(/v4\.\d+/i, "v4.20");
       }
     });
   }, 0);
@@ -2787,7 +2848,7 @@ function exportGoaliesTeams(){
 
 
 <style>
-/* v4.19 timeline report and manual timeline markers */
+/* v4.20 timeline report and manual timeline markers */
 .timeline-strip{
   display:flex;
   flex-wrap:wrap;
@@ -2835,9 +2896,9 @@ function exportGoaliesTeams(){
 </style>
 
 <script>
-/* Hockey Goalie Stats v4.19: manual timelines + timeline report */
+/* Hockey Goalie Stats v4.20: manual timelines + timeline report */
 (function(){
-  window.APP_VERSION = "4.19";
+  window.APP_VERSION = "4.20";
 
   function ensureTimeline(match){
     if(!match) return [];
@@ -3140,8 +3201,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.19")
-          .replace(/v4\.\d+/i, "v4.19");
+          .replace(/Version\s+4\.\d+/i, "Version 4.20")
+          .replace(/v4\.\d+/i, "v4.20");
       }
     });
   },0);
@@ -3150,7 +3211,7 @@ function exportGoaliesTeams(){
 
 
 <style>
-/* v4.19 restored manual match timeline */
+/* v4.20 restored manual match timeline */
 .timeline-strip{
   display:flex;
   flex-wrap:wrap;
@@ -3198,9 +3259,9 @@ function exportGoaliesTeams(){
 </style>
 
 <script>
-/* Hockey Goalie Stats v4.19: restore timeline panel and place above Match Outcome */
+/* Hockey Goalie Stats v4.20: restore timeline panel and place above Match Outcome */
 (function(){
-  window.APP_VERSION = "4.19";
+  window.APP_VERSION = "4.20";
 
   function getDb(){
     try{ if(typeof DB !== "undefined") return DB; }catch(e){}
@@ -3504,8 +3565,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.19")
-          .replace(/v4\.\d+/i, "v4.19");
+          .replace(/Version\s+4\.\d+/i, "Version 4.20")
+          .replace(/v4\.\d+/i, "v4.20");
       }
     });
   }, 0);
@@ -3514,90 +3575,372 @@ function exportGoaliesTeams(){
 
 
 <script>
-/* Hockey Goalie Stats v4.19: Defence Rate as a normal report stat card */
+/* Hockey Goalie Stats v4.20: Match Editor */
 (function(){
-  window.APP_VERSION = "4.19";
+  window.APP_VERSION = "4.20";
 
-  function hgsRate(n,d){
-    return d ? Math.round(n / d * 100) + "%" : "N/C";
+  let meShotId = "";
+  let meOutcome = "Save";
+  let meType = "1st Shot";
+  let meOutnumbered = "Not Out Numbered";
+  let meRebound = "No rebound";
+  let meDPoint = null;
+  let meGoalPoint = null;
+
+  function me$(id){ return document.getElementById(id); }
+
+  function meGoalies(){
+    try{ return Array.isArray(db.goalies) ? db.goalies : []; }catch(e){ return []; }
   }
 
-  function hgsShotType(s){
-    return s.type || s.shotCategory || s.shotType || "";
+  function meCurrentGoalie(){
+    const id = me$("matchEditorGoalie")?.value || currentGoalieId || "";
+    return meGoalies().find(g => g.id === id) || goalie() || meGoalies()[0] || null;
   }
 
-  window.calcStats = function(ms){
-    const sh = shotsFor(ms);
-    const saves = sh.filter(s => s.outcome === "Save").length;
-    const goals = sh.filter(s => s.outcome === "Goal").length;
-    const angles = sh.filter(s => s.outcome === "Angle Closed Off").length;
-    const totalAttemptsAtGoal = saves + goals;
-    const totalShotRecords = saves + goals + angles;
+  function meMatches(g){
+    return g && Array.isArray(g.matches) ? g.matches : [];
+  }
 
-    const safe = sh.filter(s => s.rebound === "Safe").length;
-    const danger = sh.filter(s => s.rebound === "Dangerous").length;
+  function meCurrentMatch(){
+    const g = meCurrentGoalie();
+    if(!g) return null;
+    const id = me$("matchEditorMatch")?.value || "";
+    return meMatches(g).find(m => m.id === id) || meMatches(g)[0] || null;
+  }
 
-    const countType = t => sh.filter(s => hgsShotType(s) === t).length;
-    const saveType = t => sh.filter(s => hgsShotType(s) === t && s.outcome === "Save").length;
+  function meCurrentShot(){
+    const m = meCurrentMatch();
+    return m && Array.isArray(m.shots) ? m.shots.find(s => s.id === meShotId) : null;
+  }
 
-    return {
-      "Games Played": ms.length,
-      "Wins": ms.filter(m => m.result === "Win").length,
-      "Losses": ms.filter(m => m.result === "Loss").length,
-      "Draws": ms.filter(m => m.result === "Draw").length,
-      "Shot Records": sh.length,
-      "Saves": saves,
-      "Goals": goals,
-      "Angle Closed Off": angles,
+  function meShotLabel(s){
+    if(!s) return "Shot";
+    if(s.outcome === "Angle Closed Off") return "Angle Closed Off";
+    return s.outcome || "Shot";
+  }
 
-      "Save Rate": hgsRate(saves, totalAttemptsAtGoal),
-      "Defence Rate": hgsRate(saves + angles, totalShotRecords),
+  function meBadgeClass(s){
+    if(!s) return "";
+    if(s.outcome === "Angle Closed Off") return "Angle";
+    return s.outcome || "";
+  }
 
-      "1st Shot Save Rate": hgsRate(saveType("1st Shot"), countType("1st Shot")),
-      "Rebound Save Rate": hgsRate(saveType("Rebound"), countType("Rebound")),
-      "Penalty Corner Save Rate": hgsRate(saveType("Penalty Corner"), countType("Penalty Corner")),
-      "Penalty Stroke Save Rate": hgsRate(saveType("Penalty Stroke"), countType("Penalty Stroke")),
-      "In Game 1v1 Save Rate": hgsRate(saveType("In Game 1v1"), countType("In Game 1v1")),
-      "8 Second 1v1 Save Rate": hgsRate(saveType("8 Second 1v1"), countType("8 Second 1v1")),
-      "Safe Rebound Rate": hgsRate(safe, safe + danger),
-      "Rate of Attempts at Goals Out Numbered": hgsRate(
-        sh.filter(s =>
-          (s.outcome === "Save" || s.outcome === "Goal") &&
-          s.outnumbered &&
-          s.outnumbered !== "Not Out Numbered" &&
-          s.outnumbered !== "1 vs 1"
-        ).length,
-        totalAttemptsAtGoal
-      )
-    };
+  function meEsc(v){
+    try{ return esc(v); }catch(e){ return String(v ?? "").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+  }
+
+  function meSetOptions(select, items, value, emptyLabel){
+    if(!select) return;
+    if(!items || !items.length){
+      select.innerHTML = `<option value="">${meEsc(emptyLabel || "None")}</option>`;
+      return;
+    }
+    select.innerHTML = items.map(item => `<option value="${meEsc(item.id)}">${meEsc(item.name)}</option>`).join("");
+    if(value && items.some(i => i.id === value)) select.value = value;
+    else select.value = items[0].id;
+  }
+
+  window.renderMatchEditorSelectors = function(){
+    const gSel = me$("matchEditorGoalie");
+    const mSel = me$("matchEditorMatch");
+    const gs = meGoalies();
+
+    meSetOptions(gSel, gs.map(g => ({id:g.id, name:g.name || "Unnamed Goalie"})), currentGoalieId || gs[0]?.id || "", "No goalies yet");
+
+    const g = meCurrentGoalie();
+    const ms = meMatches(g).map(m => ({id:m.id, name:m.name || `${m.date || ""} Match`}));
+    meSetOptions(mSel, ms, mSel?.value || ms[0]?.id || "", "No matches yet");
   };
 
-  window.statCards = function(obj){
-    return Object.entries(obj).map(([k,v]) =>
-      `<div class="stat"><b>${esc(v)}</b><span>${esc(k)}</span></div>`
+  function meSetChoice(groupId, options, current, setterName){
+    const el = me$(groupId);
+    if(!el) return;
+    el.innerHTML = options.map(o => 
+      `<button type="button" class="chip ${o === current ? "on" : ""}" onclick="${setterName}('${meEsc(o)}')">${meEsc(o)}</button>`
     ).join("");
+  }
+
+  window.setMatchEditorOutcome = function(v){
+    meOutcome = v;
+    if(meOutcome === "Angle Closed Off") meGoalPoint = null;
+    renderMatchEditorEditPanel();
   };
 
-  // If a report is already visible, rebuild it once using the corrected calcStats.
-  setTimeout(function(){
-    try{
-      if(reportOutput && reportOutput.style.display !== "none" && reportOutput.innerHTML.trim()){
-        const g = goalie();
-        if(g && typeof reportYear !== "undefined" && reportYear.value){
-          const ms = allMatches(g).filter(m => yearOf(m) === reportYear.value);
-          if(ms.length) buildReport("Year Report", g, ms);
-        }
-      }
-    }catch(e){}
+  window.setMatchEditorType = function(v){
+    meType = v;
+    renderMatchEditorEditPanel();
+  };
 
+  window.setMatchEditorOutnumbered = function(v){
+    meOutnumbered = v;
+    renderMatchEditorEditPanel();
+  };
+
+  window.setMatchEditorRebound = function(v){
+    meRebound = v;
+    renderMatchEditorEditPanel();
+  };
+
+  function meLoadShot(s){
+    if(!s) return;
+    meShotId = s.id;
+    meOutcome = s.outcome || "Save";
+    meType = s.type || s.shotCategory || "1st Shot";
+    meOutnumbered = s.outnumbered || "Not Out Numbered";
+    meRebound = s.rebound || "No rebound";
+    meDPoint = (s.dX != null && s.dY != null) ? {x:Number(s.dX), y:Number(s.dY)} : null;
+    meGoalPoint = (s.gX != null && s.gY != null) ? {x:Number(s.gX), y:Number(s.gY)} : null;
+    if(me$("matchEditorNote")) me$("matchEditorNote").value = s.note || "";
+    renderMatchEditor();
+    renderMatchEditorEditPanel();
+  }
+
+  window.openMatchEditorShot = function(id){
+    const m = meCurrentMatch();
+    const s = m && Array.isArray(m.shots) ? m.shots.find(x => x.id === id) : null;
+    if(!s) return;
+    meLoadShot(s);
+  };
+
+  window.closeMatchEditorShot = function(){
+    meShotId = "";
+    const card = me$("matchEditorEditCard");
+    if(card) card.style.display = "none";
+    renderMatchEditor();
+  };
+
+  function meRenderMaps(){
+    const dMap = me$("matchEditorDMap");
+    const gMap = me$("matchEditorGoalMap");
+
+    if(dMap){
+      dMap.innerHTML = basePitch([], p => {
+        meDPoint = p;
+        meRenderMaps();
+      }, meDPoint);
+    }
+
+    if(gMap){
+      if(meOutcome === "Angle Closed Off"){
+        gMap.innerHTML = '<p class="muted" style="padding:12px">Goal-box placement is not used for Angle Closed Off.</p>';
+      }else{
+        gMap.innerHTML = baseGoal([], p => {
+          meGoalPoint = p;
+          meRenderMaps();
+        }, meGoalPoint);
+      }
+    }
+  }
+
+  window.renderMatchEditorEditPanel = function(){
+    const card = me$("matchEditorEditCard");
+    const shot = meCurrentShot();
+    if(!card || !shot){
+      if(card) card.style.display = "none";
+      return;
+    }
+
+    card.style.display = "block";
+
+    const m = meCurrentMatch();
+    const index = m && Array.isArray(m.shots) ? m.shots.findIndex(s => s.id === meShotId) + 1 : "";
+    if(me$("matchEditorSelectedInfo")){
+      me$("matchEditorSelectedInfo").innerHTML =
+        `<b>Shot ${index}</b> • ${meEsc(shot.time ? new Date(shot.time).toLocaleString() : "No timestamp")}<br>` +
+        `Currently saved as: <b>${meEsc(meShotLabel(shot))}</b> • ${meEsc(shot.type || shot.shotCategory || "")}`;
+    }
+
+    meSetChoice("matchEditorOutcomeButtons", outcomes, meOutcome, "setMatchEditorOutcome");
+    meSetChoice("matchEditorTypeButtons", shotTypes, meType, "setMatchEditorType");
+    meSetChoice("matchEditorOutnumberedButtons", outnumberedOptions, meOutnumbered, "setMatchEditorOutnumbered");
+    meSetChoice("matchEditorReboundButtons", rebounds, meRebound, "setMatchEditorRebound");
+
+    if(me$("matchEditorNote")) me$("matchEditorNote").value = shot.note || "";
+    meRenderMaps();
+  };
+
+  window.renderMatchEditor = function(){
+    renderMatchEditorSelectors();
+
+    const m = meCurrentMatch();
+    const list = me$("matchEditorShotList");
+    const summary = me$("matchEditorSummary");
+
+    if(summary){
+      summary.textContent = m
+        ? `${m.name || "Selected match"} • ${(m.shots || []).length} shot(s) recorded`
+        : "No match selected.";
+    }
+
+    if(!list) return;
+
+    if(!m || !Array.isArray(m.shots) || !m.shots.length){
+      list.innerHTML = '<div class="matchEditorEmpty">No shots recorded for this match yet.</div>';
+      const card = me$("matchEditorEditCard");
+      if(card) card.style.display = "none";
+      return;
+    }
+
+    list.className = "matchShotList";
+    list.innerHTML = m.shots.map((s,i) => {
+      const hasD = s.dX != null && s.dY != null;
+      const hasG = s.gX != null && s.gY != null;
+      const heat = s.outcome === "Angle Closed Off"
+        ? (hasD ? "D placed" : "No D point")
+        : `${hasD ? "D placed" : "No D point"} • ${hasG ? "Goal placed" : "No goal point"}`;
+
+      return `<button type="button" class="matchShotItem ${s.id === meShotId ? "active" : ""}" onclick="openMatchEditorShot('${meEsc(s.id)}')">
+        <span class="matchShotNum">${i+1}</span>
+        <span>
+          <b>${meEsc(meShotLabel(s))}</b>
+          <div class="matchShotMeta">${meEsc(s.type || s.shotCategory || "No type")} • ${meEsc(s.outnumbered || "Not Out Numbered")} • ${meEsc(s.rebound || "No rebound")}<br>${meEsc(heat)}</div>
+        </span>
+        <span class="matchShotBadge ${meBadgeClass(s)}">${meEsc(s.outcome === "Angle Closed Off" ? "A" : (s.outcome || "?").slice(0,1))}</span>
+      </button>`;
+    }).join("");
+
+    if(meShotId) renderMatchEditorEditPanel();
+  };
+
+  window.saveMatchEditorShot = function(){
+    const m = meCurrentMatch();
+    const s = meCurrentShot();
+    if(!m || !s){
+      alert("Select a shot first.");
+      return;
+    }
+
+    if(!meDPoint){
+      alert("Tap the D heat map or keep the existing D point before saving.");
+      return;
+    }
+
+    if(meOutcome !== "Angle Closed Off" && !meGoalPoint){
+      alert("Tap the goal box heat map or keep the existing goal point before saving.");
+      return;
+    }
+
+    s.outcome = meOutcome;
+    s.type = meType;
+    s.shotCategory = meType;
+    s.outnumbered = meOutnumbered;
+    s.rebound = meRebound === "No rebound" ? "" : meRebound;
+    s.note = me$("matchEditorNote") ? me$("matchEditorNote").value : "";
+    s.dX = meDPoint.x;
+    s.dY = meDPoint.y;
+
+    if(meOutcome === "Angle Closed Off"){
+      delete s.gX;
+      delete s.gY;
+    }else{
+      let gx = meGoalPoint.x;
+      if(me$("matchEditorMirrorGoal") && me$("matchEditorMirrorGoal").checked) gx = 100 - gx;
+      s.gX = gx;
+      s.gY = meGoalPoint.y;
+    }
+
+    // Keep any timeline label in sync if the match has timeline data.
+    if(Array.isArray(m.timeline)){
+      const ev = m.timeline.find(e => e.shotId === s.id);
+      if(ev){
+        ev.outcome = s.outcome;
+        ev.label = s.outcome === "Save" ? "S" : s.outcome === "Goal" ? "G" : "A";
+        ev.type = s.type;
+        ev.shotSituation = s.shotSituation || ev.shotSituation || "";
+        ev.outnumbered = s.outnumbered;
+      }
+    }
+
+    saveDB();
+    updateOpponentGoalsDisplay();
+    renderAll();
+    meShotId = s.id;
+    renderMatchEditor();
+    const status = me$("matchEditorStatus");
+    if(status) status.textContent = "Shot changes saved.";
+  };
+
+  window.deleteMatchEditorShot = function(){
+    const m = meCurrentMatch();
+    const s = meCurrentShot();
+    if(!m || !s){
+      alert("Select a shot first.");
+      return;
+    }
+    if(!confirm("Delete this shot from the match?")) return;
+
+    m.shots = (m.shots || []).filter(x => x.id !== s.id);
+    if(Array.isArray(m.timeline)){
+      m.timeline = m.timeline.filter(e => e.shotId !== s.id);
+    }
+
+    meShotId = "";
+    saveDB();
+    updateOpponentGoalsDisplay();
+    renderAll();
+    renderMatchEditor();
+    const status = me$("matchEditorStatus");
+    if(status) status.textContent = "Shot deleted.";
+  };
+
+  function meAttachEvents(){
+    const gSel = me$("matchEditorGoalie");
+    const mSel = me$("matchEditorMatch");
+
+    if(gSel && !gSel.__matchEditorBound){
+      gSel.addEventListener("change", function(){
+        currentGoalieId = this.value;
+        saveDB();
+        renderAll();
+        renderMatchEditor();
+      });
+      gSel.__matchEditorBound = true;
+    }
+
+    if(mSel && !mSel.__matchEditorBound){
+      mSel.addEventListener("change", function(){
+        meShotId = "";
+        renderMatchEditor();
+      });
+      mSel.__matchEditorBound = true;
+    }
+  }
+
+  const oldRenderAll = window.renderAll;
+  if(typeof oldRenderAll === "function" && !window.__v420RenderAllWrapped){
+    window.renderAll = function(){
+      const result = oldRenderAll.apply(this, arguments);
+      setTimeout(function(){
+        renderMatchEditorSelectors();
+        meAttachEvents();
+        if(document.getElementById("matchEditor")?.classList.contains("active")) renderMatchEditor();
+      },0);
+      return result;
+    };
+    window.__v420RenderAllWrapped = true;
+  }
+
+  document.addEventListener("click", function(){
+    setTimeout(function(){
+      if(document.getElementById("matchEditor")?.classList.contains("active")){
+        meAttachEvents();
+        renderMatchEditorSelectors();
+      }
+    },0);
+  });
+
+  setTimeout(function(){
+    renderMatchEditorSelectors();
+    meAttachEvents();
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.19")
-          .replace(/v4\.\d+/i, "v4.19");
+          .replace(/Version\s+4\.\d+/i, "Version 4.20")
+          .replace(/v4\.\d+/i, "v4.20");
       }
     });
-  }, 0);
+  },0);
 })();
 </script>
 
