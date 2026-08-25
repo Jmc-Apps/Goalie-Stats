@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Hockey Goalie Stats: Data Driven Development v4.17</title>
+<title>Hockey Goalie Stats: Data Driven Development v4.18</title>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#1f1f1f">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -53,21 +53,14 @@ table{width:100%;border-collapse:collapse;font-size:13px} th,td{border-bottom:1p
 </style>
 
 <style>
-/* v4.17: real unified stat card formatting */
-.statgrid{
-  display:grid!important;
-  grid-template-columns:repeat(2, minmax(0, 1fr))!important;
-  gap:9px!important;
-  align-items:stretch!important;
-}
+/* v4.18: uniform original report stat cards with darker text */
 .reportDoc .statgrid{
+  display:grid!important;
   grid-template-columns:repeat(4, minmax(0, 1fr))!important;
   gap:8px!important;
+  align-items:stretch!important;
 }
-.stat,
-.reportStatCard,
-.reportDoc .stat,
-.reportDoc .reportStatCard{
+.reportDoc .stat{
   box-sizing:border-box!important;
   display:flex!important;
   flex-direction:column!important;
@@ -84,10 +77,7 @@ table{width:100%;border-collapse:collapse;font-size:13px} th,td{border-bottom:1p
   break-inside:avoid!important;
   page-break-inside:avoid!important;
 }
-.stat b,
-.reportStatCard b,
-.reportDoc .stat b,
-.reportDoc .reportStatCard b{
+.reportDoc .stat b{
   display:block!important;
   margin:0!important;
   padding:0!important;
@@ -96,10 +86,7 @@ table{width:100%;border-collapse:collapse;font-size:13px} th,td{border-bottom:1p
   font-weight:900!important;
   color:#111!important;
 }
-.stat span,
-.reportStatCard span,
-.reportDoc .stat span,
-.reportDoc .reportStatCard span{
+.reportDoc .stat span{
   display:block!important;
   margin:0!important;
   padding:0!important;
@@ -109,18 +96,12 @@ table{width:100%;border-collapse:collapse;font-size:13px} th,td{border-bottom:1p
   color:#333!important;
   overflow-wrap:anywhere!important;
 }
-@media(min-width:760px){
-  .statgrid{grid-template-columns:repeat(4, minmax(0, 1fr))!important;}
-}
 @media print{
   .reportDoc .statgrid{
     grid-template-columns:repeat(4, minmax(0, 1fr))!important;
     gap:8px!important;
   }
-  .stat,
-  .reportStatCard,
-  .reportDoc .stat,
-  .reportDoc .reportStatCard{
+  .reportDoc .stat{
     background:#f8f8f8!important;
     color:#111!important;
     border-color:#bfc5ca!important;
@@ -148,7 +129,7 @@ table{width:100%;border-collapse:collapse;font-size:13px} th,td{border-bottom:1p
       <img src="assets/home-logo.png" alt="Hockey Goalie Stats Data Driven Development" class="homeLogo">
     </div>
     <div class="versionBox">
-      <b>Version 4.17</b>
+      <b>Version 4.18</b>
       <div class="small">Build Date: 2026-06-03</div>
     </div>
     <div id="homeSummary" class="hiddenHomeSummary"></div>
@@ -207,7 +188,7 @@ table{width:100%;border-collapse:collapse;font-size:13px} th,td{border-bottom:1p
   <div id="matchImportStatus" class="small"></div>
 </div>
 <div class="card"><h2>Export Goalies & Teams</h2><button class="btn good" onclick="exportGoaliesTeams()">Export Goalies & Teams</button><div id="masterExportStatus" class="small"></div></div></section>
-<div class="footer">Hockey Goalie Stats: Data Driven Development • Version 4.17</div>
+<div class="footer">Hockey Goalie Stats: Data Driven Development • Version 4.18</div>
 </main>
 
 <script>
@@ -243,9 +224,7 @@ document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>show
 function opts(items,selected='',empty=''){let h=empty?`<option value="">${esc(empty)}</option>`:'';return h+items.map(x=>`<option value="${esc(x.id??x)}" ${String(selected)===String(x.id??x)?'selected':''}>${esc(x.name??x)}</option>`).join('')}
 function setOptions(id,items,selected='',empty=''){const el=document.getElementById(id);if(el)el.innerHTML=opts(items,selected,empty)}
 function statCards(obj){
-  return Object.entries(obj).map(([k,v]) =>
-    `<div class="stat reportStatCard"><b>${esc(v)}</b><span>${esc(k)}</span></div>`
-  ).join('');
+  return Object.entries(obj).map(([k,v])=>`<div class="stat"><b>${esc(v)}</b><span>${esc(k)}</span></div>`).join('')
 }
 function showStatus(id,msg){const el=document.getElementById(id);if(el)el.textContent=msg}
 
@@ -349,6 +328,7 @@ function calcStats(ms){
   const danger=sh.filter(s=>s.rebound==='Dangerous').length;
   const count=t=>sh.filter(s=>s.type===t).length;
   const save=t=>sh.filter(s=>s.type===t&&s.outcome==='Save').length;
+  const rate=(n,d)=>d?Math.round(n/d*100)+'%':'N/C';
   return {
     'Games Played':ms.length,
     'Wins':ms.filter(m=>m.result==='Win').length,
@@ -358,16 +338,16 @@ function calcStats(ms){
     'Saves':saves,
     'Goals':goals,
     'Angle Closed Off':angles,
-    'Save Rate':pct(saves,sot)+'%',
-    'Defence Rate':pct(saves+angles,totalShotRecords)+'%',
-    '1st Shot Save Rate':pct(save('1st Shot'),count('1st Shot'))+'%',
-    'Rebound Save Rate':pct(save('Rebound'),count('Rebound'))+'%',
-    'Penalty Corner Save Rate':pct(save('Penalty Corner'),count('Penalty Corner'))+'%',
-    'Penalty Stroke Save Rate':pct(save('Penalty Stroke'),count('Penalty Stroke'))+'%',
-    'In Game 1v1 Save Rate':pct(save('In Game 1v1'),count('In Game 1v1'))+'%',
-    '8 Second 1v1 Save Rate':pct(save('8 Second 1v1'),count('8 Second 1v1'))+'%',
-    'Safe Rebound Rate':pct(safe,safe+danger)+'%',
-    'Rate of Attempts at Goals Out Numbered':pct(sh.filter(s=>s.outnumbered&&s.outnumbered!=='1 vs 1').length,sh.length)+'%'
+    'Save Rate':rate(saves,sot),
+    'Defence Rate':rate(saves+angles,totalShotRecords),
+    '1st Shot Save Rate':rate(save('1st Shot'),count('1st Shot')),
+    'Rebound Save Rate':rate(save('Rebound'),count('Rebound')),
+    'Penalty Corner Save Rate':rate(save('Penalty Corner'),count('Penalty Corner')),
+    'Penalty Stroke Save Rate':rate(save('Penalty Stroke'),count('Penalty Stroke')),
+    'In Game 1v1 Save Rate':rate(save('In Game 1v1'),count('In Game 1v1')),
+    '8 Second 1v1 Save Rate':rate(save('8 Second 1v1'),count('8 Second 1v1')),
+    'Safe Rebound Rate':rate(safe,safe+danger),
+    'Rate of Attempts at Goals Out Numbered':rate(sh.filter(s=>s.outnumbered&&s.outnumbered!=='1 vs 1').length,sh.length)
   };
 }
 function filterMatches(g,period='year',year='',home='All',opp='All'){let ms=allMatches(g);if(period==='match')ms=[matchById(g,statsMatch.value)].filter(Boolean);if(period==='year')ms=ms.filter(m=>yearOf(m)===String(year));if(period==='last5')ms=ms.slice(0,5);if(home&&home!=='All')ms=ms.filter(m=>m.homeTeam===home);if(opp&&opp!=='All')ms=ms.filter(m=>m.opponentTeam===opp);return ms}
@@ -397,7 +377,7 @@ matchDate.value=today();renderAll();
 </script>
 <script>
 
-/* v4.17 safe heat placement layer */
+/* v4.18 safe heat placement layer */
 let heatEditOutcome = 'Save';
 let pendingHeatD = null;
 
@@ -665,7 +645,7 @@ document.addEventListener('change', function(e){
 </script>
 <script>
 
-/* v4.17: Angle Closed Off D-map-only fix and plain shot type buttons */
+/* v4.18: Angle Closed Off D-map-only fix and plain shot type buttons */
 (function(){
   function isAngle(outcome){ return outcome === 'Angle Closed Off'; }
 
@@ -899,14 +879,14 @@ document.addEventListener('change', function(e){
     renderHeatMaps();
     if(typeof renderHeatPlacementEditor === 'function') renderHeatPlacementEditor();
   }catch(e){
-    console.warn('v4.17 refresh warning', e);
+    console.warn('v4.18 refresh warning', e);
   }
 })();
 
 </script>
 <script>
 
-/* v4.17: separate D heat-map points from goal-box points */
+/* v4.18: separate D heat-map points from goal-box points */
 (function(){
   function matchHeatPlacements(m){
     return (m && m.heatPlacements) ? m.heatPlacements : [];
@@ -952,13 +932,13 @@ document.addEventListener('change', function(e){
     };
   }
 
-  try { renderHeatMaps(); } catch(e) { console.warn('v4.17 heat map refresh warning', e); }
+  try { renderHeatMaps(); } catch(e) { console.warn('v4.18 heat map refresh warning', e); }
 })();
 
 </script>
 <script>
 
-/* v4.17: use uploaded SVG files as heat map backgrounds */
+/* v4.18: use uploaded SVG files as heat map backgrounds */
 (function(){
   const D_BG = './assets/d.svg';
   const GOAL_BG = './assets/box.svg';
@@ -1004,14 +984,14 @@ document.addEventListener('change', function(e){
     renderHeatMaps();
     if(typeof renderHeatPlacementEditor === 'function') renderHeatPlacementEditor();
   }catch(e){
-    console.warn('v4.17 heat map background refresh warning', e);
+    console.warn('v4.18 heat map background refresh warning', e);
   }
 })();
 
 </script>
 <script>
 
-/* v4.17: match list Save Rate and Defence Rate columns */
+/* v4.18: match list Save Rate and Defence Rate columns */
 (function(){
   function matchOutcomeCounts(m){
     const shots = m?.shots || [];
@@ -1078,14 +1058,14 @@ document.addEventListener('change', function(e){
   try{
     if(typeof renderStats === 'function') renderStats();
   }catch(e){
-    console.warn('v4.17 stats refresh warning', e);
+    console.warn('v4.18 stats refresh warning', e);
   }
 })();
 
 </script>
 <script>
 
-/* v4.17: goalie history rates, primary/situation shot categories, and N/C rate display */
+/* v4.18: goalie history rates, primary/situation shot categories, and N/C rate display */
 (function(){
   const primaryShotTypes = ['1st Shot','Rebound'];
   const shotSituations = ['None','Penalty Corner','Penalty Stroke','In Game 1v1','8 Second 1v1','Own Goal','Other'];
@@ -1333,14 +1313,14 @@ document.addEventListener('change', function(e){
     renderGoalieForm();
     renderStats();
   }catch(e){
-    console.warn('v4.17 refresh warning', e);
+    console.warn('v4.18 refresh warning', e);
   }
 })();
 
 </script>
 <script>
 
-/* v4.17: normalize old 1 vs 1 outnumbered value to Not Out Numbered */
+/* v4.18: normalize old 1 vs 1 outnumbered value to Not Out Numbered */
 (function(){
   function normalizeOutnumberedValue(v){
     return v === '1 vs 1' ? 'Not Out Numbered' : v;
@@ -1389,14 +1369,14 @@ document.addEventListener('change', function(e){
   try{
     renderShotButtons();
   }catch(e){
-    console.warn('v4.17 outnumbered refresh warning', e);
+    console.warn('v4.18 outnumbered refresh warning', e);
   }
 })();
 
 </script>
 <script>
 
-/* v4.17: integrated game history, dated backups, edit/delete match */
+/* v4.18: integrated game history, dated backups, edit/delete match */
 (function(){
   function pad(n){ return String(n).padStart(2,'0'); }
   function backupStamp(){
@@ -1640,14 +1620,14 @@ document.addEventListener('change', function(e){
     renderGameHistory();
     populateMatchTools();
   }catch(e){
-    console.warn('v4.17 setup warning', e);
+    console.warn('v4.18 setup warning', e);
   }
 })();
 
 </script>
 <script>
 
-/* v4.17: Game History / histogram feature removed */
+/* v4.18: Game History / histogram feature removed */
 (function(){
   window.renderGameHistory = function(){};
   const oldRenderAll325 = window.renderAll;
@@ -1668,7 +1648,7 @@ document.addEventListener('change', function(e){
 </script>
 <script>
 
-/* v4.17: Import match JSON exported by Goalie Stats Recorder */
+/* v4.18: Import match JSON exported by Goalie Stats Recorder */
 (function(){
   function normalizeImportedShot(s){
     return {
@@ -1786,15 +1766,15 @@ function exportGoaliesTeams(){
 }
 </script>
 <script>
-/* v4.17: version display and Heat Map Editor display improvements */
+/* v4.18: version display and Heat Map Editor display improvements */
 (function(){
-  window.APP_VERSION = "4.17";
+  window.APP_VERSION = "4.18";
 
   function setTextIfVersionish(el){
     if(!el) return;
     const txt = (el.textContent || "").trim();
     if(/Version\s+\d+\.\d+|v\d+\.\d+/i.test(txt)){
-      el.textContent = txt.replace(/Version\s+\d+\.\d+/i, "Version 4.17").replace(/v\d+\.\d+/i, "v4.17");
+      el.textContent = txt.replace(/Version\s+\d+\.\d+/i, "Version 4.18").replace(/v\d+\.\d+/i, "v4.18");
     }
   }
 
@@ -1933,9 +1913,9 @@ function exportGoaliesTeams(){
 
 
 <script>
-/* v4.17: Heat Maps tab wording update */
+/* v4.18: Heat Maps tab wording update */
 (function(){
-  window.APP_VERSION = "4.17";
+  window.APP_VERSION = "4.18";
 
   function updateHeatMapLabels(){
     let changedTab = false;
@@ -1959,8 +1939,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.17")
-          .replace(/v4\.\d+/i, "v4.17");
+          .replace(/Version\s+4\.\d+/i, "Version 4.18")
+          .replace(/v4\.\d+/i, "v4.18");
       }
     });
   }
@@ -1980,9 +1960,9 @@ function exportGoaliesTeams(){
 
 
 <script>
-/* v4.17: separate Heat Maps view tab from Heat Map Editor tab */
+/* v4.18: separate Heat Maps view tab from Heat Map Editor tab */
 (function(){
-  window.APP_VERSION = "4.17";
+  window.APP_VERSION = "4.18";
 
   function normalizeHeatTabs(){
     const candidates = Array.from(document.querySelectorAll("button,a,.tab,span,div"))
@@ -2032,8 +2012,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.17")
-          .replace(/v4\.\d+/i, "v4.17");
+          .replace(/Version\s+4\.\d+/i, "Version 4.18")
+          .replace(/v4\.\d+/i, "v4.18");
       }
     });
   }
@@ -2063,9 +2043,9 @@ function exportGoaliesTeams(){
 
 
 <script>
-/* v4.17: fix Recorder import failure caused by editShot global reference */
+/* v4.18: fix Recorder import failure caused by editShot global reference */
 (function(){
-  window.APP_VERSION = "4.17";
+  window.APP_VERSION = "4.18";
 
   function safeEl(id){ return document.getElementById(id); }
 
@@ -2190,8 +2170,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.17")
-          .replace(/v4\.\d+/i, "v4.17");
+          .replace(/Version\s+4\.\d+/i, "Version 4.18")
+          .replace(/v4\.\d+/i, "v4.18");
       }
     });
   },0);
@@ -2200,9 +2180,9 @@ function exportGoaliesTeams(){
 
 
 <script>
-/* v4.17: show N/C for percentage stats with no attempts */
+/* v4.18: show N/C for percentage stats with no attempts */
 (function(){
-  window.APP_VERSION = "4.17";
+  window.APP_VERSION = "4.18";
 
   function pctNC(success, attempts){
     attempts = Number(attempts || 0);
@@ -2330,8 +2310,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.17")
-          .replace(/v4\.\d+/i, "v4.17");
+          .replace(/Version\s+4\.\d+/i, "Version 4.18")
+          .replace(/v4\.\d+/i, "v4.18");
       }
     });
   },0);
@@ -2340,9 +2320,9 @@ function exportGoaliesTeams(){
 
 
 <script>
-/* v4.17: correct N/C display inside existing Stats cards */
+/* v4.18: correct N/C display inside existing Stats cards */
 (function(){
-  window.APP_VERSION = "4.17";
+  window.APP_VERSION = "4.18";
 
   const zeroAttemptRateLabels = [
     "Save Rate",
@@ -2452,8 +2432,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.17")
-          .replace(/v4\.\d+/i, "v4.17");
+          .replace(/Version\s+4\.\d+/i, "Version 4.18")
+          .replace(/v4\.\d+/i, "v4.18");
       }
     });
   },0);
@@ -2462,9 +2442,9 @@ function exportGoaliesTeams(){
 
 
 <script>
-/* v4.17: core Stats calculation uses N/C for zero-attempt rate cards */
+/* v4.18: core Stats calculation uses N/C for zero-attempt rate cards */
 (function(){
-  window.APP_VERSION = "4.17";
+  window.APP_VERSION = "4.18";
 
   function pctText(success, attempts){
     attempts = Number(attempts || 0);
@@ -2625,7 +2605,7 @@ function exportGoaliesTeams(){
       const ms = typeof filterMatches === "function" ? filterMatches(g, period, year, home, opp) : [];
       out.innerHTML = '<div class="statgrid">' + statCards(calcStats(ms)) + '</div>' + matchTable(ms);
     }catch(e){
-      console.warn("v4.17 stats rerender warning", e);
+      console.warn("v4.18 stats rerender warning", e);
     }
   }
 
@@ -2659,8 +2639,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.17")
-          .replace(/v4\.\d+/i, "v4.17");
+          .replace(/Version\s+4\.\d+/i, "Version 4.18")
+          .replace(/v4\.\d+/i, "v4.18");
       }
     });
   }, 0);
@@ -2669,9 +2649,9 @@ function exportGoaliesTeams(){
 
 
 <script>
-/* v4.17: corrected Rate of Attempts at Goals Out Numbered */
+/* v4.18: corrected Rate of Attempts at Goals Out Numbered */
 (function(){
-  window.APP_VERSION = "4.17";
+  window.APP_VERSION = "4.18";
 
   function pctText(success, attempts){
     attempts = Number(attempts || 0);
@@ -2810,7 +2790,7 @@ function exportGoaliesTeams(){
         out.innerHTML = '<div class="statgrid">' + statCards(calcStats(ms)) + '</div>' + matchTable(ms);
       }
     } catch(e) {
-      console.warn("v4.17 stats rerender warning", e);
+      console.warn("v4.18 stats rerender warning", e);
     }
   }
 
@@ -2831,8 +2811,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.17")
-          .replace(/v4\.\d+/i, "v4.17");
+          .replace(/Version\s+4\.\d+/i, "Version 4.18")
+          .replace(/v4\.\d+/i, "v4.18");
       }
     });
   }, 0);
@@ -2841,7 +2821,7 @@ function exportGoaliesTeams(){
 
 
 <style>
-/* v4.17 timeline report and manual timeline markers */
+/* v4.18 timeline report and manual timeline markers */
 .timeline-strip{
   display:flex;
   flex-wrap:wrap;
@@ -2889,9 +2869,9 @@ function exportGoaliesTeams(){
 </style>
 
 <script>
-/* Hockey Goalie Stats v4.17: manual timelines + timeline report */
+/* Hockey Goalie Stats v4.18: manual timelines + timeline report */
 (function(){
-  window.APP_VERSION = "4.17";
+  window.APP_VERSION = "4.18";
 
   function ensureTimeline(match){
     if(!match) return [];
@@ -3194,8 +3174,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.17")
-          .replace(/v4\.\d+/i, "v4.17");
+          .replace(/Version\s+4\.\d+/i, "Version 4.18")
+          .replace(/v4\.\d+/i, "v4.18");
       }
     });
   },0);
@@ -3203,32 +3183,95 @@ function exportGoaliesTeams(){
 </script>
 
 
+<style>
+/* v4.18 restored manual match timeline */
+.timeline-strip{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  align-items:center;
+  margin:8px 0 12px;
+}
+.tl-pill{
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:1000;
+  font-size:15px;
+  color:#fff;
+}
+.tl-pill.S{background:#54b52b;}
+.tl-pill.G{background:#c83028;}
+.tl-pill.A{background:#d9ad16;color:#1d1600;}
+.tl-pill.P{
+  background:#2275d7;
+  clip-path:polygon(50% 5%,95% 94%,5% 94%);
+  border-radius:0;
+  color:#fff;
+}
+.timeline-card{
+  border:1px solid var(--line, #3b4650);
+  border-radius:14px;
+  padding:12px;
+  margin:12px 0;
+  background:rgba(255,255,255,.03);
+}
+.timeline-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin:10px 0;
+}
+.timeline-actions button{
+  flex:1;
+  min-width:150px;
+}
+</style>
+
 <script>
-/* Hockey Goalie Stats v4.17: add Defence Rate after Save Rate in report summaries */
+/* Hockey Goalie Stats v4.18: restore timeline panel and place above Match Outcome */
 (function(){
-  window.APP_VERSION = "4.17";
+  window.APP_VERSION = "4.18";
 
-  function isShotRecord(s){
-    return s && (s.outcome === "Save" || s.outcome === "Goal" || s.outcome === "Angle Closed Off");
-  }
-
-  function pct(num, den){
-    return den > 0 ? Math.round((num / den) * 100) + "%" : "N/C";
+  function getDb(){
+    try{ if(typeof DB !== "undefined") return DB; }catch(e){}
+    try{ if(typeof db !== "undefined") return db; }catch(e){}
+    try{ if(typeof data !== "undefined") return data; }catch(e){}
+    try{
+      const keys = ["hockeyGoalieStatsDB","goalieStatsDB","hgs_state"];
+      for(const k of keys){
+        const raw = localStorage.getItem(k);
+        if(raw){
+          const parsed = JSON.parse(raw);
+          if(parsed && Array.isArray(parsed.goalies)) return parsed;
+        }
+      }
+    }catch(e){}
+    return null;
   }
 
   function allGoalies(){
-    try{ if(typeof DB !== "undefined" && Array.isArray(DB.goalies)) return DB.goalies; }catch(e){}
-    try{ if(typeof db !== "undefined" && Array.isArray(db.goalies)) return db.goalies; }catch(e){}
-    try{ if(typeof data !== "undefined" && Array.isArray(data.goalies)) return data.goalies; }catch(e){}
+    const d = getDb();
+    if(d && Array.isArray(d.goalies)) return d.goalies;
     try{ if(Array.isArray(goalies)) return goalies; }catch(e){}
-    try{
-      const raw = localStorage.getItem("hockeyGoalieStatsDB") || localStorage.getItem("goalieStatsDB") || localStorage.getItem("hgs_state");
-      if(raw){
-        const parsed = JSON.parse(raw);
-        if(parsed && Array.isArray(parsed.goalies)) return parsed.goalies;
-      }
-    }catch(e){}
     return [];
+  }
+
+  function goalieObj(){
+    try{ if(typeof goalie === "function") return goalie(); }catch(e){}
+    const gs = allGoalies();
+    const selectors = ["goalieSelect","matchGoalie","statsGoalie","reportGoalie"];
+    for(const id of selectors){
+      const el = document.getElementById(id);
+      if(el && el.value){
+        const found = gs.find(g => g.id === el.value || g.name === el.value);
+        if(found) return found;
+      }
+    }
+    return gs[0] || null;
   }
 
   function matchesOf(g){
@@ -3238,170 +3281,265 @@ function exportGoaliesTeams(){
     return [];
   }
 
-  function selectedGoalie(){
-    try{ if(typeof goalie === "function") return goalie(); }catch(e){}
-    const gs = allGoalies();
-    const selectors = ["reportGoalie","goalieSelect","statsGoalie","matchGoalie"];
+  function currentMatch(){
+    const g = goalieObj();
+    if(!g) return null;
+    const ms = matchesOf(g);
+    if(!ms.length) return null;
+
+    const selectors = ["matchSelect","editMatch","matchMatch","heatMatch","statsMatch"];
     for(const id of selectors){
       const el = document.getElementById(id);
       if(el && el.value){
-        const found = gs.find(g => g.id === el.value || g.name === el.value || String(gs.indexOf(g)) === String(el.value));
+        const found = ms.find(m => m.id === el.value || m.name === el.value || String(ms.indexOf(m)) === String(el.value));
         if(found) return found;
       }
     }
-    return gs.length === 1 ? gs[0] : null;
+
+    // Prefer latest match if no selector is present.
+    return ms[ms.length - 1];
   }
 
-  function getReportShots(){
+  function saveDb(){
+    try{ if(typeof save === "function") save(); }catch(e){}
+    try{ if(typeof saveDB === "function") saveDB(); }catch(e){}
+    try{ if(typeof persist === "function") persist(); }catch(e){}
     try{
-      if(typeof filteredShots === "function"){
-        const fs = filteredShots();
-        if(Array.isArray(fs)) return fs.filter(isShotRecord);
-      }
+      const d = getDb();
+      if(d) localStorage.setItem("hockeyGoalieStatsDB", JSON.stringify(d));
     }catch(e){}
-    try{
-      if(typeof reportShots === "function"){
-        const rs = reportShots();
-        if(Array.isArray(rs)) return rs.filter(isShotRecord);
+  }
+
+  function ensureTimeline(m){
+    if(!m) return [];
+    if(!Array.isArray(m.timeline)) m.timeline = [];
+    return m.timeline;
+  }
+
+  function letterFromShot(s){
+    if(!s) return "";
+    if(s.outcome === "Save") return "S";
+    if(s.outcome === "Goal") return "G";
+    if(s.outcome === "Angle Closed Off") return "A";
+    return "";
+  }
+
+  function icon(ev){
+    if(!ev) return "";
+    if(ev.eventType === "periodMarker") return "P";
+    return ev.label || letterFromShot(ev) || "";
+  }
+
+  function timelineHtml(tl){
+    tl = Array.isArray(tl) ? tl : [];
+    if(!tl.length) return '<p class="small muted">No timeline recorded yet.</p>';
+    return '<div class="timeline-strip">' + tl.map(ev => {
+      const l = icon(ev);
+      if(!l) return "";
+      return '<span class="tl-pill '+l+'">'+(l === "P" ? "▲" : l)+'</span>';
+    }).join("") + '</div>';
+  }
+
+  function findMatchRoot(){
+    return document.getElementById("matches") ||
+           document.getElementById("match") ||
+           Array.from(document.querySelectorAll("section,div")).find(el => {
+             const txt = (el.textContent || "").toLowerCase();
+             return txt.includes("match outcome") || (txt.includes("record") && txt.includes("shot") && txt.includes("match"));
+           }) ||
+           document.body;
+  }
+
+  function findOutcomeBlock(root){
+    if(!root) return null;
+    const headings = Array.from(root.querySelectorAll("h1,h2,h3,h4,label,legend,b,strong"));
+    for(const h of headings){
+      const txt = (h.textContent || "").trim().toLowerCase();
+      if(txt.includes("match outcome")){
+        return h.closest(".card,section,fieldset,div") || h.parentElement;
       }
-    }catch(e){}
-    try{
-      if(typeof getReportShots === "function"){
-        const rs = getReportShots();
-        if(Array.isArray(rs)) return rs.filter(isShotRecord);
-      }
-    }catch(e){}
+    }
 
-    const shots = [];
-    const g = selectedGoalie();
-    const sourceGoalies = g ? [g] : allGoalies();
-
-    sourceGoalies.forEach(goalie => {
-      matchesOf(goalie).forEach(match => {
-        if(Array.isArray(match.shots)){
-          match.shots.forEach(s => { if(isShotRecord(s)) shots.push(s); });
-        }
-      });
-    });
-    return shots;
-  }
-
-  function calcDefenceRate(){
-    const shots = getReportShots();
-    const saves = shots.filter(s => s.outcome === "Save").length;
-    const angles = shots.filter(s => s.outcome === "Angle Closed Off").length;
-    const total = shots.length;
-    return pct(saves + angles, total);
-  }
-
-  function cardText(el){
-    return (el.textContent || "").replace(/\s+/g, " ").trim().toLowerCase();
-  }
-
-  function findSummaryArea(root){
-    const statCards = Array.from(root.querySelectorAll(".stat-card,.metric-card,.summary-card"));
-    if(statCards.length) return statCards[0].parentElement;
-    const cards = Array.from(root.querySelectorAll(".card,div"));
-    const saveCard = cards.find(c => {
-      const t = cardText(c);
-      return t.includes("save rate") && !t.includes("1st shot") && !t.includes("rebound") && !t.includes("penalty") && !t.includes("1v1");
-    });
-    return saveCard ? saveCard.parentElement : root;
-  }
-
-  function findSaveRateCard(root){
-    const cards = Array.from(root.querySelectorAll(".stat-card,.metric-card,.summary-card,.card,div"));
-    return cards.find(card => {
-      if(card.classList && card.classList.contains("v414-defence-rate-card")) return false;
-      const t = cardText(card);
-      return t.includes("save rate") &&
-        !t.includes("1st shot") &&
-        !t.includes("rebound") &&
-        !t.includes("penalty") &&
-        !t.includes("1v1") &&
-        !t.includes("defence rate");
+    const cards = Array.from(root.querySelectorAll(".card,section,fieldset,div"));
+    return cards.find(el => {
+      const txt = (el.textContent || "").toLowerCase();
+      return txt.includes("home goals") && (txt.includes("result") || txt.includes("win") || txt.includes("loss") || txt.includes("draw"));
     }) || null;
   }
 
-  function makeCard(value){
-    const card = document.createElement("div");
-    card.className = "stat-card metric-card summary-card v414-defence-rate-card";
-    card.innerHTML = '<strong>'+value+'</strong><span>Defence Rate</span>';
-    card.style.border = "1px solid #ddd";
-    card.style.borderRadius = "10px";
-    card.style.padding = "10px";
-    card.style.background = "#fff";
-    return card;
+  function createTimelinePanel(){
+    let panel = document.getElementById("manualTimelinePanel");
+    if(panel) return panel;
+
+    panel = document.createElement("div");
+    panel.id = "manualTimelinePanel";
+    panel.className = "card timeline-card";
+    panel.innerHTML =
+      '<h2>Match Timeline</h2>' +
+      '<p class="small muted">Timeline for this match. Use End of Period when capturing manually.</p>' +
+      '<div id="manualTimelineDisplay"></div>' +
+      '<div class="timeline-actions">' +
+      '<button class="btn" id="manualEndPeriodBtn" type="button">End of Period</button>' +
+      '</div>';
+
+    panel.querySelector("#manualEndPeriodBtn").addEventListener("click", function(){
+      const m = currentMatch();
+      if(!m){
+        alert("Please create or select a match first.");
+        return;
+      }
+      ensureTimeline(m).push({eventType:"periodMarker", label:"End of Period"});
+      saveDb();
+      renderTimelinePanel();
+    });
+
+    return panel;
   }
 
-  function updateCard(card, value){
-    card.classList.add("v414-defence-rate-card");
-    const strong = card.querySelector("strong,b,.value,.stat-value");
-    if(strong) strong.textContent = value;
-    else card.innerHTML = '<strong>'+value+'</strong><span>Defence Rate</span>';
-    if(!/Defence Rate/i.test(card.textContent || "")){
-      const span = document.createElement("span");
-      span.textContent = "Defence Rate";
-      card.appendChild(span);
+  function placeTimelinePanel(){
+    const root = findMatchRoot();
+    if(!root) return;
+
+    const panel = createTimelinePanel();
+    const outcome = findOutcomeBlock(root);
+
+    if(outcome && outcome.parentNode){
+      if(outcome.previousElementSibling !== panel){
+        outcome.parentNode.insertBefore(panel, outcome);
+      }
+    }else if(!panel.parentNode){
+      root.appendChild(panel);
     }
   }
 
-  function insertDefenceRate(){
-    const roots = [
-      document.getElementById("reports"),
-      document.getElementById("report"),
-      document.getElementById("reportPreview"),
-      document.getElementById("yearReport"),
-      document.getElementById("reportOutput"),
-      document.querySelector(".report"),
-      document.body
-    ].filter(Boolean);
+  function renderTimelinePanel(){
+    const display = document.getElementById("manualTimelineDisplay");
+    if(!display) return;
+    const m = currentMatch();
+    display.innerHTML = m ? timelineHtml(m.timeline || []) : '<p class="small muted">Create or select a match to use the timeline.</p>';
+  }
 
-    const value = calcDefenceRate();
-
-    roots.forEach(root => {
-      const saveCard = findSaveRateCard(root);
-      if(!saveCard) return;
-      const area = findSummaryArea(root);
-      let existing = area.querySelector(".v414-defence-rate-card");
-      if(existing) updateCard(existing, value);
-      else existing = makeCard(value);
-      if(saveCard.nextElementSibling !== existing){
-        saveCard.insertAdjacentElement("afterend", existing);
-      }
+  function addShotToTimeline(m, shot){
+    if(!m || !shot) return;
+    const l = letterFromShot(shot);
+    if(!l) return;
+    const tl = ensureTimeline(m);
+    if(shot.id && tl.some(ev => ev.shotId === shot.id)) return;
+    tl.push({
+      eventType:"shot",
+      shotId: shot.id || ("manual_" + Date.now() + "_" + Math.random().toString(36).slice(2)),
+      label:l,
+      outcome:shot.outcome,
+      type:shot.type || shot.shotCategory || "",
+      shotSituation:shot.shotSituation || "",
+      outnumbered:shot.outnumbered || ""
     });
   }
 
-  const oldRenderReports = window.renderReports;
-  if(typeof oldRenderReports === "function" && !window.__v414ReportsWrapped){
-    window.renderReports = function(){
-      const result = oldRenderReports.apply(this, arguments);
-      setTimeout(insertDefenceRate, 0);
-      return result;
-    };
-    window.__v414ReportsWrapped = true;
+  // Wrap common shot functions so manual captures populate timeline.
+  ["saveShot","addShot","recordShot","captureShot"].forEach(function(fnName){
+    try{
+      const oldFn = window[fnName];
+      if(typeof oldFn === "function" && !oldFn.__v413TimelineWrapped){
+        window[fnName] = function(){
+          const beforeM = currentMatch();
+          const beforeCount = beforeM && Array.isArray(beforeM.shots) ? beforeM.shots.length : 0;
+          const result = oldFn.apply(this, arguments);
+          const afterM = currentMatch() || beforeM;
+          if(afterM && Array.isArray(afterM.shots) && afterM.shots.length > beforeCount){
+            addShotToTimeline(afterM, afterM.shots[afterM.shots.length - 1]);
+            saveDb();
+            renderTimelinePanel();
+          }
+          return result;
+        };
+        window[fnName].__v413TimelineWrapped = true;
+      }
+    }catch(e){}
+  });
+
+  function matchTitle(m){
+    return m.name || ((m.date || "") + " - " + (m.homeTeam || m.team || "Team") + " VS " + (m.opponentTeam || m.opponent || "Opponent"));
+  }
+
+  function scoreText(m){
+    if(m.score) return m.score;
+    if(m.homeGoals !== undefined && m.opponentGoals !== undefined) return m.homeGoals + "-" + m.opponentGoals;
+    return "";
+  }
+
+  function renderTimelineReport(){
+    const reports = document.getElementById("reports") || document.getElementById("report");
+    if(!reports) return;
+
+    let panel = document.getElementById("gameTimelineReport");
+    if(!panel){
+      panel = document.createElement("div");
+      panel.id = "gameTimelineReport";
+      panel.className = "card timeline-card";
+      panel.innerHTML = '<h2>Game Timeline Report</h2><div id="gameTimelineReportBody"></div>';
+      reports.appendChild(panel);
+    }
+
+    const body = document.getElementById("gameTimelineReportBody");
+    const rows = [];
+    allGoalies().forEach(g => matchesOf(g).forEach(m => {
+      if(Array.isArray(m.timeline) && m.timeline.length) rows.push({goalie:g, match:m});
+    }));
+
+    if(!rows.length){
+      body.innerHTML = '<p class="small muted">No matches with timeline data yet.</p>';
+      return;
+    }
+
+    body.innerHTML = rows.map(row => {
+      const m = row.match;
+      const score = scoreText(m);
+      return '<div class="timeline-card">' +
+        '<h3>'+matchTitle(m)+'</h3>' +
+        '<p class="small muted">Goalie: '+(row.goalie.name || "Goalie")+
+        (score ? ' • Score: '+score : '')+
+        (m.result ? ' • Result: '+m.result : '')+'</p>' +
+        '<b>MATCH TIMELINE</b>' +
+        timelineHtml(m.timeline) +
+        '</div>';
+    }).join("");
+  }
+
+  function refreshAll(){
+    placeTimelinePanel();
+    renderTimelinePanel();
+    renderTimelineReport();
   }
 
   const oldRenderAll = window.renderAll;
-  if(typeof oldRenderAll === "function" && !window.__v414RenderAllWrapped){
+  if(typeof oldRenderAll === "function" && !window.__v413RenderAllWrapped){
     window.renderAll = function(){
-      const result = oldRenderAll.apply(this, arguments);
-      setTimeout(insertDefenceRate, 0);
-      return result;
+      oldRenderAll.apply(this, arguments);
+      setTimeout(refreshAll, 0);
     };
-    window.__v414RenderAllWrapped = true;
+    window.__v413RenderAllWrapped = true;
   }
 
-  document.addEventListener("click", () => setTimeout(insertDefenceRate, 0));
-  document.addEventListener("change", () => setTimeout(insertDefenceRate, 0));
+  const oldRenderReports = window.renderReports;
+  if(typeof oldRenderReports === "function" && !window.__v413ReportsWrapped){
+    window.renderReports = function(){
+      oldRenderReports.apply(this, arguments);
+      setTimeout(renderTimelineReport, 0);
+    };
+    window.__v413ReportsWrapped = true;
+  }
+
+  document.addEventListener("click", function(){ setTimeout(refreshAll, 0); });
+  document.addEventListener("change", function(){ setTimeout(refreshAll, 0); });
 
   setTimeout(function(){
-    insertDefenceRate();
+    refreshAll();
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.17")
-          .replace(/v4\.\d+/i, "v4.17");
+          .replace(/Version\s+4\.\d+/i, "Version 4.18")
+          .replace(/v4\.\d+/i, "v4.18");
       }
     });
   }, 0);
@@ -3410,44 +3548,15 @@ function exportGoaliesTeams(){
 
 
 <script>
-/* Hockey Goalie Stats v4.17: ensure reports use real unified stat cards */
+/* Hockey Goalie Stats v4.18: clean version text only */
 (function(){
-  window.APP_VERSION = "4.17";
-
-  function removeOldPatchedDefenceCards(){
-    document.querySelectorAll(".v414-defence-rate-card,.v415-defence-rate-card,.v416-unified-stat-card").forEach(el => {
-      const label = (el.textContent || "").toLowerCase();
-      if(label.includes("defence rate")) el.remove();
-    });
-  }
-
-  const oldBuildReport = window.buildReport;
-  if(typeof oldBuildReport === "function" && !window.__v417BuildReportWrapped){
-    window.buildReport = function(){
-      const result = oldBuildReport.apply(this, arguments);
-      removeOldPatchedDefenceCards();
-      return result;
-    };
-    window.__v417BuildReportWrapped = true;
-  }
-
-  const oldRenderStats = window.renderStats;
-  if(typeof oldRenderStats === "function" && !window.__v417RenderStatsWrapped){
-    window.renderStats = function(){
-      const result = oldRenderStats.apply(this, arguments);
-      removeOldPatchedDefenceCards();
-      return result;
-    };
-    window.__v417RenderStatsWrapped = true;
-  }
-
+  window.APP_VERSION = "4.18";
   setTimeout(function(){
-    removeOldPatchedDefenceCards();
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.17")
-          .replace(/v4\.\d+/i, "v4.17");
+          .replace(/Version\s+4\.\d+/i, "Version 4.18")
+          .replace(/v4\.\d+/i, "v4.18");
       }
     });
   },0);

@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats: Data Driven Development",
   "short_name": "Goalie Stats",
-  "description": "Hockey Goalie Stats v4.17 fixes report stat cards at the generator level.",
+  "description": "Hockey Goalie Stats v4.18 clean report stat cards with Defence Rate in the original summary list.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
