@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats: Data Driven Development",
   "short_name": "Goalie Stats",
-  "description": "Hockey Goalie Stats v4.32 fixes Game Heat Map Editor adding and Match Timeline sync.",
+  "description": "Hockey Goalie Stats v4.33 fixes Match tab timeline display and guarded match deletion.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
