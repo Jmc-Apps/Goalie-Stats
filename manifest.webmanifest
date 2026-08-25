@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats: Data Driven Development",
   "short_name": "Goalie Stats",
-  "description": "Hockey Goalie Stats v4.34 resets Match Timeline after finalize and keeps Game Heat Map editing inline.",
+  "description": "Hockey Goalie Stats v4.35 fixes active match isolation, finalise/save reset, and timeline carry-over.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
