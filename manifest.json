@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats: Data Driven Development",
   "short_name": "Goalie Stats",
-  "description": "Hockey Goalie Stats v4.31 primes heat-map adding and cleans the Match tab.",
+  "description": "Hockey Goalie Stats v4.32 fixes Game Heat Map Editor adding and Match Timeline sync.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
