@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats: Data Driven Development",
   "short_name": "Goalie Stats",
-  "description": "Hockey Goalie Stats v4.13 restores Match Timeline above Match Outcome.",
+  "description": "Hockey Goalie Stats v4.14 adds Defence Rate after Save Rate in reports.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
