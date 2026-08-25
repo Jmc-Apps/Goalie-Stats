@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats: Data Driven Development",
   "short_name": "Goalie Stats",
-  "description": "Hockey Goalie Stats v4.29 fixes Match Editor inputs and heat map population.",
+  "description": "Hockey Goalie Stats v4.30 cleans Match Editor and adds ordered period markers.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
