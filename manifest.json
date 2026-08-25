@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats: Data Driven Development",
   "short_name": "Goalie Stats",
-  "description": "Hockey Goalie Stats v4.27 fixes Game Heat Map Editor population and adds Save/Goal/Angle buttons.",
+  "description": "Hockey Goalie Stats v4.28 improves Match Editor, heat maps, shot ordering, and period markers.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
