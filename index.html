@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Hockey Goalie Stats: Data Driven Development v4.28</title>
+<title>Hockey Goalie Stats: Data Driven Development v4.29</title>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#1f1f1f">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -53,7 +53,7 @@ table{width:100%;border-collapse:collapse;font-size:13px} th,td{border-bottom:1p
 </style>
 
 <style>
-/* v4.28 Match Editor */
+/* v4.29 Match Editor */
 .matchShotList{
   display:flex;
   flex-direction:column;
@@ -117,7 +117,7 @@ table{width:100%;border-collapse:collapse;font-size:13px} th,td{border-bottom:1p
 
 
 <style>
-/* v4.28 restored Match Editor */
+/* v4.29 restored Match Editor */
 .matchShotList{
   display:flex;
   flex-direction:column;
@@ -190,7 +190,7 @@ table{width:100%;border-collapse:collapse;font-size:13px} th,td{border-bottom:1p
 
 
 <style>
-/* v4.28 Match Editor consolidated heat maps */
+/* v4.29 Match Editor consolidated heat maps */
 .consolidatedHeatMap{
   min-height:260px;
 }
@@ -237,66 +237,15 @@ table{width:100%;border-collapse:collapse;font-size:13px} th,td{border-bottom:1p
 
 
 <style>
-/* v4.28 Match Editor consolidated rebuild */
-#matchEditorRoot .card,
+/* v4.29 Game Heat Map Editor fixes */
 #matchEditorConsolidatedHeatCard{
-  margin-top:14px;
+  display:block!important;
+  margin-top:14px!important;
 }
-.v428Grid2{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:14px;
+#matchEditorGameDHeat,
+#matchEditorGameGoalHeat{
+  min-height:260px;
 }
-.v428Grid3{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:10px;
-}
-.v428Field label{
-  display:block;
-  margin:10px 0 5px;
-  color:#cfd3d6;
-  font-weight:700;
-}
-.v428Field input,
-.v428Field select,
-.v428Field textarea{
-  width:100%;
-  box-sizing:border-box;
-}
-.v428ShotRow,
-.v428MarkerRow{
-  display:grid;
-  grid-template-columns:auto 1fr auto auto auto;
-  align-items:center;
-  gap:8px;
-  padding:8px;
-  border:1px solid rgba(255,255,255,.14);
-  border-radius:10px;
-  margin:6px 0;
-  background:rgba(255,255,255,.035);
-}
-.v428ShotRow button,
-.v428MarkerRow button{
-  padding:8px 10px!important;
-  min-height:34px!important;
-}
-.v428Badge{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  min-width:30px;
-  height:30px;
-  border-radius:999px;
-  color:#111;
-  font-weight:900;
-}
-.v428Badge.save{background:#2fd17c;}
-.v428Badge.goal{background:#ef5350;color:#fff;}
-.v428Badge.angle{background:#ffca28;}
-.v428Badge.marker{background:#42a5f5;color:#fff;}
-#v428EditorDMap svg,
-#v428EditorGoalMap svg,
 #matchEditorGameDHeat svg,
 #matchEditorGameGoalHeat svg,
 .matchEditorMapBox svg,
@@ -305,24 +254,17 @@ table{width:100%;border-collapse:collapse;font-size:13px} th,td{border-bottom:1p
   height:auto;
   display:block;
 }
-.matchEditorMapBox,
-.consolidatedHeatMap{
-  min-height:220px;
-}
-.v428Dot,
 .consolidatedHeatDot{
   cursor:pointer;
   stroke:#111;
   stroke-width:1;
   opacity:.94;
 }
-.v428Dot:hover,
 .consolidatedHeatDot:hover{
   stroke:#fff;
   stroke-width:2.5;
   filter:drop-shadow(0 0 4px rgba(45,127,249,.85));
 }
-.v428DotLabel,
 .consolidatedHeatLabel{
   pointer-events:none;
   font-size:3.2px;
@@ -331,47 +273,61 @@ table{width:100%;border-collapse:collapse;font-size:13px} th,td{border-bottom:1p
   text-anchor:middle;
   dominant-baseline:middle;
 }
-.v428AddButtons{
+.consolidatedHeatDot.Save{fill:#2fd17c;}
+.consolidatedHeatDot.Goal{fill:#ef5350;}
+.consolidatedHeatDot.Angle{fill:#ffca28;}
+.v427-selected-map{
+  box-shadow:0 0 0 3px rgba(45,127,249,.35)!important;
+}
+.v427AddShotButtons{
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
   gap:10px;
   margin:12px 0;
 }
-.v428BtnAngle,
-button.v428BtnAngle{
-  background:#ffca28!important;
-  color:#111!important;
+.v427AddShotButtons .btn{
+  width:100%;
 }
-.v428BtnSave,
-button.v428BtnSave{
-  background:#2fd17c!important;
-  color:#07131f!important;
-}
-.v428BtnGoal,
-button.v428BtnGoal{
-  background:#ef5350!important;
-  color:#fff!important;
-}
-.v428SelectedMap{
-  box-shadow:0 0 0 3px rgba(45,127,249,.35)!important;
-}
-.v428SmallNote{
-  color:#9aa4ad;
-  font-size:13px;
-  margin-top:6px;
-}
-.v428DangerZone{
-  margin-top:14px;
-  padding-top:10px;
-  border-top:1px solid rgba(255,255,255,.12);
-}
-@media(max-width:800px){
-  .v428Grid2,.v428Grid3,.v428AddButtons{
+@media(max-width:720px){
+  .v427AddShotButtons{
     grid-template-columns:1fr;
   }
-  .v428ShotRow,.v428MarkerRow{
-    grid-template-columns:auto 1fr;
-  }
+}
+</style>
+
+
+<style>
+/* v4.29 Match Editor deep fix */
+#matchEditorRoot .card,
+#matchEditorConsolidatedHeatCard{margin-top:14px;}
+.v429Grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;}
+.v429Grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;}
+.v429Field label{display:block;margin:10px 0 5px;color:#cfd3d6;font-weight:700;}
+.v429Field input,.v429Field select,.v429Field textarea{width:100%;box-sizing:border-box;pointer-events:auto!important;}
+#matchEditorRoot input,#matchEditorRoot select,#matchEditorRoot textarea,#matchEditorRoot button{pointer-events:auto!important;position:relative;z-index:5;}
+.v429ShotRow,.v429MarkerRow{display:grid;grid-template-columns:auto 1fr auto auto auto;align-items:center;gap:8px;padding:8px;border:1px solid rgba(255,255,255,.14);border-radius:10px;margin:6px 0;background:rgba(255,255,255,.035);}
+.v429ShotRow button,.v429MarkerRow button{padding:8px 10px!important;min-height:34px!important;}
+.v429Badge{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:30px;border-radius:999px;color:#111;font-weight:900;}
+.v429Badge.save{background:#2fd17c;}
+.v429Badge.goal{background:#ef5350;color:#fff;}
+.v429Badge.angle{background:#ffca28;}
+.v429Badge.marker{background:#42a5f5;color:#fff;}
+#v429EditorDMap svg,#v429EditorGoalMap svg,#matchEditorGameDHeat svg,#matchEditorGameGoalHeat svg,.matchEditorMapBox svg,.consolidatedHeatMap svg{width:100%;height:auto;display:block;}
+.matchEditorMapBox,.consolidatedHeatMap{min-height:220px;}
+.v429Dot,.consolidatedHeatDot{cursor:pointer;stroke:#111;stroke-width:1;opacity:.94;}
+.v429Dot:hover,.consolidatedHeatDot:hover{stroke:#fff;stroke-width:2.5;filter:drop-shadow(0 0 4px rgba(45,127,249,.85));}
+.v429DotLabel,.consolidatedHeatLabel{pointer-events:none;font-size:3.2px;font-weight:900;fill:#111;text-anchor:middle;dominant-baseline:middle;}
+.v429AddButtons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0;}
+.v429BtnAngle,button.v429BtnAngle{background:#ffca28!important;color:#111!important;}
+.v429BtnSave,button.v429BtnSave{background:#2fd17c!important;color:#07131f!important;}
+.v429BtnGoal,button.v429BtnGoal{background:#ef5350!important;color:#fff!important;}
+.v429SelectedMap{box-shadow:0 0 0 3px rgba(45,127,249,.35)!important;}
+.v429SmallNote{color:#9aa4ad;font-size:13px;margin-top:6px;}
+.v429DangerZone{margin-top:14px;padding-top:10px;border-top:1px solid rgba(255,255,255,.12);}
+.v429Unlinked{font-size:12px;color:#ffca28;margin-left:8px;}
+@media(max-width:800px){
+  .v429Grid2,.v429Grid3,.v429AddButtons{grid-template-columns:1fr;}
+  .v429ShotRow,.v429MarkerRow{grid-template-columns:auto 1fr;}
 }
 </style>
 
@@ -393,7 +349,7 @@ button.v428BtnGoal{
       <img src="assets/home-logo.png" alt="Hockey Goalie Stats Data Driven Development" class="homeLogo">
     </div>
     <div class="versionBox">
-      <b>Version 4.28</b>
+      <b>Version 4.29</b>
       <div class="small">Build Date: 2026-06-03</div>
     </div>
     <div id="homeSummary" class="hiddenHomeSummary"></div>
@@ -442,7 +398,6 @@ button.v428BtnGoal{
     <p class="muted">Select a goalie and match to edit match details, shots, shot order, heat maps, and period markers.</p>
     <div id="matchEditorRoot"></div>
   </div>
-
   <div class="card">
     <h2>Match Editor</h2>
     <p class="muted">Select a match, then choose any shot in the order it was recorded. Editing a shot loads the saved details so you can correct it like recording the shot again.</p>
@@ -485,11 +440,11 @@ button.v428BtnGoal{
     <div class="grid2">
       <div>
         <h3>D Heat Map</h3>
-        <div class="matchEditorMapBox" id="matchEditorDMap"></div>
+        <div class="matchEditorMapBox" id="matchEditorDMap"></div><button class="btn secondary" type="button" onclick="clearMatchEditorDPoint()">Clear D Point</button>
       </div>
       <div>
         <h3>Goal Box Heat Map</h3>
-        <div class="matchEditorMapBox" id="matchEditorGoalMap"></div>
+        <div class="matchEditorMapBox" id="matchEditorGoalMap"></div><button class="btn secondary" type="button" onclick="clearMatchEditorGoalPoint()">Clear Goal Point</button>
         <div class="small">Angle Closed Off only uses the D heat map.</div>
         <label><input id="matchEditorMirrorGoal" type="checkbox" style="width:auto"> Mirror goal-box point when saving</label>
       </div>
@@ -500,6 +455,32 @@ button.v428BtnGoal{
     <button class="btn danger" type="button" onclick="deleteMatchEditorShot()">Delete This Shot</button>
     <div id="matchEditorStatus" class="small"></div>
   </div>
+  <div class="card" id="matchEditorConsolidatedHeatCard">
+    <h2>Game Heat Map Editor</h2>
+    <p class="muted">These are the consolidated heat maps for the selected match. Click a single dot to open that shot above and edit its saved details. D heat-map and goal-box placements are edited independently.</p>
+    <div class="grid2">
+      <div>
+        <h3>D Heat Map</h3>
+        <div class="matchEditorMapBox consolidatedHeatMap" id="matchEditorGameDHeat"></div>
+      </div>
+      <div>
+        <h3>Goal Box Heat Map</h3>
+        <div class="matchEditorMapBox consolidatedHeatMap" id="matchEditorGameGoalHeat"></div>
+      </div>
+    </div>
+    <div class="legend">
+      <span><span class="dot" style="background:#2fd17c"></span> Save</span>
+      <span><span class="dot" style="background:#ef5350"></span> Goal</span>
+      <span><span class="dot" style="background:#ffca28"></span> Angle Closed Off</span>
+    </div>
+    <div class="v427AddShotButtons">
+      <button class="btn good" type="button" onclick="addNewShotFromMatchEditor('Save')">Add Save</button>
+      <button class="btn danger" type="button" onclick="addNewShotFromMatchEditor('Goal')">Add Goal</button>
+      <button class="btn warn" type="button" onclick="addNewShotFromMatchEditor('Angle Closed Off')">Add Angle Closed Off</button>
+    </div>
+    <div id="matchEditorHeatStatus" class="small"></div>
+  </div>
+
 </section>
 
 <section id="stats" class="panel"><div class="card"><h2>Stats</h2><div class="grid3"><div><label>Goalie</label><select id="statsGoalie"></select></div><div><label>Home Team</label><select id="statsHome"></select></div><div><label>Opponent</label><select id="statsOpp"></select></div></div><div class="grid3"><div><label>Period</label><select id="statsPeriod"><option value="match">Match</option><option value="year">Year</option><option value="last5">Last 5 Games</option><option value="all">All Matches</option></select></div><div><label>Calendar Year</label><select id="statsYear"></select></div><div><label>Match</label><select id="statsMatch"></select></div></div><button class="btn secondary" onclick="renderStats()">Update Stats</button></div><div class="card"><div id="statsOutput"></div></div></section>
@@ -520,7 +501,7 @@ button.v428BtnGoal{
   <div id="matchImportStatus" class="small"></div>
 </div>
 <div class="card"><h2>Export Goalies & Teams</h2><button class="btn good" onclick="exportGoaliesTeams()">Export Goalies & Teams</button><div id="masterExportStatus" class="small"></div></div></section>
-<div class="footer">Hockey Goalie Stats: Data Driven Development • Version 4.28</div>
+<div class="footer">Hockey Goalie Stats: Data Driven Development • Version 4.29</div>
 </main>
 
 <script>
@@ -675,7 +656,7 @@ matchDate.value=today();renderAll();
 </script>
 <script>
 
-/* v4.28 safe heat placement layer */
+/* v4.29 safe heat placement layer */
 let heatEditOutcome = 'Save';
 let pendingHeatD = null;
 
@@ -943,7 +924,7 @@ document.addEventListener('change', function(e){
 </script>
 <script>
 
-/* v4.28: Angle Closed Off D-map-only fix and plain shot type buttons */
+/* v4.29: Angle Closed Off D-map-only fix and plain shot type buttons */
 (function(){
   function isAngle(outcome){ return outcome === 'Angle Closed Off'; }
 
@@ -1177,14 +1158,14 @@ document.addEventListener('change', function(e){
     renderHeatMaps();
     if(typeof renderHeatPlacementEditor === 'function') renderHeatPlacementEditor();
   }catch(e){
-    console.warn('v4.28 refresh warning', e);
+    console.warn('v4.29 refresh warning', e);
   }
 })();
 
 </script>
 <script>
 
-/* v4.28: separate D heat-map points from goal-box points */
+/* v4.29: separate D heat-map points from goal-box points */
 (function(){
   function matchHeatPlacements(m){
     return (m && m.heatPlacements) ? m.heatPlacements : [];
@@ -1230,13 +1211,13 @@ document.addEventListener('change', function(e){
     };
   }
 
-  try { renderHeatMaps(); } catch(e) { console.warn('v4.28 heat map refresh warning', e); }
+  try { renderHeatMaps(); } catch(e) { console.warn('v4.29 heat map refresh warning', e); }
 })();
 
 </script>
 <script>
 
-/* v4.28: use uploaded SVG files as heat map backgrounds */
+/* v4.29: use uploaded SVG files as heat map backgrounds */
 (function(){
   const D_BG = './assets/d.svg';
   const GOAL_BG = './assets/box.svg';
@@ -1282,14 +1263,14 @@ document.addEventListener('change', function(e){
     renderHeatMaps();
     if(typeof renderHeatPlacementEditor === 'function') renderHeatPlacementEditor();
   }catch(e){
-    console.warn('v4.28 heat map background refresh warning', e);
+    console.warn('v4.29 heat map background refresh warning', e);
   }
 })();
 
 </script>
 <script>
 
-/* v4.28: match list Save Rate and Defence Rate columns */
+/* v4.29: match list Save Rate and Defence Rate columns */
 (function(){
   function matchOutcomeCounts(m){
     const shots = m?.shots || [];
@@ -1356,14 +1337,14 @@ document.addEventListener('change', function(e){
   try{
     if(typeof renderStats === 'function') renderStats();
   }catch(e){
-    console.warn('v4.28 stats refresh warning', e);
+    console.warn('v4.29 stats refresh warning', e);
   }
 })();
 
 </script>
 <script>
 
-/* v4.28: goalie history rates, primary/situation shot categories, and N/C rate display */
+/* v4.29: goalie history rates, primary/situation shot categories, and N/C rate display */
 (function(){
   const primaryShotTypes = ['1st Shot','Rebound'];
   const shotSituations = ['None','Penalty Corner','Penalty Stroke','In Game 1v1','8 Second 1v1','Own Goal','Other'];
@@ -1611,14 +1592,14 @@ document.addEventListener('change', function(e){
     renderGoalieForm();
     renderStats();
   }catch(e){
-    console.warn('v4.28 refresh warning', e);
+    console.warn('v4.29 refresh warning', e);
   }
 })();
 
 </script>
 <script>
 
-/* v4.28: normalize old 1 vs 1 outnumbered value to Not Out Numbered */
+/* v4.29: normalize old 1 vs 1 outnumbered value to Not Out Numbered */
 (function(){
   function normalizeOutnumberedValue(v){
     return v === '1 vs 1' ? 'Not Out Numbered' : v;
@@ -1667,14 +1648,14 @@ document.addEventListener('change', function(e){
   try{
     renderShotButtons();
   }catch(e){
-    console.warn('v4.28 outnumbered refresh warning', e);
+    console.warn('v4.29 outnumbered refresh warning', e);
   }
 })();
 
 </script>
 <script>
 
-/* v4.28: integrated game history, dated backups, edit/delete match */
+/* v4.29: integrated game history, dated backups, edit/delete match */
 (function(){
   function pad(n){ return String(n).padStart(2,'0'); }
   function backupStamp(){
@@ -1918,14 +1899,14 @@ document.addEventListener('change', function(e){
     renderGameHistory();
     populateMatchTools();
   }catch(e){
-    console.warn('v4.28 setup warning', e);
+    console.warn('v4.29 setup warning', e);
   }
 })();
 
 </script>
 <script>
 
-/* v4.28: Game History / histogram feature removed */
+/* v4.29: Game History / histogram feature removed */
 (function(){
   window.renderGameHistory = function(){};
   const oldRenderAll325 = window.renderAll;
@@ -1946,7 +1927,7 @@ document.addEventListener('change', function(e){
 </script>
 <script>
 
-/* v4.28: Import match JSON exported by Goalie Stats Recorder */
+/* v4.29: Import match JSON exported by Goalie Stats Recorder */
 (function(){
   function normalizeImportedShot(s){
     return {
@@ -2054,7 +2035,7 @@ if ('serviceWorker' in navigator && location.protocol !== 'file:') {
 
 <script>
 function exportGoaliesTeams(){
- const payload={sourceApp:'Hockey Goalie Stats',sourceVersion:'4.01',exportType:'MasterData',exportedAt:new Date().toISOString(),
+ const payload={sourceApp:'Hockey Goalie Stats',sourceVersion:'4.29',exportType:'MasterData',exportedAt:new Date().toISOString(),
  goalies:(db.goalies||[]).map(g=>({name:g.name||'',dob:g.dob||'',gender:g.gender||'',teams:g.teams||[]}))};
  const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
@@ -2064,15 +2045,15 @@ function exportGoaliesTeams(){
 }
 </script>
 <script>
-/* v4.28: version display and Heat Map Editor display improvements */
+/* v4.29: version display and Heat Map Editor display improvements */
 (function(){
-  window.APP_VERSION = "4.28";
+  window.APP_VERSION = "4.29";
 
   function setTextIfVersionish(el){
     if(!el) return;
     const txt = (el.textContent || "").trim();
     if(/Version\s+\d+\.\d+|v\d+\.\d+/i.test(txt)){
-      el.textContent = txt.replace(/Version\s+\d+\.\d+/i, "Version 4.28").replace(/v\d+\.\d+/i, "v4.28");
+      el.textContent = txt.replace(/Version\s+\d+\.\d+/i, "Version 4.29").replace(/v\d+\.\d+/i, "v4.29");
     }
   }
 
@@ -2211,9 +2192,9 @@ function exportGoaliesTeams(){
 
 
 <script>
-/* v4.28: Heat Maps tab wording update */
+/* v4.29: Heat Maps tab wording update */
 (function(){
-  window.APP_VERSION = "4.28";
+  window.APP_VERSION = "4.29";
 
   function updateHeatMapLabels(){
     let changedTab = false;
@@ -2237,8 +2218,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.28")
-          .replace(/v4\.\d+/i, "v4.28");
+          .replace(/Version\s+4\.\d+/i, "Version 4.29")
+          .replace(/v4\.\d+/i, "v4.29");
       }
     });
   }
@@ -2258,9 +2239,9 @@ function exportGoaliesTeams(){
 
 
 <script>
-/* v4.28: separate Heat Maps view tab from Heat Map Editor tab */
+/* v4.29: separate Heat Maps view tab from Heat Map Editor tab */
 (function(){
-  window.APP_VERSION = "4.28";
+  window.APP_VERSION = "4.29";
 
   function normalizeHeatTabs(){
     const candidates = Array.from(document.querySelectorAll("button,a,.tab,span,div"))
@@ -2310,8 +2291,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.28")
-          .replace(/v4\.\d+/i, "v4.28");
+          .replace(/Version\s+4\.\d+/i, "Version 4.29")
+          .replace(/v4\.\d+/i, "v4.29");
       }
     });
   }
@@ -2341,9 +2322,9 @@ function exportGoaliesTeams(){
 
 
 <script>
-/* v4.28: fix Recorder import failure caused by editShot global reference */
+/* v4.29: fix Recorder import failure caused by editShot global reference */
 (function(){
-  window.APP_VERSION = "4.28";
+  window.APP_VERSION = "4.29";
 
   function safeEl(id){ return document.getElementById(id); }
 
@@ -2468,8 +2449,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.28")
-          .replace(/v4\.\d+/i, "v4.28");
+          .replace(/Version\s+4\.\d+/i, "Version 4.29")
+          .replace(/v4\.\d+/i, "v4.29");
       }
     });
   },0);
@@ -2478,9 +2459,9 @@ function exportGoaliesTeams(){
 
 
 <script>
-/* v4.28: show N/C for percentage stats with no attempts */
+/* v4.29: show N/C for percentage stats with no attempts */
 (function(){
-  window.APP_VERSION = "4.28";
+  window.APP_VERSION = "4.29";
 
   function pctNC(success, attempts){
     attempts = Number(attempts || 0);
@@ -2608,8 +2589,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.28")
-          .replace(/v4\.\d+/i, "v4.28");
+          .replace(/Version\s+4\.\d+/i, "Version 4.29")
+          .replace(/v4\.\d+/i, "v4.29");
       }
     });
   },0);
@@ -2618,9 +2599,9 @@ function exportGoaliesTeams(){
 
 
 <script>
-/* v4.28: correct N/C display inside existing Stats cards */
+/* v4.29: correct N/C display inside existing Stats cards */
 (function(){
-  window.APP_VERSION = "4.28";
+  window.APP_VERSION = "4.29";
 
   const zeroAttemptRateLabels = [
     "Save Rate",
@@ -2730,8 +2711,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.28")
-          .replace(/v4\.\d+/i, "v4.28");
+          .replace(/Version\s+4\.\d+/i, "Version 4.29")
+          .replace(/v4\.\d+/i, "v4.29");
       }
     });
   },0);
@@ -2740,9 +2721,9 @@ function exportGoaliesTeams(){
 
 
 <script>
-/* v4.28: core Stats calculation uses N/C for zero-attempt rate cards */
+/* v4.29: core Stats calculation uses N/C for zero-attempt rate cards */
 (function(){
-  window.APP_VERSION = "4.28";
+  window.APP_VERSION = "4.29";
 
   function pctText(success, attempts){
     attempts = Number(attempts || 0);
@@ -2903,7 +2884,7 @@ function exportGoaliesTeams(){
       const ms = typeof filterMatches === "function" ? filterMatches(g, period, year, home, opp) : [];
       out.innerHTML = '<div class="statgrid">' + statCards(calcStats(ms)) + '</div>' + matchTable(ms);
     }catch(e){
-      console.warn("v4.28 stats rerender warning", e);
+      console.warn("v4.29 stats rerender warning", e);
     }
   }
 
@@ -2937,8 +2918,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.28")
-          .replace(/v4\.\d+/i, "v4.28");
+          .replace(/Version\s+4\.\d+/i, "Version 4.29")
+          .replace(/v4\.\d+/i, "v4.29");
       }
     });
   }, 0);
@@ -2947,9 +2928,9 @@ function exportGoaliesTeams(){
 
 
 <script>
-/* v4.28: corrected Rate of Attempts at Goals Out Numbered */
+/* v4.29: corrected Rate of Attempts at Goals Out Numbered */
 (function(){
-  window.APP_VERSION = "4.28";
+  window.APP_VERSION = "4.29";
 
   function pctText(success, attempts){
     attempts = Number(attempts || 0);
@@ -3088,7 +3069,7 @@ function exportGoaliesTeams(){
         out.innerHTML = '<div class="statgrid">' + statCards(calcStats(ms)) + '</div>' + matchTable(ms);
       }
     } catch(e) {
-      console.warn("v4.28 stats rerender warning", e);
+      console.warn("v4.29 stats rerender warning", e);
     }
   }
 
@@ -3109,8 +3090,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.28")
-          .replace(/v4\.\d+/i, "v4.28");
+          .replace(/Version\s+4\.\d+/i, "Version 4.29")
+          .replace(/v4\.\d+/i, "v4.29");
       }
     });
   }, 0);
@@ -3119,7 +3100,7 @@ function exportGoaliesTeams(){
 
 
 <style>
-/* v4.28 timeline report and manual timeline markers */
+/* v4.29 timeline report and manual timeline markers */
 .timeline-strip{
   display:flex;
   flex-wrap:wrap;
@@ -3167,9 +3148,9 @@ function exportGoaliesTeams(){
 </style>
 
 <script>
-/* Hockey Goalie Stats v4.28: manual timelines + timeline report */
+/* Hockey Goalie Stats v4.29: manual timelines + timeline report */
 (function(){
-  window.APP_VERSION = "4.28";
+  window.APP_VERSION = "4.29";
 
   function ensureTimeline(match){
     if(!match) return [];
@@ -3472,8 +3453,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.28")
-          .replace(/v4\.\d+/i, "v4.28");
+          .replace(/Version\s+4\.\d+/i, "Version 4.29")
+          .replace(/v4\.\d+/i, "v4.29");
       }
     });
   },0);
@@ -3482,7 +3463,7 @@ function exportGoaliesTeams(){
 
 
 <style>
-/* v4.28 restored manual match timeline */
+/* v4.29 restored manual match timeline */
 .timeline-strip{
   display:flex;
   flex-wrap:wrap;
@@ -3530,9 +3511,9 @@ function exportGoaliesTeams(){
 </style>
 
 <script>
-/* Hockey Goalie Stats v4.28: restore timeline panel and place above Match Outcome */
+/* Hockey Goalie Stats v4.29: restore timeline panel and place above Match Outcome */
 (function(){
-  window.APP_VERSION = "4.28";
+  window.APP_VERSION = "4.29";
 
   function getDb(){
     try{ if(typeof DB !== "undefined") return DB; }catch(e){}
@@ -3836,8 +3817,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.28")
-          .replace(/v4\.\d+/i, "v4.28");
+          .replace(/Version\s+4\.\d+/i, "Version 4.29")
+          .replace(/v4\.\d+/i, "v4.29");
       }
     });
   }, 0);
@@ -3846,9 +3827,9 @@ function exportGoaliesTeams(){
 
 
 <script>
-/* Hockey Goalie Stats v4.28: Match Editor */
+/* Hockey Goalie Stats v4.29: Match Editor */
 (function(){
-  window.APP_VERSION = "4.28";
+  window.APP_VERSION = "4.29";
 
   let meShotId = "";
   let meOutcome = "Save";
@@ -4087,17 +4068,25 @@ s.outcome = meOutcome;
     s.outnumbered = meOutnumbered;
     s.rebound = meRebound === "No rebound" ? "" : meRebound;
     s.note = me$("matchEditorNote") ? me$("matchEditorNote").value : "";
-    s.dX = meDPoint.x;
-    s.dY = meDPoint.y;
+    if(meDPoint){
+      s.dX = meDPoint.x;
+      s.dY = meDPoint.y;
+    }else{
+      delete s.dX;
+      delete s.dY;
+    }
 
     if(meOutcome === "Angle Closed Off"){
       delete s.gX;
       delete s.gY;
-    }else{
+    }else if(meGoalPoint){
       let gx = meGoalPoint.x;
       if(me$("matchEditorMirrorGoal") && me$("matchEditorMirrorGoal").checked) gx = 100 - gx;
       s.gX = gx;
       s.gY = meGoalPoint.y;
+    }else{
+      delete s.gX;
+      delete s.gY;
     }
 
     // Keep any timeline label in sync if the match has timeline data.
@@ -4196,8 +4185,8 @@ s.outcome = meOutcome;
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.28")
-          .replace(/v4\.\d+/i, "v4.28");
+          .replace(/Version\s+4\.\d+/i, "Version 4.29")
+          .replace(/v4\.\d+/i, "v4.29");
       }
     });
   },0);
@@ -4206,9 +4195,9 @@ s.outcome = meOutcome;
 
 
 <script>
-/* Hockey Goalie Stats v4.28: restored Match Editor with Shot Situation and maps */
+/* Hockey Goalie Stats v4.29: restored Match Editor with Shot Situation and maps */
 (function(){
-  window.APP_VERSION = "4.28";
+  window.APP_VERSION = "4.29";
 
   let meShotId = "";
   let meOutcome = "Save";
@@ -4460,17 +4449,25 @@ s.outcome = meOutcome;
     s.outnumbered = meOutnumbered;
     s.rebound = meRebound === "No rebound" ? "" : meRebound;
     s.note = me$("matchEditorNote") ? me$("matchEditorNote").value : "";
-    s.dX = meDPoint.x;
-    s.dY = meDPoint.y;
+    if(meDPoint){
+      s.dX = meDPoint.x;
+      s.dY = meDPoint.y;
+    }else{
+      delete s.dX;
+      delete s.dY;
+    }
 
     if(meOutcome === "Angle Closed Off"){
       delete s.gX;
       delete s.gY;
-    }else{
+    }else if(meGoalPoint){
       let gx = meGoalPoint.x;
       if(me$("matchEditorMirrorGoal") && me$("matchEditorMirrorGoal").checked) gx = 100 - gx;
       s.gX = gx;
       s.gY = meGoalPoint.y;
+    }else{
+      delete s.gX;
+      delete s.gY;
     }
 
     if(Array.isArray(m.timeline)){
@@ -4568,8 +4565,8 @@ s.outcome = meOutcome;
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.28")
-          .replace(/v4\.\d+/i, "v4.28");
+          .replace(/Version\s+4\.\d+/i, "Version 4.29")
+          .replace(/v4\.\d+/i, "v4.29");
       }
     });
   },0);
@@ -4577,232 +4574,16 @@ s.outcome = meOutcome;
 </script>
 
 
-<script>
-/* Hockey Goalie Stats v4.28: consolidated heat maps inside Match Editor */
-(function(){
-  window.APP_VERSION = "4.28";
 
-  function h$(id){ return document.getElementById(id); }
 
-  function hEsc(v){
-    try{ return esc(v); }catch(e){ return String(v ?? "").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
-  }
 
-  function hGoalies(){
-    try{ return Array.isArray(db.goalies) ? db.goalies : []; }catch(e){ return []; }
-  }
 
-  function hCurrentGoalie(){
-    const id = h$("matchEditorGoalie")?.value || currentGoalieId || "";
-    return hGoalies().find(g => g.id === id) || (typeof goalie === "function" ? goalie() : null) || hGoalies()[0] || null;
-  }
-
-  function hMatches(g){
-    return g && Array.isArray(g.matches) ? g.matches : [];
-  }
-
-  function hCurrentMatch(){
-    const g = hCurrentGoalie();
-    if(!g) return null;
-    const id = h$("matchEditorMatch")?.value || "";
-    return hMatches(g).find(m => m.id === id) || hMatches(g)[0] || null;
-  }
-
-  function hColorClass(s){
-    if(!s) return "";
-    if(s.outcome === "Angle Closed Off") return "Angle";
-    return s.outcome || "";
-  }
-
-  function hPointColor(s){
-    if(s.outcome === "Save") return "#2fd17c";
-    if(s.outcome === "Goal") return "#ef5350";
-    if(s.outcome === "Angle Closed Off") return "#ffca28";
-    return "#90a4ae";
-  }
-
-  function hClickableDot(s, i, x, y, kind){
-    const cls = hColorClass(s);
-    const label = i + 1;
-    const safeId = hEsc(s.id);
-    const title = `${label}. ${s.outcome || "Shot"} • ${s.type || s.shotCategory || ""} • ${kind === "d" ? "D" : "Goal"} point`;
-    return `
-      <g onclick="selectMatchEditorHeatShot('${safeId}','${kind}')" data-shot-id="${safeId}" data-map-kind="${kind}">
-        <title>${hEsc(title)}</title>
-        <circle class="consolidatedHeatDot ${cls}" cx="${x}" cy="${y}" r="4.4" fill="${hPointColor(s)}"></circle>
-        <text class="consolidatedHeatLabel" x="${x}" y="${y}">${label}</text>
-      </g>`;
-  }
-
-  function hDMap(shots){
-    const pts = [];
-    (shots || []).forEach((s,i) => {
-      if(s.dX != null && s.dY != null) pts.push(hClickableDot(s,i,Number(s.dX),Number(s.dY),"d"));
-    });
-    return `<svg viewBox="0 0 100 80">
-      <defs><linearGradient id="gD424" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#f8fbfd"/><stop offset="1" stop-color="#e1eaf0"/></linearGradient></defs>
-      <rect width="100" height="80" fill="url(#gD424)"/>
-      <rect x="0" y="69" width="100" height="11" fill="#d1dbe1"/>
-      <line x1="0" y1="69" x2="100" y2="69" stroke="#222" stroke-width="2"/>
-      <path d="M12 69 Q50 21 88 69" fill="none" stroke="#222" stroke-width="2.2"/>
-      <path d="M25 69 Q50 42 75 69" fill="none" stroke="#9aa5aa" stroke-width="1.2" stroke-dasharray="3 3"/>
-      <rect x="40" y="66" width="20" height="4" fill="none" stroke="#222" stroke-width="1.5"/>
-      <text x="50" y="77" fill="#555" font-size="4" text-anchor="middle">GOAL LINE</text>
-      ${pts.join("")}
-    </svg>`;
-  }
-
-  function hGoalMap(shots){
-    const pts = [];
-    (shots || []).forEach((s,i) => {
-      if(s.outcome !== "Angle Closed Off" && s.gX != null && s.gY != null) pts.push(hClickableDot(s,i,Number(s.gX),Number(s.gY),"g"));
-    });
-    return `<svg viewBox="0 0 100 60">
-      <rect width="100" height="60" fill="#e8eef2"/>
-      <rect x="9" y="8" width="82" height="40" fill="#fff" stroke="#222" stroke-width="2.2"/>
-      <line x1="36.33" y1="8" x2="36.33" y2="48" stroke="#b3b3b3" stroke-width="1"/>
-      <line x1="63.66" y1="8" x2="63.66" y2="48" stroke="#b3b3b3" stroke-width="1"/>
-      <line x1="9" y1="21.33" x2="91" y2="21.33" stroke="#d0d0d0"/>
-      <line x1="9" y1="34.66" x2="91" y2="34.66" stroke="#d0d0d0"/>
-      <text x="50" y="56" fill="#555" font-size="4" text-anchor="middle">GOAL BOX</text>
-      ${pts.join("")}
-    </svg>`;
-  }
-
-  window.renderMatchEditorConsolidatedHeatMaps = function(){
-    const m = hCurrentMatch();
-    const dBox = h$("matchEditorGameDHeat");
-    const gBox = h$("matchEditorGameGoalHeat");
-    const status = h$("matchEditorHeatStatus");
-
-    if(!dBox || !gBox) return;
-
-    if(!m || !Array.isArray(m.shots) || !m.shots.length){
-      dBox.innerHTML = '<div class="matchEditorEmpty">No shots in this match yet.</div>';
-      gBox.innerHTML = '<div class="matchEditorEmpty">No shots in this match yet.</div>';
-      if(status) status.textContent = "";
-      return;
-    }
-
-    dBox.innerHTML = hDMap(m.shots);
-    gBox.innerHTML = hGoalMap(m.shots);
-
-    const dCount = m.shots.filter(s => s.dX != null && s.dY != null).length;
-    const gCount = m.shots.filter(s => s.gX != null && s.gY != null && s.outcome !== "Angle Closed Off").length;
-    if(status) status.textContent = `Showing ${dCount} D point(s) and ${gCount} goal-box point(s). Click a dot to edit that shot.`;
-  };
-
-  window.selectMatchEditorHeatShot = function(id, kind){
-    if(typeof openMatchEditorShot === "function") openMatchEditorShot(id);
-
-    setTimeout(function(){
-      const status = h$("matchEditorHeatStatus");
-      if(status) status.textContent = `Selected shot from ${kind === "d" ? "D heat map" : "Goal Box heat map"}. Edit its ${kind === "d" ? "D point" : "goal-box point"} above, then save.`;
-
-      const editCard = h$("matchEditorEditCard");
-      if(editCard) editCard.scrollIntoView({behavior:"smooth", block:"start"});
-
-      const target = kind === "d" ? h$("matchEditorDMap") : h$("matchEditorGoalMap");
-      if(target){
-        target.style.boxShadow = "0 0 0 3px rgba(45,127,249,.35)";
-        setTimeout(() => target.style.boxShadow = "", 1400);
-      }
-    }, 80);
-  };
-
-  window.addNewShotFromMatchEditor = function(){
-    const m = hCurrentMatch();
-    if(!m){
-      alert("Select a match first.");
-      return;
-    }
-
-    m.shots = m.shots || [];
-    const shot = {
-      id: uid(),
-      type: "1st Shot",
-      shotCategory: "1st Shot",
-      shotSituation: "None",
-      situation: "None",
-      outcome: "Save",
-      outnumbered: "Not Out Numbered",
-      rebound: "",
-      note: "",
-      time: new Date().toISOString()
-    };
-
-    m.shots.push(shot);
-    saveDB();
-    updateOpponentGoalsDisplay();
-
-    if(typeof renderAll === "function") renderAll();
-    setTimeout(function(){
-      if(typeof openMatchEditorShot === "function") openMatchEditorShot(shot.id);
-      renderMatchEditorConsolidatedHeatMaps();
-      const status = h$("matchEditorHeatStatus");
-      if(status) status.textContent = "New shot added. Add D and/or goal-box placement above if needed; the dot will show as soon as you click the map.";
-    }, 80);
-  };
-
-  // Wrap existing render/save/delete/edit actions so bottom maps always refresh.
-  function hWrap(fnName){
-    const old = window[fnName];
-    if(typeof old === "function" && !old.__v424HeatWrapped){
-      window[fnName] = function(){
-        const result = old.apply(this, arguments);
-        setTimeout(renderMatchEditorConsolidatedHeatMaps, 80);
-        return result;
-      };
-      window[fnName].__v424HeatWrapped = true;
-    }
-  }
-
-  ["renderMatchEditor","renderMatchEditorEditPanel","saveMatchEditorShot","deleteMatchEditorShot","closeMatchEditorShot","openMatchEditorShot"].forEach(hWrap);
-
-  const oldRenderAll = window.renderAll;
-  if(typeof oldRenderAll === "function" && !window.__v424RenderAllWrapped){
-    window.renderAll = function(){
-      const result = oldRenderAll.apply(this, arguments);
-      setTimeout(function(){
-        if(document.getElementById("matchEditor")?.classList.contains("active")){
-          renderMatchEditorConsolidatedHeatMaps();
-        }
-      }, 100);
-      return result;
-    };
-    window.__v424RenderAllWrapped = true;
-  }
-
-  document.addEventListener("click", function(){
-    setTimeout(function(){
-      if(document.getElementById("matchEditor")?.classList.contains("active")){
-        renderMatchEditorConsolidatedHeatMaps();
-      }
-    }, 100);
-  });
-
-  document.addEventListener("change", function(){
-    setTimeout(renderMatchEditorConsolidatedHeatMaps, 100);
-  });
-
-  setTimeout(function(){
-    renderMatchEditorConsolidatedHeatMaps();
-    document.querySelectorAll("*").forEach(el => {
-      if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
-        el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.28")
-          .replace(/v4\.\d+/i, "v4.28");
-      }
-    });
-  }, 0);
-})();
-</script>
 
 
 <script>
-/* Hockey Goalie Stats v4.28: Match Editor details, shots, heat maps, reorder, periods */
+/* Hockey Goalie Stats v4.29: deep Match Editor fix */
 (function(){
-  window.APP_VERSION = "4.28";
+  window.APP_VERSION = "4.29";
 
   const state = {
     goalieId: "",
@@ -4811,53 +4592,63 @@ s.outcome = meOutcome;
     draftShot: null,
     draftMode: false,
     dPoint: null,
-    gPoint: null
+    gPoint: null,
+    isRendering: false
   };
 
   function $(id){ return document.getElementById(id); }
-
   function esc2(v){
     try{ return esc(v); }
     catch(e){ return String(v ?? "").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
   }
-
-  function makeId(){
-    try{ return uid(); }
-    catch(e){ return "id_" + Date.now() + "_" + Math.random().toString(16).slice(2); }
-  }
-
-  function goalies(){
-    try{ return Array.isArray(db.goalies) ? db.goalies : []; }catch(e){ return []; }
-  }
+  function makeId(){ try{ return uid(); }catch(e){ return "id_"+Date.now()+"_"+Math.random().toString(16).slice(2); } }
+  function goalieList(){ try{ return Array.isArray(db.goalies) ? db.goalies : []; }catch(e){ return []; } }
+  function matchList(g){ return g && Array.isArray(g.matches) ? g.matches : []; }
 
   function currentGoalie(){
-    const gs = goalies();
-    const id = state.goalieId || $("v428Goalie")?.value || currentGoalieId || "";
+    const gs = goalieList();
+    const id = state.goalieId || $("v429Goalie")?.value || currentGoalieId || db.currentGoalieId || "";
     return gs.find(g => g.id === id) || (typeof goalie === "function" ? goalie() : null) || gs[0] || null;
-  }
-
-  function matches(g){
-    return g && Array.isArray(g.matches) ? g.matches : [];
   }
 
   function currentMatch(){
     const g = currentGoalie();
     if(!g) return null;
-    const ms = matches(g);
-    const id = state.matchId || $("v428Match")?.value || "";
+    const ms = matchList(g);
+    const id = state.matchId || $("v429Match")?.value || activeMatchId || db.activeMatchId || "";
     return ms.find(m => m.id === id) || ms[0] || null;
   }
 
-  function shots(m){
+  function setSelection(gid, mid){
+    const g = goalieList().find(x => x.id === gid) || currentGoalie();
+    state.goalieId = g?.id || "";
+    currentGoalieId = state.goalieId;
+    const ms = matchList(g);
+    const m = ms.find(x => x.id === mid) || ms[0] || null;
+    state.matchId = m?.id || "";
+    activeMatchId = state.matchId;
+    db.currentGoalieId = currentGoalieId;
+    db.activeMatchId = activeMatchId;
+  }
+
+  function save(){ try{ saveDB(); }catch(e){} try{ updateOpponentGoalsDisplay(); }catch(e){} }
+
+  function realShots(m){
     if(!m) return [];
     if(!Array.isArray(m.shots)) m.shots = [];
     return m.shots;
   }
 
-  function markers(m){
+  function periodMarkers(m){
     if(!m) return [];
     if(!Array.isArray(m.periodMarkers)) m.periodMarkers = [];
     return m.periodMarkers;
+  }
+
+  function heatPlacements(m){
+    if(!m) return [];
+    if(!Array.isArray(m.heatPlacements)) m.heatPlacements = [];
+    return m.heatPlacements;
   }
 
   function num(v){
@@ -4868,15 +4659,14 @@ s.outcome = meOutcome;
 
   function pointFromPair(x,y){
     x = num(x); y = num(y);
-    if(x === null || y === null) return null;
-    return {x,y};
+    return (x === null || y === null) ? null : {x,y};
   }
 
   function normPoint(p){
     if(!p || typeof p !== "object") return null;
     return pointFromPair(
-      p.x ?? p.X ?? p.cx ?? p.left ?? p.dX ?? p.gX ?? p.pitchX ?? p.goalX ?? p.xPct ?? p.percentX,
-      p.y ?? p.Y ?? p.cy ?? p.top ?? p.dY ?? p.gY ?? p.pitchY ?? p.goalY ?? p.yPct ?? p.percentY
+      p.x ?? p.X ?? p.cx ?? p.left ?? p.dX ?? p.gX ?? p.pitchX ?? p.goalX ?? p.mapX ?? p.xPct ?? p.percentX,
+      p.y ?? p.Y ?? p.cy ?? p.top ?? p.dY ?? p.gY ?? p.pitchY ?? p.goalY ?? p.mapY ?? p.yPct ?? p.percentY
     );
   }
 
@@ -4886,11 +4676,9 @@ s.outcome = meOutcome;
       pointFromPair(s?.fieldX, s?.fieldY) ||
       pointFromPair(s?.dMapX, s?.dMapY) ||
       pointFromPair(s?.dHeatX, s?.dHeatY) ||
-      normPoint(s?.dPoint) ||
-      normPoint(s?.dPlacement) ||
-      normPoint(s?.dHeatMap) ||
-      normPoint(s?.pitchPoint) ||
-      normPoint(s?.placementD) ||
+      pointFromPair(s?.x, s?.y) ||
+      normPoint(s?.dPoint) || normPoint(s?.dPlacement) || normPoint(s?.dHeatMap) ||
+      normPoint(s?.pitchPoint) || normPoint(s?.placementD) ||
       normPoint(s?.placement && (s.placement.d || s.placement.pitch || s.placement.field)) ||
       normPoint(s?.heatMap && (s.heatMap.d || s.heatMap.pitch || s.heatMap.field)) ||
       null;
@@ -4902,17 +4690,32 @@ s.outcome = meOutcome;
       pointFromPair(s?.goalBoxX, s?.goalBoxY) ||
       pointFromPair(s?.gMapX, s?.gMapY) ||
       pointFromPair(s?.goalHeatX, s?.goalHeatY) ||
-      normPoint(s?.gPoint) ||
-      normPoint(s?.goalPoint) ||
-      normPoint(s?.goalPlacement) ||
-      normPoint(s?.goalBoxPoint) ||
-      normPoint(s?.placementGoal) ||
+      normPoint(s?.gPoint) || normPoint(s?.goalPoint) || normPoint(s?.goalPlacement) ||
+      normPoint(s?.goalBoxPoint) || normPoint(s?.placementGoal) ||
       normPoint(s?.placement && (s.placement.g || s.placement.goal || s.placement.goalBox)) ||
       normPoint(s?.heatMap && (s.heatMap.g || s.heatMap.goal || s.heatMap.goalBox)) ||
       null;
   }
 
-  function color(outcome){
+  function allHeatItems(m){
+    const items = [];
+    realShots(m).forEach((s,i) => items.push({...s, __kind:"shot", __shotIndex:i}));
+    heatPlacements(m).forEach((p,i) => {
+      // Old Heat Map Editor sometimes saved independent heatPlacements instead of storing points on shots.
+      items.push({
+        ...p,
+        id: p.shotId || p.id || ("heatPlacement_"+i),
+        outcome: p.outcome || "Save",
+        type: p.type || "Heat Placement",
+        __kind:"placement",
+        __placementIndex:i,
+        __unlinked: !p.shotId
+      });
+    });
+    return items;
+  }
+
+  function outcomeColor(outcome){
     if(outcome === "Save") return "#2fd17c";
     if(outcome === "Goal") return "#ef5350";
     if(outcome === "Angle Closed Off") return "#ffca28";
@@ -4926,726 +4729,514 @@ s.outcome = meOutcome;
     return "save";
   }
 
-  function setStatus(id, msg){
-    const el = $(id);
-    if(el) el.textContent = msg || "";
-  }
-
-  function save(){
-    try{ saveDB(); }catch(e){}
-    try{ updateOpponentGoalsDisplay(); }catch(e){}
-  }
-
-  function ensureMatchPeriodsField(){
-    // Add periods field to normal Match section without depending on its internal render code.
-    const matchPanel = $("match");
-    if(!matchPanel || $("v428NormalMatchPeriodsWrap")) return;
-    const inputTarget = $("periods") || $("matchPeriods");
-    if(inputTarget) return;
-
-    const wrap = document.createElement("div");
-    wrap.id = "v428NormalMatchPeriodsWrap";
-    wrap.className = "card";
-    wrap.innerHTML = `
-      <h3>Match Periods</h3>
-      <p class="muted">Set how many periods this match uses. End of Period markers are managed in Match Editor.</p>
-      <div class="v428Grid2">
-        <div class="v428Field">
-          <label>Periods</label>
-          <input id="v428NormalMatchPeriods" type="number" min="1" max="6" value="4" onchange="v428SaveNormalPeriods()">
-        </div>
-      </div>
-    `;
-    matchPanel.appendChild(wrap);
-  }
-
-  window.v428SaveNormalPeriods = function(){
-    const m = currentMatch();
-    const val = Math.max(1, Number($("v428NormalMatchPeriods")?.value || 4));
-    if(m){ m.periods = val; save(); }
-  };
-
-  function syncSelectionFromDom(){
-    const gs = goalies();
-    if(!state.goalieId && gs[0]) state.goalieId = currentGoalieId || gs[0].id;
-    const g = currentGoalie();
-    const ms = matches(g);
-    if(!state.matchId && ms[0]) state.matchId = ms[0].id;
-  }
-
-  function renderRoot(){
-    syncSelectionFromDom();
-    const root = $("matchEditorRoot");
-    if(!root) return;
-
-    const gs = goalies();
-    const g = currentGoalie();
-    const ms = matches(g);
-    const m = currentMatch();
-
-    root.innerHTML = `
-      <div class="card" id="v428MatchDetailsCard">
-        <h2>Edit / Delete Match</h2>
-        <p class="muted">Use this if a match was captured incorrectly. This selected match also controls the Shot Editor and Game Heat Map Editor below.</p>
-
-        <div class="v428Grid2">
-          <div class="v428Field">
-            <label>Goalie</label>
-            <select id="v428Goalie" onchange="v428SelectGoalie(this.value)">
-              ${gs.map(x=>`<option value="${esc2(x.id)}" ${x.id===g?.id?'selected':''}>${esc2(x.name || "Unnamed Goalie")}</option>`).join("")}
-            </select>
-          </div>
-          <div class="v428Field">
-            <label>Match</label>
-            <select id="v428Match" onchange="v428SelectMatch(this.value)">
-              ${ms.map(x=>`<option value="${esc2(x.id)}" ${x.id===m?.id?'selected':''}>${esc2(matchLabel(x))}</option>`).join("")}
-            </select>
-          </div>
-        </div>
-
-        ${m ? `
-        <div class="v428Grid2">
-          <div class="v428Field"><label>Date</label><input id="v428Date" type="date" value="${esc2((m.date || "").slice(0,10))}"></div>
-          <div class="v428Field"><label>Home Team</label><input id="v428HomeTeam" value="${esc2(m.homeTeam || "")}"></div>
-          <div class="v428Field"><label>Opponent</label><input id="v428Opponent" value="${esc2(m.opponentTeam || m.opponent || "")}"></div>
-          <div class="v428Field"><label>Home Goals</label><input id="v428HomeGoals" type="number" min="0" value="${Number(m.homeGoals || 0)}"></div>
-          <div class="v428Field"><label>Opponent Goals</label><input id="v428OpponentGoals" type="number" min="0" value="${opponentGoals(m)}"><div class="v428SmallNote">Calculated from recorded goals unless manually adjusted.</div></div>
-          <div class="v428Field"><label>Result</label><input id="v428Result" value="${esc2(resultText(m))}" readonly></div>
-          <div class="v428Field"><label>Periods</label><input id="v428Periods" type="number" min="1" max="6" value="${Number(m.periods || m.periodCount || 4)}"></div>
-        </div>
-        <button class="btn good" type="button" onclick="v428SaveMatchDetails()">Save Match Changes</button>
-        <div class="v428DangerZone">
-          <div class="v428Field"><label>Delete confirmation</label><input id="v428DeleteConfirm" placeholder="Type DELETE to confirm"></div>
-          <button class="btn danger" type="button" onclick="v428DeleteMatch()">Delete Selected Match</button>
-        </div>` : `<p class="muted">No match selected.</p>`}
-      </div>
-
-      <div class="card" id="v428PeriodCard">
-        <h2>Period Markers</h2>
-        <p class="muted">Set the number of periods and add End of Period markers. These will be used later to break stats down by period.</p>
-        ${m ? `
-          <div class="v428Grid3">
-            <button class="btn secondary" type="button" onclick="v428AddPeriodMarker()">Add End of Period Marker</button>
-            <button class="btn secondary" type="button" onclick="v428AutoPeriodMarkers()">Auto Add Missing Period Markers</button>
-            <button class="btn secondary" type="button" onclick="v428ClearPeriodMarkers()">Clear Period Markers</button>
-          </div>
-          <div id="v428MarkersList"></div>
-        ` : ""}
-      </div>
-
-      <div class="card" id="v428ShotListCard">
-        <h2>Shot Editor</h2>
-        <p class="muted">Edit shots, add a new editable shot, and reorder shot records. Reordering affects dot numbering and future period-based stats.</p>
-        ${m ? `<button class="btn secondary" type="button" onclick="v428StartAddShot()">Add Shot</button><div id="v428ShotList"></div>` : ""}
-      </div>
-
-      <div class="card" id="v428ShotEditorCard">
-        <h2>Selected Shot</h2>
-        <div id="v428ShotEditor"></div>
-      </div>
-
-      <div class="card" id="matchEditorConsolidatedHeatCard">
-        <h2>Game Heat Map Editor</h2>
-        <p class="muted">These are the consolidated heat maps for the selected match. Click a single dot to open that shot above and edit its saved details. D heat-map and goal-box placements are edited independently.</p>
-        <div class="v428Grid2">
-          <div>
-            <h3>D Heat Map</h3>
-            <div class="matchEditorMapBox consolidatedHeatMap" id="matchEditorGameDHeat"></div>
-          </div>
-          <div>
-            <h3>Goal Box Heat Map</h3>
-            <div class="matchEditorMapBox consolidatedHeatMap" id="matchEditorGameGoalHeat"></div>
-          </div>
-        </div>
-        <div class="legend">
-          <span><span class="dot" style="background:#2fd17c"></span> Save</span>
-          <span><span class="dot" style="background:#ef5350"></span> Goal</span>
-          <span><span class="dot" style="background:#ffca28"></span> Angle Closed Off</span>
-        </div>
-        <div class="v428AddButtons">
-          <button class="btn v428BtnSave" type="button" onclick="v428StartAddShot('Save')">Add Save</button>
-          <button class="btn v428BtnGoal" type="button" onclick="v428StartAddShot('Goal')">Add Goal</button>
-          <button class="btn v428BtnAngle" type="button" onclick="v428StartAddShot('Angle Closed Off')">Add Angle Closed Off</button>
-        </div>
-        <div id="matchEditorHeatStatus" class="small"></div>
-      </div>
-    `;
-
-    renderShotList();
-    renderMarkers();
-    renderShotEditor();
-    renderHeatMaps();
-    syncNormalMatchPeriods();
-  }
-
-  function syncNormalMatchPeriods(){
-    const m = currentMatch();
-    const input = $("v428NormalMatchPeriods");
-    if(input && m) input.value = Number(m.periods || m.periodCount || 4);
-  }
+  function setStatus(id,msg){ const el=$(id); if(el) el.textContent = msg || ""; }
 
   function matchLabel(m){
-    const date = m.date || "";
-    const home = m.homeTeam || "Home";
-    const opp = m.opponentTeam || m.opponent || "Opponent";
-    return `${date} - ${home} VS ${opp}`;
+    return `${m?.date || ""} - ${m?.homeTeam || "Home"} VS ${m?.opponentTeam || m?.opponent || "Opponent"}`;
   }
 
-  function opponentGoals(m){
-    if(!m) return 0;
-    const calc = shots(m).filter(s => s.outcome === "Goal").length;
-    if(Number.isFinite(Number(m.opponentGoals)) && Number(m.opponentGoals) !== calc) return Number(m.opponentGoals);
-    return calc;
+  function oppGoals(m){
+    const calculated = realShots(m).filter(s => s.outcome === "Goal").length;
+    if(Number.isFinite(Number(m?.opponentGoals))) return Number(m.opponentGoals);
+    if(Number.isFinite(Number(m?.oppGoals))) return Number(m.oppGoals);
+    return calculated;
   }
 
   function resultText(m){
-    const h = Number(m?.homeGoals || 0);
-    const o = opponentGoals(m);
+    const h = Number(m?.homeGoals || 0), o = Number(oppGoals(m) || 0);
     if(h > o) return "Win";
     if(h < o) return "Loss";
     return "Draw";
   }
 
-  window.v428SelectGoalie = function(id){
-    state.goalieId = id;
-    const g = currentGoalie();
-    state.matchId = matches(g)[0]?.id || "";
-    state.editingShotId = "";
-    state.draftShot = null;
-    state.draftMode = false;
-    renderRoot();
-  };
+  function renderRoot(){
+    if(state.isRendering) return;
+    state.isRendering = true;
+    try{
+      const root = $("matchEditorRoot");
+      if(!root) return;
 
-  window.v428SelectMatch = function(id){
-    state.matchId = id;
-    state.editingShotId = "";
-    state.draftShot = null;
-    state.draftMode = false;
-    renderRoot();
-  };
+      const gs = goalieList();
+      if(!state.goalieId) setSelection(currentGoalieId || gs[0]?.id || "", activeMatchId || "");
+      const g = currentGoalie();
+      if(!state.matchId) setSelection(g?.id || "", activeMatchId || matchList(g)[0]?.id || "");
+      const ms = matchList(g);
+      const m = currentMatch();
 
-  window.v428SaveMatchDetails = function(){
-    const m = currentMatch();
-    if(!m) return;
-    m.date = $("v428Date")?.value || m.date;
-    m.homeTeam = $("v428HomeTeam")?.value || "";
-    m.opponentTeam = $("v428Opponent")?.value || "";
-    m.opponent = m.opponentTeam;
-    m.homeGoals = Number($("v428HomeGoals")?.value || 0);
-    m.opponentGoals = Number($("v428OpponentGoals")?.value || opponentGoals(m));
-    m.result = resultText(m);
-    m.periods = Math.max(1, Number($("v428Periods")?.value || 4));
-    m.periodCount = m.periods;
-    save();
-    setStatus("matchEditorHeatStatus", "Match changes saved.");
-    renderRoot();
-  };
+      root.innerHTML = `
+        <div class="card" id="v429MatchDetailsCard">
+          <h2>Edit / Delete Match</h2>
+          <p class="muted">Use this if a match was captured incorrectly. This selected match also controls the Shot Editor and Game Heat Map Editor below.</p>
+          <div class="v429Grid2">
+            <div class="v429Field">
+              <label>Goalie</label>
+              <select id="v429Goalie" onchange="v429SelectGoalie(this.value)">
+                ${gs.map(x=>`<option value="${esc2(x.id)}" ${x.id===g?.id?'selected':''}>${esc2(x.name || "Unnamed Goalie")}</option>`).join("")}
+              </select>
+            </div>
+            <div class="v429Field">
+              <label>Match</label>
+              <select id="v429Match" onchange="v429SelectMatch(this.value)">
+                ${ms.map(x=>`<option value="${esc2(x.id)}" ${x.id===m?.id?'selected':''}>${esc2(matchLabel(x))}</option>`).join("")}
+              </select>
+            </div>
+          </div>
+          ${m ? `
+          <div class="v429Grid2">
+            <div class="v429Field"><label>Date</label><input id="v429Date" type="date" value="${esc2(String(m.date || "").slice(0,10))}"></div>
+            <div class="v429Field"><label>Home Team</label><input id="v429HomeTeam" value="${esc2(m.homeTeam || "")}"></div>
+            <div class="v429Field"><label>Opponent</label><input id="v429Opponent" value="${esc2(m.opponentTeam || m.opponent || "")}"></div>
+            <div class="v429Field"><label>Home Goals</label><input id="v429HomeGoals" type="number" min="0" value="${Number(m.homeGoals || 0)}" oninput="v429UpdateResultPreview()"></div>
+            <div class="v429Field"><label>Opponent Goals</label><input id="v429OpponentGoals" type="number" min="0" value="${Number(oppGoals(m) || 0)}" oninput="v429UpdateResultPreview()"><div class="v429SmallNote">You can edit this manually. Recorded goals remain in the shot list.</div></div>
+            <div class="v429Field"><label>Result</label><input id="v429Result" value="${esc2(resultText(m))}" readonly></div>
+            <div class="v429Field"><label>Periods</label><input id="v429Periods" type="number" min="1" max="6" value="${Number(m.periods || m.periodCount || 4)}"></div>
+          </div>
+          <button class="btn good" type="button" onclick="v429SaveMatchDetails()">Save Match Changes</button>
+          <div class="v429DangerZone">
+            <div class="v429Field"><label>Delete confirmation</label><input id="v429DeleteConfirm" placeholder="Type DELETE to confirm"></div>
+            <button class="btn danger" type="button" onclick="v429DeleteMatch()">Delete Selected Match</button>
+          </div>` : `<p class="muted">No match selected.</p>`}
+        </div>
 
-  window.v428DeleteMatch = function(){
-    const g = currentGoalie();
-    const m = currentMatch();
-    if(!g || !m) return;
-    if(($("v428DeleteConfirm")?.value || "") !== "DELETE"){
-      alert("Type DELETE to confirm.");
-      return;
+        <div class="card" id="v429PeriodCard">
+          <h2>Period Markers</h2>
+          <p class="muted">Set the number of periods and add End of Period markers. These will be used later to break stats down by period.</p>
+          ${m ? `
+          <div class="v429Grid3">
+            <button class="btn secondary" type="button" onclick="v429AddPeriodMarker()">Add End of Period Marker</button>
+            <button class="btn secondary" type="button" onclick="v429AutoPeriodMarkers()">Auto Add Missing Period Markers</button>
+            <button class="btn secondary" type="button" onclick="v429ClearPeriodMarkers()">Clear Period Markers</button>
+          </div>
+          <div id="v429MarkersList"></div>` : ""}
+        </div>
+
+        <div class="card" id="v429ShotListCard">
+          <h2>Shot Editor</h2>
+          <p class="muted">Edit shots, add a new editable shot, and reorder shot records. Reordering affects dot numbering and future period-based stats.</p>
+          ${m ? `<button class="btn secondary" type="button" onclick="v429StartAddShot()">Add Shot</button><div id="v429ShotList"></div>` : ""}
+        </div>
+
+        <div class="card" id="v429ShotEditorCard">
+          <h2>Selected Shot</h2>
+          <div id="v429ShotEditor"></div>
+        </div>
+
+        <div class="card" id="matchEditorConsolidatedHeatCard">
+          <h2>Game Heat Map Editor</h2>
+          <p class="muted">These are the consolidated heat maps for the selected match. Click a dot linked to a shot to open that shot above. Old unlinked heat placements are displayed too.</p>
+          <div class="v429Grid2">
+            <div>
+              <h3>D Heat Map</h3>
+              <div class="matchEditorMapBox consolidatedHeatMap" id="matchEditorGameDHeat"></div>
+            </div>
+            <div>
+              <h3>Goal Box Heat Map</h3>
+              <div class="matchEditorMapBox consolidatedHeatMap" id="matchEditorGameGoalHeat"></div>
+            </div>
+          </div>
+          <div class="legend">
+            <span><span class="dot" style="background:#2fd17c"></span> Save</span>
+            <span><span class="dot" style="background:#ef5350"></span> Goal</span>
+            <span><span class="dot" style="background:#ffca28"></span> Angle Closed Off</span>
+          </div>
+          <div class="v429AddButtons">
+            <button class="btn v429BtnSave" type="button" onclick="v429StartAddShot('Save')">Add Save</button>
+            <button class="btn v429BtnGoal" type="button" onclick="v429StartAddShot('Goal')">Add Goal</button>
+            <button class="btn v429BtnAngle" type="button" onclick="v429StartAddShot('Angle Closed Off')">Add Angle Closed Off</button>
+          </div>
+          <div id="matchEditorHeatStatus" class="small"></div>
+        </div>
+      `;
+
+      renderMarkers();
+      renderShotList();
+      renderShotEditor();
+      renderHeatMaps();
+      syncNormalPeriods();
+    } finally {
+      state.isRendering = false;
     }
-    const ms = matches(g);
-    const idx = ms.findIndex(x => x.id === m.id);
-    if(idx >= 0) ms.splice(idx,1);
-    state.matchId = ms[0]?.id || "";
-    state.editingShotId = "";
-    state.draftShot = null;
-    state.draftMode = false;
-    save();
-    renderRoot();
-  };
-
-  function timelineForMarker(marker){
-    return { id: marker.id, markerId: marker.id, type:"End of Period", label:"▲", period:Number(marker.period || 1), note:`End of Period ${Number(marker.period || 1)}` };
   }
 
-  window.v428AddPeriodMarker = function(){
-    const m = currentMatch();
-    if(!m) return;
-    const periodCount = Math.max(1, Number(m.periods || m.periodCount || $("v428Periods")?.value || 4));
-    const existing = markers(m).map(x => Number(x.period || 0));
-    let next = 1;
-    while(existing.includes(next) && next < periodCount) next++;
-    const marker = { id: makeId(), type:"End of Period", period: next, orderAfterShotIndex: Math.max(0, shots(m).length - 1) };
-    markers(m).push(marker);
-    m.timeline = Array.isArray(m.timeline) ? m.timeline : [];
-    m.timeline.push(timelineForMarker(marker));
+  window.v429UpdateResultPreview = function(){
+    const h = Number($("v429HomeGoals")?.value || 0), o = Number($("v429OpponentGoals")?.value || 0);
+    const r = $("v429Result");
+    if(r) r.value = h > o ? "Win" : h < o ? "Loss" : "Draw";
+  };
+
+  window.v429SelectGoalie = function(id){
+    const g = goalieList().find(x => x.id === id) || goalieList()[0] || null;
+    setSelection(g?.id || "", matchList(g)[0]?.id || "");
+    state.editingShotId = ""; state.draftMode = false; state.draftShot = null;
     save();
     renderRoot();
   };
 
-  window.v428AutoPeriodMarkers = function(){
+  window.v429SelectMatch = function(id){
+    const g = currentGoalie();
+    setSelection(g?.id || "", id);
+    state.editingShotId = ""; state.draftMode = false; state.draftShot = null;
+    save();
+    renderRoot();
+  };
+
+  window.v429SaveMatchDetails = function(){
     const m = currentMatch();
     if(!m) return;
-    const periodCount = Math.max(1, Number(m.periods || m.periodCount || $("v428Periods")?.value || 4));
-    const existing = new Set(markers(m).map(x => Number(x.period || 0)));
-    for(let p=1; p<periodCount; p++){
-      if(!existing.has(p)){
-        const marker = { id: makeId(), type:"End of Period", period:p, orderAfterShotIndex: Math.max(0, shots(m).length - 1) };
-        markers(m).push(marker);
+    m.date = $("v429Date")?.value || m.date || "";
+    m.homeTeam = $("v429HomeTeam")?.value || "";
+    m.opponentTeam = $("v429Opponent")?.value || "";
+    m.opponent = m.opponentTeam;
+    m.name = `${m.date} - ${m.homeTeam} VS ${m.opponentTeam}`;
+    m.homeGoals = Number($("v429HomeGoals")?.value || 0);
+    m.opponentGoals = Number($("v429OpponentGoals")?.value || 0);
+    m.oppGoals = m.opponentGoals;
+    m.result = $("v429Result")?.value || resultText(m);
+    m.periods = Math.max(1, Number($("v429Periods")?.value || 4));
+    m.periodCount = m.periods;
+    save();
+    renderRoot();
+    setStatus("matchEditorHeatStatus", "Match changes saved.");
+  };
+
+  window.v429DeleteMatch = function(){
+    const g = currentGoalie(), m = currentMatch();
+    if(!g || !m) return;
+    if(($("v429DeleteConfirm")?.value || "") !== "DELETE"){ alert("Type DELETE to confirm."); return; }
+    const ms = matchList(g);
+    const idx = ms.findIndex(x => x.id === m.id);
+    if(idx >= 0) ms.splice(idx, 1);
+    setSelection(g.id, ms[0]?.id || "");
+    state.editingShotId = ""; state.draftMode = false; state.draftShot = null;
+    save();
+    renderRoot();
+  };
+
+  function markerEvent(marker){
+    return {id: marker.id, markerId: marker.id, type:"End of Period", label:"▲", period:Number(marker.period||1), note:`End of Period ${Number(marker.period||1)}`};
+  }
+
+  window.v429AddPeriodMarker = function(){
+    const m = currentMatch(); if(!m) return;
+    const count = Math.max(1, Number(m.periods || m.periodCount || $("v429Periods")?.value || 4));
+    const used = new Set(periodMarkers(m).map(x=>Number(x.period||0)));
+    let next = 1; while(used.has(next) && next < count) next++;
+    const marker = {id: makeId(), type:"End of Period", period: next, orderAfterShotIndex: Math.max(0, realShots(m).length-1)};
+    periodMarkers(m).push(marker);
+    m.timeline = Array.isArray(m.timeline) ? m.timeline : [];
+    m.timeline.push(markerEvent(marker));
+    save(); renderMarkers();
+  };
+
+  window.v429AutoPeriodMarkers = function(){
+    const m = currentMatch(); if(!m) return;
+    const count = Math.max(1, Number(m.periods || m.periodCount || $("v429Periods")?.value || 4));
+    const used = new Set(periodMarkers(m).map(x=>Number(x.period||0)));
+    for(let p=1; p<count; p++){
+      if(!used.has(p)){
+        const marker = {id: makeId(), type:"End of Period", period:p, orderAfterShotIndex: Math.max(0, realShots(m).length-1)};
+        periodMarkers(m).push(marker);
         m.timeline = Array.isArray(m.timeline) ? m.timeline : [];
-        m.timeline.push(timelineForMarker(marker));
+        m.timeline.push(markerEvent(marker));
       }
     }
-    save();
-    renderRoot();
+    save(); renderMarkers();
   };
 
-  window.v428ClearPeriodMarkers = function(){
-    const m = currentMatch();
-    if(!m) return;
+  window.v429ClearPeriodMarkers = function(){
+    const m = currentMatch(); if(!m) return;
     if(!confirm("Clear all End of Period markers for this match?")) return;
     m.periodMarkers = [];
-    if(Array.isArray(m.timeline)){
-      m.timeline = m.timeline.filter(e => e.type !== "End of Period" && e.label !== "▲");
-    }
-    save();
-    renderRoot();
+    if(Array.isArray(m.timeline)) m.timeline = m.timeline.filter(e => e.type !== "End of Period" && e.label !== "▲");
+    save(); renderMarkers();
   };
 
-  window.v428UpdateMarker = function(id){
-    const m = currentMatch();
-    const mk = markers(m).find(x => x.id === id);
-    if(!mk) return;
+  window.v429UpdateMarker = function(id){
+    const m = currentMatch(); if(!m) return;
+    const mk = periodMarkers(m).find(x=>x.id===id); if(!mk) return;
     mk.period = Number($("mk_period_"+id)?.value || mk.period || 1);
     mk.orderAfterShotIndex = Number($("mk_after_"+id)?.value || 0);
-    if(Array.isArray(m.timeline)){
-      let ev = m.timeline.find(e => e.markerId === id || e.id === id);
-      if(!ev){ ev = timelineForMarker(mk); m.timeline.push(ev); }
-      ev.period = mk.period;
-      ev.note = `End of Period ${mk.period}`;
-    }
-    save();
-    renderMarkers();
+    save(); renderMarkers();
   };
 
-  window.v428DeleteMarker = function(id){
-    const m = currentMatch();
-    if(!m) return;
-    m.periodMarkers = markers(m).filter(x => x.id !== id);
-    if(Array.isArray(m.timeline)){
-      m.timeline = m.timeline.filter(e => e.markerId !== id && e.id !== id);
-    }
-    save();
-    renderMarkers();
+  window.v429DeleteMarker = function(id){
+    const m = currentMatch(); if(!m) return;
+    m.periodMarkers = periodMarkers(m).filter(x=>x.id!==id);
+    if(Array.isArray(m.timeline)) m.timeline = m.timeline.filter(e => e.markerId !== id && e.id !== id);
+    save(); renderMarkers();
   };
 
   function renderMarkers(){
-    const box = $("v428MarkersList");
-    const m = currentMatch();
+    const box = $("v429MarkersList"), m = currentMatch();
     if(!box || !m) return;
-    const count = Math.max(1, Number(m.periods || m.periodCount || 4));
-    const sCount = shots(m).length;
-    const mks = markers(m).sort((a,b)=>Number(a.period||0)-Number(b.period||0));
-    if(!mks.length){
-      box.innerHTML = `<p class="muted">No End of Period markers added yet.</p>`;
-      return;
-    }
-    box.innerHTML = mks.map(mk => `
-      <div class="v428MarkerRow">
-        <span class="v428Badge marker">▲</span>
+    const count = Math.max(1, Number(m.periods || m.periodCount || $("v429Periods")?.value || 4));
+    const sCount = realShots(m).length;
+    const mks = periodMarkers(m).slice().sort((a,b)=>Number(a.period||0)-Number(b.period||0));
+    if(!mks.length){ box.innerHTML = `<p class="muted">No End of Period markers added yet.</p>`; return; }
+    box.innerHTML = mks.map(mk=>`
+      <div class="v429MarkerRow">
+        <span class="v429Badge marker">▲</span>
         <strong>End of Period ${Number(mk.period || 1)}</strong>
-        <label>Period <input id="mk_period_${esc2(mk.id)}" type="number" min="1" max="${count}" value="${Number(mk.period || 1)}" onchange="v428UpdateMarker('${esc2(mk.id)}')"></label>
-        <label>After shot <input id="mk_after_${esc2(mk.id)}" type="number" min="0" max="${sCount}" value="${Number(mk.orderAfterShotIndex || 0)}" onchange="v428UpdateMarker('${esc2(mk.id)}')"></label>
-        <button class="btn danger" type="button" onclick="v428DeleteMarker('${esc2(mk.id)}')">Delete</button>
-      </div>
-    `).join("");
+        <label>Period <input id="mk_period_${esc2(mk.id)}" type="number" min="1" max="${count}" value="${Number(mk.period || 1)}" onchange="v429UpdateMarker('${esc2(mk.id)}')"></label>
+        <label>After shot <input id="mk_after_${esc2(mk.id)}" type="number" min="0" max="${sCount}" value="${Number(mk.orderAfterShotIndex || 0)}" onchange="v429UpdateMarker('${esc2(mk.id)}')"></label>
+        <button class="btn danger" type="button" onclick="v429DeleteMarker('${esc2(mk.id)}')">Delete</button>
+      </div>`).join("");
   }
 
   function renderShotList(){
-    const box = $("v428ShotList");
-    const m = currentMatch();
+    const box = $("v429ShotList"), m = currentMatch();
     if(!box || !m) return;
-    const ss = shots(m);
-    if(!ss.length){
-      box.innerHTML = `<p class="muted">No shots in this match yet.</p>`;
-      return;
-    }
-    box.innerHTML = ss.map((s,i) => `
-      <div class="v428ShotRow">
-        <span class="v428Badge ${badgeClass(s.outcome)}">${s.outcome === "Angle Closed Off" ? "A" : (s.outcome === "Goal" ? "G" : "S")}</span>
-        <button class="btn secondary" type="button" onclick="v428OpenShot('${esc2(s.id)}')">#${i+1} ${esc2(s.outcome || "Shot")} • ${esc2(s.type || s.shotCategory || "")} ${esc2(s.shotSituation || s.situation || "")}</button>
-        <button class="btn secondary" type="button" onclick="v428MoveShot('${esc2(s.id)}',-1)" ${i===0?'disabled':''}>↑</button>
-        <button class="btn secondary" type="button" onclick="v428MoveShot('${esc2(s.id)}',1)" ${i===ss.length-1?'disabled':''}>↓</button>
-        <button class="btn danger" type="button" onclick="v428DeleteShot('${esc2(s.id)}')">Delete</button>
-      </div>
-    `).join("");
+    const ss = realShots(m);
+    if(!ss.length){ box.innerHTML = `<p class="muted">No shot records in this match yet. Old standalone heat placements, if any, will still show on the Game Heat Map Editor.</p>`; return; }
+    box.innerHTML = ss.map((s,i)=>`
+      <div class="v429ShotRow">
+        <span class="v429Badge ${badgeClass(s.outcome)}">${s.outcome==="Angle Closed Off"?"A":s.outcome==="Goal"?"G":"S"}</span>
+        <button class="btn secondary" type="button" onclick="v429OpenShot('${esc2(s.id)}')">#${i+1} ${esc2(s.outcome || "Shot")} • ${esc2(s.type || s.shotCategory || "")} ${esc2(s.shotSituation || s.situation || "")}</button>
+        <button class="btn secondary" type="button" onclick="v429MoveShot('${esc2(s.id)}',-1)" ${i===0?'disabled':''}>↑</button>
+        <button class="btn secondary" type="button" onclick="v429MoveShot('${esc2(s.id)}',1)" ${i===ss.length-1?'disabled':''}>↓</button>
+        <button class="btn danger" type="button" onclick="v429DeleteShot('${esc2(s.id)}')">Delete</button>
+      </div>`).join("");
   }
 
-  window.v428OpenShot = function(id){
-    state.editingShotId = id;
-    state.draftMode = false;
-    state.draftShot = null;
-    const s = shots(currentMatch()).find(x => x.id === id);
-    state.dPoint = getDPoint(s);
-    state.gPoint = getGPoint(s);
-    renderShotEditor();
-    renderHeatMaps();
-    const card = $("v428ShotEditorCard");
-    if(card) card.scrollIntoView({behavior:"smooth", block:"start"});
+  window.v429OpenShot = function(id){
+    const s = realShots(currentMatch()).find(x=>x.id===id);
+    if(!s){ setStatus("matchEditorHeatStatus","That heat-map point is an older unlinked placement. Use Add Shot to create a linked shot record if needed."); return; }
+    state.editingShotId = id; state.draftMode = false; state.draftShot = null;
+    state.dPoint = getDPoint(s); state.gPoint = getGPoint(s);
+    renderShotEditor(); renderHeatMaps();
+    $("v429ShotEditorCard")?.scrollIntoView({behavior:"smooth", block:"start"});
   };
 
-  window.v428MoveShot = function(id, dir){
-    const m = currentMatch();
-    const ss = shots(m);
-    const i = ss.findIndex(x => x.id === id);
-    const j = i + dir;
-    if(i < 0 || j < 0 || j >= ss.length) return;
-    [ss[i], ss[j]] = [ss[j], ss[i]];
-
-    // Keep simple timeline shot events in the same order as shots, preserving non-shot period markers separately.
+  window.v429MoveShot = function(id, dir){
+    const m = currentMatch(), ss = realShots(m);
+    const i = ss.findIndex(x=>x.id===id), j = i + dir;
+    if(i<0 || j<0 || j>=ss.length) return;
+    [ss[i],ss[j]] = [ss[j],ss[i]];
     if(Array.isArray(m.timeline)){
-      const nonShot = m.timeline.filter(e => !e.shotId);
-      const shotEvents = [];
-      ss.forEach(s => {
-        let ev = m.timeline.find(e => e.shotId === s.id);
-        if(ev) shotEvents.push(ev);
-      });
-      m.timeline = [...shotEvents, ...nonShot];
+      const nonShot = m.timeline.filter(e=>!e.shotId);
+      const events = [];
+      ss.forEach(s=>{ const ev = m.timeline.find(e=>e.shotId===s.id); if(ev) events.push(ev); });
+      m.timeline = [...events, ...nonShot];
     }
-    save();
-    renderShotList();
-    renderHeatMaps();
+    save(); renderShotList(); renderHeatMaps();
   };
 
-  window.v428DeleteShot = function(id){
-    const m = currentMatch();
-    if(!m) return;
+  window.v429DeleteShot = function(id){
+    const m = currentMatch(); if(!m) return;
     if(!confirm("Delete this shot?")) return;
-    m.shots = shots(m).filter(s => s.id !== id);
-    if(Array.isArray(m.timeline)) m.timeline = m.timeline.filter(e => e.shotId !== id);
+    m.shots = realShots(m).filter(s=>s.id!==id);
+    if(Array.isArray(m.timeline)) m.timeline = m.timeline.filter(e=>e.shotId!==id);
     if(state.editingShotId === id) state.editingShotId = "";
-    save();
-    renderShotList();
-    renderShotEditor();
-    renderHeatMaps();
+    save(); renderShotList(); renderShotEditor(); renderHeatMaps();
   };
 
-  window.v428StartAddShot = function(outcome){
+  window.v429StartAddShot = function(outcome){
     outcome = outcome || "Save";
-    state.draftMode = true;
-    state.editingShotId = "";
-    state.draftShot = {
-      id: makeId(),
-      outcome,
-      type:"1st Shot",
-      shotCategory:"1st Shot",
-      shotSituation:"None",
-      situation:"None",
-      outnumbered:"Not Out Numbered",
-      rebound:"",
-      note:""
-    };
-    state.dPoint = null;
-    state.gPoint = null;
+    state.draftMode = true; state.editingShotId = "";
+    state.draftShot = {id: makeId(), outcome, type:"1st Shot", shotCategory:"1st Shot", shotSituation:"None", situation:"None", outnumbered:"Not Out Numbered", rebound:"", note:""};
+    state.dPoint = null; state.gPoint = null;
     renderShotEditor();
-    const card = $("v428ShotEditorCard");
-    if(card) card.scrollIntoView({behavior:"smooth", block:"start"});
-    setStatus("matchEditorHeatStatus", `Draft ${outcome} ready. Edit it above, then save to add it to the match.`);
+    $("v429ShotEditorCard")?.scrollIntoView({behavior:"smooth", block:"start"});
+    setStatus("matchEditorHeatStatus", `Draft ${outcome} ready. Edit it above, then click Save Shot. It has not been added to the match yet.`);
   };
 
   function selectedShot(){
     if(state.draftMode) return state.draftShot;
-    return shots(currentMatch()).find(s => s.id === state.editingShotId) || null;
+    return realShots(currentMatch()).find(s=>s.id===state.editingShotId) || null;
   }
 
   function renderShotEditor(){
-    const box = $("v428ShotEditor");
-    if(!box) return;
+    const box = $("v429ShotEditor"); if(!box) return;
     const s = selectedShot();
-    if(!s){
-      box.innerHTML = `<p class="muted">Select a shot from the list or click Add Shot / Add Save / Add Goal / Add Angle Closed Off.</p>`;
-      return;
-    }
-
+    if(!s){ box.innerHTML = `<p class="muted">Select a shot from the list or click Add Shot / Add Save / Add Goal / Add Angle Closed Off.</p>`; return; }
     const d = state.dPoint || getDPoint(s);
     const g = state.gPoint || getGPoint(s);
-
     box.innerHTML = `
       <p class="muted">${state.draftMode ? "New draft shot. It will only be added to the match when you click Save Shot." : "Editing saved shot."}</p>
-      <div class="v428Grid2">
-        <div class="v428Field">
-          <label>Outcome</label>
-          <select id="v428ShotOutcome" onchange="v428RefreshShotOutcome()">
-            ${["Save","Goal","Angle Closed Off"].map(o=>`<option ${s.outcome===o?'selected':''}>${o}</option>`).join("")}
-          </select>
-        </div>
-        <div class="v428Field">
-          <label>Shot Type</label>
-          <select id="v428ShotType">
-            ${["1st Shot","Rebound"].map(o=>`<option ${((s.type || s.shotCategory)==o)?'selected':''}>${o}</option>`).join("")}
-          </select>
-        </div>
-        <div class="v428Field">
-          <label>Shot Situation</label>
-          <select id="v428ShotSituation">
-            ${["None","Penalty Corner","Penalty Stroke","In Game 1v1","8 Second 1v1","Own Goal","Other"].map(o=>`<option ${((s.shotSituation || s.situation || "None")==o)?'selected':''}>${o}</option>`).join("")}
-          </select>
-        </div>
-        <div class="v428Field">
-          <label>Outnumbered</label>
-          <select id="v428ShotOutnumbered">
-            ${["Not Out Numbered","1 vs 1","2 vs 1","3 vs 1","3 vs 2","4 vs 2","4 vs 3","5 vs 3","Other"].map(o=>`<option ${((s.outnumbered || "Not Out Numbered")==o)?'selected':''}>${o}</option>`).join("")}
-          </select>
-        </div>
-        <div class="v428Field">
-          <label>Rebound</label>
-          <select id="v428ShotRebound">
-            ${["","Rebound Saved","Rebound Goal","No rebound"].map(o=>`<option value="${esc2(o)}" ${((s.rebound || "")==o)?'selected':''}>${o || "None"}</option>`).join("")}
-          </select>
-        </div>
-        <div class="v428Field">
-          <label>Notes</label>
-          <textarea id="v428ShotNote" rows="3">${esc2(s.note || "")}</textarea>
-        </div>
+      <div class="v429Grid2">
+        <div class="v429Field"><label>Outcome</label><select id="v429ShotOutcome" onchange="v429RefreshShotOutcome()">${["Save","Goal","Angle Closed Off"].map(o=>`<option ${s.outcome===o?'selected':''}>${o}</option>`).join("")}</select></div>
+        <div class="v429Field"><label>Shot Type</label><select id="v429ShotType">${["1st Shot","Rebound"].map(o=>`<option ${((s.type||s.shotCategory)==o)?'selected':''}>${o}</option>`).join("")}</select></div>
+        <div class="v429Field"><label>Shot Situation</label><select id="v429ShotSituation">${["None","Penalty Corner","Penalty Stroke","In Game 1v1","8 Second 1v1","Own Goal","Other"].map(o=>`<option ${((s.shotSituation||s.situation||"None")==o)?'selected':''}>${o}</option>`).join("")}</select></div>
+        <div class="v429Field"><label>Outnumbered</label><select id="v429ShotOutnumbered">${["Not Out Numbered","1 vs 1","2 vs 1","3 vs 1","3 vs 2","4 vs 2","4 vs 3","5 vs 3","Other"].map(o=>`<option ${((s.outnumbered||"Not Out Numbered")==o)?'selected':''}>${o}</option>`).join("")}</select></div>
+        <div class="v429Field"><label>Rebound</label><select id="v429ShotRebound">${["","Rebound Saved","Rebound Goal","No rebound","Safe","Dangerous"].map(o=>`<option value="${esc2(o)}" ${((s.rebound||"")==o)?'selected':''}>${o||"None"}</option>`).join("")}</select></div>
+        <div class="v429Field"><label>Notes</label><textarea id="v429ShotNote" rows="3">${esc2(s.note||"")}</textarea></div>
       </div>
-
-      <div class="v428Grid2">
-        <div>
-          <h3>D Heat Map</h3>
-          <div class="matchEditorMapBox" id="v428EditorDMap">${renderEditableMap("d", d)}</div>
-          <button class="btn secondary" type="button" onclick="v428ClearDPoint()">Clear D Point</button>
-        </div>
-        <div>
-          <h3>Goal Box Heat Map</h3>
-          <div class="matchEditorMapBox" id="v428EditorGoalMap">${renderEditableMap("g", g)}</div>
-          <div class="v428SmallNote">Angle Closed Off only uses the D heat map.</div>
-          <button class="btn secondary" type="button" onclick="v428ClearGPoint()">Clear Goal Point</button>
-        </div>
+      <div class="v429Grid2">
+        <div><h3>D Heat Map</h3><div class="matchEditorMapBox" id="v429EditorDMap">${renderEditableMap("d", d)}</div><button class="btn secondary" type="button" onclick="v429ClearDPoint()">Clear D Point</button></div>
+        <div><h3>Goal Box Heat Map</h3><div class="matchEditorMapBox" id="v429EditorGoalMap">${renderEditableMap("g", g)}</div><div class="v429SmallNote">Angle Closed Off only uses the D heat map.</div><button class="btn secondary" type="button" onclick="v429ClearGPoint()">Clear Goal Point</button></div>
       </div>
-
-      <button class="btn good" type="button" onclick="v428SaveShot()">Save Shot</button>
-      <button class="btn secondary" type="button" onclick="v428CancelShotEdit()">Cancel</button>
-    `;
+      <button class="btn good" type="button" onclick="v429SaveShot()">Save Shot</button>
+      <button class="btn secondary" type="button" onclick="v429CancelShotEdit()">Cancel</button>`;
   }
 
-  window.v428RefreshShotOutcome = function(){
-    const s = selectedShot();
-    if(!s) return;
-    s.outcome = $("v428ShotOutcome")?.value || s.outcome;
+  window.v429RefreshShotOutcome = function(){
+    const s = selectedShot(); if(!s) return;
+    s.outcome = $("v429ShotOutcome")?.value || s.outcome;
     renderShotEditor();
-  };
-
-  function clickPoint(evt, kind){
-    const svg = evt.currentTarget;
-    const pt = svg.createSVGPoint();
-    pt.x = evt.clientX; pt.y = evt.clientY;
-    const loc = pt.matrixTransform(svg.getScreenCTM().inverse());
-    const x = Math.max(0, Math.min(100, loc.x));
-    const y = Math.max(0, Math.min(100, loc.y));
-    if(kind === "d") state.dPoint = {x,y};
-    else state.gPoint = {x,y};
-    renderShotEditor();
-  }
-
-  window.v428MapClick = function(evt, kind){
-    clickPoint(evt, kind);
   };
 
   function renderEditableMap(kind, p){
     let svg = "";
-    try{
-      svg = kind === "d" ? basePitch([], function(){}, null) : baseGoal([], function(){}, null);
-    }catch(e){
-      return `<div class="matchEditorEmpty">Map could not load.</div>`;
-    }
-    const dot = p ? `<circle class="v428Dot" cx="${p.x}" cy="${p.y}" r="4.8" fill="#2d7ff9"></circle>` : "";
-    svg = svg.replace("<svg ", `<svg onclick="v428MapClick(evt,'${kind}')" `);
+    try{ svg = kind === "d" ? basePitch([], function(){}, null) : baseGoal([], function(){}, null); }
+    catch(e){ return `<div class="matchEditorEmpty">Map could not load.</div>`; }
+    const dot = p ? `<circle class="v429Dot" cx="${p.x}" cy="${p.y}" r="4.8" fill="#2d7ff9"></circle>` : "";
+    svg = svg.replace("<svg ", `<svg onclick="v429MapClick(evt,'${kind}')" `);
     return svg.replace("</svg>", dot + "</svg>");
   }
 
-  window.v428ClearDPoint = function(){
-    state.dPoint = null;
+  window.v429MapClick = function(evt, kind){
+    const svg = evt.currentTarget;
+    const pt = svg.createSVGPoint();
+    pt.x = evt.clientX; pt.y = evt.clientY;
+    const loc = pt.matrixTransform(svg.getScreenCTM().inverse());
+    const p = {x: Math.max(0, Math.min(100, +loc.x.toFixed(1))), y: Math.max(0, Math.min(100, +loc.y.toFixed(1)))};
+    if(kind === "d") state.dPoint = p; else state.gPoint = p;
     renderShotEditor();
   };
 
-  window.v428ClearGPoint = function(){
-    state.gPoint = null;
-    renderShotEditor();
-  };
+  window.v429ClearDPoint = function(){ state.dPoint = null; renderShotEditor(); };
+  window.v429ClearGPoint = function(){ state.gPoint = null; renderShotEditor(); };
+  window.v429CancelShotEdit = function(){ state.draftMode=false; state.draftShot=null; state.editingShotId=""; state.dPoint=null; state.gPoint=null; renderShotEditor(); renderHeatMaps(); };
 
-  window.v428CancelShotEdit = function(){
-    state.draftMode = false;
-    state.draftShot = null;
-    state.editingShotId = "";
-    state.dPoint = null;
-    state.gPoint = null;
-    renderShotEditor();
-    renderHeatMaps();
-  };
-
-  window.v428SaveShot = function(){
-    const m = currentMatch();
-    if(!m) return;
-    const s = selectedShot();
-    if(!s) return;
-
-    s.outcome = $("v428ShotOutcome")?.value || s.outcome;
-    s.type = $("v428ShotType")?.value || s.type || "1st Shot";
+  window.v429SaveShot = function(){
+    const m = currentMatch(); if(!m) return;
+    const s = selectedShot(); if(!s) return;
+    s.outcome = $("v429ShotOutcome")?.value || s.outcome;
+    s.type = $("v429ShotType")?.value || s.type || "1st Shot";
     s.shotCategory = s.type;
-    s.shotSituation = $("v428ShotSituation")?.value || "None";
+    s.shotSituation = $("v429ShotSituation")?.value || "None";
     s.situation = s.shotSituation;
-    s.outnumbered = $("v428ShotOutnumbered")?.value || "Not Out Numbered";
-    s.rebound = $("v428ShotRebound")?.value || "";
+    s.outnumbered = $("v429ShotOutnumbered")?.value || "Not Out Numbered";
+    s.rebound = $("v429ShotRebound")?.value || "";
     if(s.rebound === "No rebound") s.rebound = "";
-    s.note = $("v428ShotNote")?.value || "";
+    s.note = $("v429ShotNote")?.value || "";
 
-    if(state.dPoint){
-      s.dX = state.dPoint.x;
-      s.dY = state.dPoint.y;
-    }else{
-      delete s.dX; delete s.dY;
-    }
-
-    if(s.outcome === "Angle Closed Off"){
-      delete s.gX; delete s.gY;
-    }else if(state.gPoint){
-      s.gX = state.gPoint.x;
-      s.gY = state.gPoint.y;
-    }else{
-      delete s.gX; delete s.gY;
-    }
+    if(state.dPoint){ s.dX = state.dPoint.x; s.dY = state.dPoint.y; } else { delete s.dX; delete s.dY; }
+    if(s.outcome === "Angle Closed Off"){ delete s.gX; delete s.gY; }
+    else if(state.gPoint){ s.gX = state.gPoint.x; s.gY = state.gPoint.y; }
+    else { delete s.gX; delete s.gY; }
 
     if(state.draftMode){
-      shots(m).push(s);
+      realShots(m).push(s);
       m.timeline = Array.isArray(m.timeline) ? m.timeline : [];
-      m.timeline.push({ id: makeId(), shotId:s.id, label:s.outcome==="Save"?"S":s.outcome==="Goal"?"G":"A", outcome:s.outcome, type:s.type, shotSituation:s.shotSituation, outnumbered:s.outnumbered });
-      state.draftMode = false;
-      state.draftShot = null;
-      state.editingShotId = s.id;
+      m.timeline.push({id: makeId(), shotId:s.id, label:s.outcome==="Save"?"S":s.outcome==="Goal"?"G":"A", outcome:s.outcome, type:s.type, shotSituation:s.shotSituation, outnumbered:s.outnumbered});
+      state.draftMode = false; state.draftShot = null; state.editingShotId = s.id;
     }else if(Array.isArray(m.timeline)){
-      const ev = m.timeline.find(e => e.shotId === s.id);
-      if(ev){
-        ev.label = s.outcome==="Save"?"S":s.outcome==="Goal"?"G":"A";
-        ev.outcome = s.outcome;
-        ev.type = s.type;
-        ev.shotSituation = s.shotSituation;
-        ev.outnumbered = s.outnumbered;
-      }
+      const ev = m.timeline.find(e=>e.shotId===s.id);
+      if(ev){ ev.label=s.outcome==="Save"?"S":s.outcome==="Goal"?"G":"A"; ev.outcome=s.outcome; ev.type=s.type; ev.shotSituation=s.shotSituation; ev.outnumbered=s.outnumbered; }
     }
 
     save();
-    state.dPoint = getDPoint(s);
-    state.gPoint = getGPoint(s);
-    renderShotList();
-    renderShotEditor();
-    renderMarkers();
-    renderHeatMaps();
+    state.dPoint = getDPoint(s); state.gPoint = getGPoint(s);
+    renderShotList(); renderShotEditor(); renderHeatMaps();
     setStatus("matchEditorHeatStatus", "Shot saved.");
   };
 
-  function dotSvg(s, i, p, kind){
-    const label = i + 1;
-    const id = esc2(s.id || ("shot_"+i));
+  function dotSvg(item, i, p, kind){
+    const label = item.__kind === "placement" ? "P" + (item.__placementIndex + 1) : (item.__shotIndex + 1);
+    const id = esc2(item.id || "");
+    const unlinked = item.__unlinked ? " • old unlinked heat placement" : "";
     return `
-      <g onclick="v428OpenShotFromMap('${id}','${kind}')">
-        <title>${esc2(label + ". " + (s.outcome || "Shot") + " • " + (kind === "d" ? "D" : "Goal") + " point")}</title>
-        <circle class="consolidatedHeatDot" cx="${p.x}" cy="${p.y}" r="4.4" fill="${color(s.outcome)}"></circle>
+      <g onclick="v429OpenHeatItem('${id}','${kind}','${item.__kind || "shot"}')">
+        <title>${esc2(label + ". " + (item.outcome || "Shot") + " • " + (kind === "d" ? "D" : "Goal") + " point" + unlinked)}</title>
+        <circle class="consolidatedHeatDot" cx="${p.x}" cy="${p.y}" r="4.4" fill="${outcomeColor(item.outcome)}"></circle>
         <text class="consolidatedHeatLabel" x="${p.x}" y="${p.y}">${label}</text>
       </g>`;
   }
 
-  function baseWithDots(kind, ss){
+  function baseWithDots(kind, items){
     let svg = "";
     try{ svg = kind === "d" ? basePitch([], function(){}, null) : baseGoal([], function(){}, null); }
     catch(e){ return `<div class="matchEditorEmpty">Map could not load.</div>`; }
     const dots = [];
-    ss.forEach((s,i) => {
-      const p = kind === "d" ? getDPoint(s) : getGPoint(s);
-      if(kind === "g" && s.outcome === "Angle Closed Off") return;
-      if(p) dots.push(dotSvg(s,i,p,kind));
+    items.forEach((item,i)=>{
+      if(kind === "g" && item.outcome === "Angle Closed Off") return;
+      const p = kind === "d" ? getDPoint(item) : getGPoint(item);
+      if(p) dots.push(dotSvg(item, i, p, kind));
     });
     return svg.replace("</svg>", dots.join("") + "</svg>");
   }
 
   function renderHeatMaps(){
-    const m = currentMatch();
-    const dBox = $("matchEditorGameDHeat");
-    const gBox = $("matchEditorGameGoalHeat");
-    const status = $("matchEditorHeatStatus");
+    const m = currentMatch(), dBox = $("matchEditorGameDHeat"), gBox = $("matchEditorGameGoalHeat"), status = $("matchEditorHeatStatus");
     if(!dBox || !gBox || !m) return;
-
-    const ss = shots(m);
-    dBox.innerHTML = baseWithDots("d", ss);
-    gBox.innerHTML = baseWithDots("g", ss);
-
-    const dCount = ss.filter(s => !!getDPoint(s)).length;
-    const gCount = ss.filter(s => s.outcome !== "Angle Closed Off" && !!getGPoint(s)).length;
-    if(status) status.textContent = `Showing ${dCount} D point(s) and ${gCount} goal-box point(s). Click a dot to edit that shot.`;
+    const items = allHeatItems(m);
+    dBox.innerHTML = baseWithDots("d", items);
+    gBox.innerHTML = baseWithDots("g", items);
+    const dCount = items.filter(x=>!!getDPoint(x)).length;
+    const gCount = items.filter(x=>x.outcome!=="Angle Closed Off" && !!getGPoint(x)).length;
+    const oldCount = heatPlacements(m).length;
+    if(status) status.textContent = `Showing ${dCount} D point(s) and ${gCount} goal-box point(s). ${oldCount ? oldCount + " old heat placement(s) also checked." : ""}`.trim();
   }
 
-  window.v428OpenShotFromMap = function(id, kind){
-    v428OpenShot(id);
-    setStatus("matchEditorHeatStatus", `Selected shot from ${kind === "d" ? "D heat map" : "Goal Box heat map"}.`);
-    const target = kind === "d" ? $("v428EditorDMap") : $("v428EditorGoalMap");
-    if(target){
-      target.classList.add("v428SelectedMap");
-      setTimeout(()=>target.classList.remove("v428SelectedMap"), 1400);
+  window.v429OpenHeatItem = function(id, kind, itemKind){
+    if(itemKind === "placement" && !realShots(currentMatch()).some(s=>s.id===id)){
+      setStatus("matchEditorHeatStatus","This is an older unlinked heat placement. It is displayed on the map, but it is not linked to a shot record.");
+      return;
     }
+    v429OpenShot(id);
+    setStatus("matchEditorHeatStatus", `Selected shot from ${kind === "d" ? "D heat map" : "Goal Box heat map"}.`);
+    const target = kind === "d" ? $("v429EditorDMap") : $("v429EditorGoalMap");
+    if(target){ target.classList.add("v429SelectedMap"); setTimeout(()=>target.classList.remove("v429SelectedMap"), 1400); }
   };
 
-  // Compatibility names used by earlier generated markup.
-  window.renderMatchEditorConsolidatedHeatMaps = renderHeatMaps;
-  window.addNewShotFromMatchEditor = function(outcome){ v428StartAddShot(outcome || "Save"); };
-  window.selectMatchEditorHeatShot = function(id, kind){ v428OpenShotFromMap(id, kind || "d"); };
+  function syncNormalPeriods(){
+    const normal = $("v429NormalMatchPeriods");
+    const m = currentMatch();
+    if(normal && m) normal.value = Number(m.periods || m.periodCount || 4);
+  }
 
-  // Render Match Editor instead of relying on older partial patch implementations.
+  function ensureNormalPeriodsField(){
+    const panel = $("match");
+    if(!panel || $("v429NormalMatchPeriodsWrap")) return;
+    const wrap = document.createElement("div");
+    wrap.id = "v429NormalMatchPeriodsWrap";
+    wrap.className = "card";
+    wrap.innerHTML = `
+      <h3>Match Periods</h3>
+      <p class="muted">Set how many periods this match uses. End of Period markers are managed in Match Editor.</p>
+      <div class="v429Grid2"><div class="v429Field"><label>Periods</label><input id="v429NormalMatchPeriods" type="number" min="1" max="6" value="4" onchange="v429SaveNormalPeriods()"></div></div>`;
+    panel.appendChild(wrap);
+  }
+
+  window.v429SaveNormalPeriods = function(){
+    const m = currentMatch();
+    if(m){ m.periods = Math.max(1, Number($("v429NormalMatchPeriods")?.value || 4)); m.periodCount=m.periods; save(); }
+  };
+
+  // Compatibility names used by older injected markup.
+  window.renderMatchEditorConsolidatedHeatMaps = renderHeatMaps;
+  window.addNewShotFromMatchEditor = function(outcome){ v429StartAddShot(outcome || "Save"); };
+  window.selectMatchEditorHeatShot = function(id, kind){ v429OpenHeatItem(id, kind || "d", "shot"); };
+
+  // Override older Match Editor renderers so the tab uses the stable v4.29 editor.
+  window.renderMatchEditor = renderRoot;
+
   const oldRenderAll = window.renderAll;
-  if(typeof oldRenderAll === "function" && !window.__v428RenderAllWrapped){
+  if(typeof oldRenderAll === "function" && !window.__v429RenderAllWrapped){
     window.renderAll = function(){
       const result = oldRenderAll.apply(this, arguments);
       setTimeout(function(){
-        ensureMatchPeriodsField();
-        renderRoot();
-      }, 80);
+        ensureNormalPeriodsField();
+        if($("matchEditor")?.classList.contains("active")) renderRoot();
+        else syncNormalPeriods();
+      }, 60);
       return result;
     };
-    window.__v428RenderAllWrapped = true;
+    window.__v429RenderAllWrapped = true;
   }
-
-  // When tab changes or selectors change, refresh maps.
-  document.addEventListener("click", function(){
-    setTimeout(function(){
-      ensureMatchPeriodsField();
-      if($("matchEditor")?.classList.contains("active")) renderRoot();
-    }, 120);
-  });
 
   document.addEventListener("change", function(e){
-    setTimeout(function(){
-      if($("matchEditor")?.classList.contains("active")){
-        renderHeatMaps();
-        syncNormalMatchPeriods();
-      }
-    }, 80);
+    if(e.target && e.target.id === "v429Match") v429SelectMatch(e.target.value);
+    if(e.target && e.target.id === "v429Goalie") v429SelectGoalie(e.target.value);
   });
 
-  // Try to augment older normal save/create functions so periods are stored.
-  const oldSaveMatch = window.saveMatch;
-  if(typeof oldSaveMatch === "function" && !oldSaveMatch.__v428Wrapped){
-    window.saveMatch = function(){
-      const result = oldSaveMatch.apply(this, arguments);
-      const m = currentMatch();
-      const p = Number($("periods")?.value || $("matchPeriods")?.value || $("v428NormalMatchPeriods")?.value || 4);
-      if(m){ m.periods = Math.max(1,p); m.periodCount = m.periods; save(); }
-      return result;
-    };
-    window.saveMatch.__v428Wrapped = true;
-  }
-
   setTimeout(function(){
-    ensureMatchPeriodsField();
+    ensureNormalPeriodsField();
     renderRoot();
-    document.querySelectorAll("*").forEach(el => {
-      if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
-        el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.28")
-          .replace(/v4\.\d+/i, "v4.28");
+    document.querySelectorAll("*").forEach(el=>{
+      if(el.children.length===0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent||"")){
+        el.textContent = el.textContent.replace(/Version\s+4\.\d+/i,"Version 4.29").replace(/v4\.\d+/i,"v4.29");
       }
     });
   }, 0);
