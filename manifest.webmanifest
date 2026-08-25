@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats: Data Driven Development",
   "short_name": "Goalie Stats",
-  "description": "Hockey Goalie Stats v4.21 adds Shot Situation to Match Editor.",
+  "description": "Hockey Goalie Stats v4.22 restores Match Editor with Shot Situation and heat maps.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
