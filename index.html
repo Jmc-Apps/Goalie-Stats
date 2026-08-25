@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Hockey Goalie Stats: Data Driven Development v4.26</title>
+<title>Hockey Goalie Stats: Data Driven Development v4.27</title>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#1f1f1f">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -53,7 +53,7 @@ table{width:100%;border-collapse:collapse;font-size:13px} th,td{border-bottom:1p
 </style>
 
 <style>
-/* v4.26 Match Editor */
+/* v4.27 Match Editor */
 .matchShotList{
   display:flex;
   flex-direction:column;
@@ -117,7 +117,7 @@ table{width:100%;border-collapse:collapse;font-size:13px} th,td{border-bottom:1p
 
 
 <style>
-/* v4.26 restored Match Editor */
+/* v4.27 restored Match Editor */
 .matchShotList{
   display:flex;
   flex-direction:column;
@@ -190,7 +190,7 @@ table{width:100%;border-collapse:collapse;font-size:13px} th,td{border-bottom:1p
 
 
 <style>
-/* v4.26 Match Editor consolidated heat maps */
+/* v4.27 Match Editor consolidated heat maps */
 .consolidatedHeatMap{
   min-height:260px;
 }
@@ -237,7 +237,7 @@ table{width:100%;border-collapse:collapse;font-size:13px} th,td{border-bottom:1p
 
 
 <style>
-/* v4.26 restore consolidated Game Heat Map Editor */
+/* v4.27 Game Heat Map Editor fixes */
 #matchEditorConsolidatedHeatCard{
   display:block!important;
   margin-top:14px!important;
@@ -276,8 +276,22 @@ table{width:100%;border-collapse:collapse;font-size:13px} th,td{border-bottom:1p
 .consolidatedHeatDot.Save{fill:#2fd17c;}
 .consolidatedHeatDot.Goal{fill:#ef5350;}
 .consolidatedHeatDot.Angle{fill:#ffca28;}
-.v426-selected-map{
+.v427-selected-map{
   box-shadow:0 0 0 3px rgba(45,127,249,.35)!important;
+}
+.v427AddShotButtons{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  margin:12px 0;
+}
+.v427AddShotButtons .btn{
+  width:100%;
+}
+@media(max-width:720px){
+  .v427AddShotButtons{
+    grid-template-columns:1fr;
+  }
 }
 </style>
 
@@ -299,7 +313,7 @@ table{width:100%;border-collapse:collapse;font-size:13px} th,td{border-bottom:1p
       <img src="assets/home-logo.png" alt="Hockey Goalie Stats Data Driven Development" class="homeLogo">
     </div>
     <div class="versionBox">
-      <b>Version 4.26</b>
+      <b>Version 4.27</b>
       <div class="small">Build Date: 2026-06-03</div>
     </div>
     <div id="homeSummary" class="hiddenHomeSummary"></div>
@@ -385,11 +399,11 @@ table{width:100%;border-collapse:collapse;font-size:13px} th,td{border-bottom:1p
     <div class="grid2">
       <div>
         <h3>D Heat Map</h3>
-        <div class="matchEditorMapBox" id="matchEditorDMap"></div>
+        <div class="matchEditorMapBox" id="matchEditorDMap"></div><button class="btn secondary" type="button" onclick="clearMatchEditorDPoint()">Clear D Point</button>
       </div>
       <div>
         <h3>Goal Box Heat Map</h3>
-        <div class="matchEditorMapBox" id="matchEditorGoalMap"></div>
+        <div class="matchEditorMapBox" id="matchEditorGoalMap"></div><button class="btn secondary" type="button" onclick="clearMatchEditorGoalPoint()">Clear Goal Point</button>
         <div class="small">Angle Closed Off only uses the D heat map.</div>
         <label><input id="matchEditorMirrorGoal" type="checkbox" style="width:auto"> Mirror goal-box point when saving</label>
       </div>
@@ -400,7 +414,6 @@ table{width:100%;border-collapse:collapse;font-size:13px} th,td{border-bottom:1p
     <button class="btn danger" type="button" onclick="deleteMatchEditorShot()">Delete This Shot</button>
     <div id="matchEditorStatus" class="small"></div>
   </div>
-
   <div class="card" id="matchEditorConsolidatedHeatCard">
     <h2>Game Heat Map Editor</h2>
     <p class="muted">These are the consolidated heat maps for the selected match. Click a single dot to open that shot above and edit its saved details. D heat-map and goal-box placements are edited independently.</p>
@@ -419,7 +432,11 @@ table{width:100%;border-collapse:collapse;font-size:13px} th,td{border-bottom:1p
       <span><span class="dot" style="background:#ef5350"></span> Goal</span>
       <span><span class="dot" style="background:#ffca28"></span> Angle Closed Off</span>
     </div>
-    <button class="btn secondary" type="button" onclick="addNewShotFromMatchEditor()">Add New Shot To This Match</button>
+    <div class="v427AddShotButtons">
+      <button class="btn good" type="button" onclick="addNewShotFromMatchEditor('Save')">Add Save</button>
+      <button class="btn danger" type="button" onclick="addNewShotFromMatchEditor('Goal')">Add Goal</button>
+      <button class="btn warn" type="button" onclick="addNewShotFromMatchEditor('Angle Closed Off')">Add Angle Closed Off</button>
+    </div>
     <div id="matchEditorHeatStatus" class="small"></div>
   </div>
 
@@ -443,7 +460,7 @@ table{width:100%;border-collapse:collapse;font-size:13px} th,td{border-bottom:1p
   <div id="matchImportStatus" class="small"></div>
 </div>
 <div class="card"><h2>Export Goalies & Teams</h2><button class="btn good" onclick="exportGoaliesTeams()">Export Goalies & Teams</button><div id="masterExportStatus" class="small"></div></div></section>
-<div class="footer">Hockey Goalie Stats: Data Driven Development • Version 4.26</div>
+<div class="footer">Hockey Goalie Stats: Data Driven Development • Version 4.27</div>
 </main>
 
 <script>
@@ -598,7 +615,7 @@ matchDate.value=today();renderAll();
 </script>
 <script>
 
-/* v4.26 safe heat placement layer */
+/* v4.27 safe heat placement layer */
 let heatEditOutcome = 'Save';
 let pendingHeatD = null;
 
@@ -866,7 +883,7 @@ document.addEventListener('change', function(e){
 </script>
 <script>
 
-/* v4.26: Angle Closed Off D-map-only fix and plain shot type buttons */
+/* v4.27: Angle Closed Off D-map-only fix and plain shot type buttons */
 (function(){
   function isAngle(outcome){ return outcome === 'Angle Closed Off'; }
 
@@ -1100,14 +1117,14 @@ document.addEventListener('change', function(e){
     renderHeatMaps();
     if(typeof renderHeatPlacementEditor === 'function') renderHeatPlacementEditor();
   }catch(e){
-    console.warn('v4.26 refresh warning', e);
+    console.warn('v4.27 refresh warning', e);
   }
 })();
 
 </script>
 <script>
 
-/* v4.26: separate D heat-map points from goal-box points */
+/* v4.27: separate D heat-map points from goal-box points */
 (function(){
   function matchHeatPlacements(m){
     return (m && m.heatPlacements) ? m.heatPlacements : [];
@@ -1153,13 +1170,13 @@ document.addEventListener('change', function(e){
     };
   }
 
-  try { renderHeatMaps(); } catch(e) { console.warn('v4.26 heat map refresh warning', e); }
+  try { renderHeatMaps(); } catch(e) { console.warn('v4.27 heat map refresh warning', e); }
 })();
 
 </script>
 <script>
 
-/* v4.26: use uploaded SVG files as heat map backgrounds */
+/* v4.27: use uploaded SVG files as heat map backgrounds */
 (function(){
   const D_BG = './assets/d.svg';
   const GOAL_BG = './assets/box.svg';
@@ -1205,14 +1222,14 @@ document.addEventListener('change', function(e){
     renderHeatMaps();
     if(typeof renderHeatPlacementEditor === 'function') renderHeatPlacementEditor();
   }catch(e){
-    console.warn('v4.26 heat map background refresh warning', e);
+    console.warn('v4.27 heat map background refresh warning', e);
   }
 })();
 
 </script>
 <script>
 
-/* v4.26: match list Save Rate and Defence Rate columns */
+/* v4.27: match list Save Rate and Defence Rate columns */
 (function(){
   function matchOutcomeCounts(m){
     const shots = m?.shots || [];
@@ -1279,14 +1296,14 @@ document.addEventListener('change', function(e){
   try{
     if(typeof renderStats === 'function') renderStats();
   }catch(e){
-    console.warn('v4.26 stats refresh warning', e);
+    console.warn('v4.27 stats refresh warning', e);
   }
 })();
 
 </script>
 <script>
 
-/* v4.26: goalie history rates, primary/situation shot categories, and N/C rate display */
+/* v4.27: goalie history rates, primary/situation shot categories, and N/C rate display */
 (function(){
   const primaryShotTypes = ['1st Shot','Rebound'];
   const shotSituations = ['None','Penalty Corner','Penalty Stroke','In Game 1v1','8 Second 1v1','Own Goal','Other'];
@@ -1534,14 +1551,14 @@ document.addEventListener('change', function(e){
     renderGoalieForm();
     renderStats();
   }catch(e){
-    console.warn('v4.26 refresh warning', e);
+    console.warn('v4.27 refresh warning', e);
   }
 })();
 
 </script>
 <script>
 
-/* v4.26: normalize old 1 vs 1 outnumbered value to Not Out Numbered */
+/* v4.27: normalize old 1 vs 1 outnumbered value to Not Out Numbered */
 (function(){
   function normalizeOutnumberedValue(v){
     return v === '1 vs 1' ? 'Not Out Numbered' : v;
@@ -1590,14 +1607,14 @@ document.addEventListener('change', function(e){
   try{
     renderShotButtons();
   }catch(e){
-    console.warn('v4.26 outnumbered refresh warning', e);
+    console.warn('v4.27 outnumbered refresh warning', e);
   }
 })();
 
 </script>
 <script>
 
-/* v4.26: integrated game history, dated backups, edit/delete match */
+/* v4.27: integrated game history, dated backups, edit/delete match */
 (function(){
   function pad(n){ return String(n).padStart(2,'0'); }
   function backupStamp(){
@@ -1841,14 +1858,14 @@ document.addEventListener('change', function(e){
     renderGameHistory();
     populateMatchTools();
   }catch(e){
-    console.warn('v4.26 setup warning', e);
+    console.warn('v4.27 setup warning', e);
   }
 })();
 
 </script>
 <script>
 
-/* v4.26: Game History / histogram feature removed */
+/* v4.27: Game History / histogram feature removed */
 (function(){
   window.renderGameHistory = function(){};
   const oldRenderAll325 = window.renderAll;
@@ -1869,7 +1886,7 @@ document.addEventListener('change', function(e){
 </script>
 <script>
 
-/* v4.26: Import match JSON exported by Goalie Stats Recorder */
+/* v4.27: Import match JSON exported by Goalie Stats Recorder */
 (function(){
   function normalizeImportedShot(s){
     return {
@@ -1987,15 +2004,15 @@ function exportGoaliesTeams(){
 }
 </script>
 <script>
-/* v4.26: version display and Heat Map Editor display improvements */
+/* v4.27: version display and Heat Map Editor display improvements */
 (function(){
-  window.APP_VERSION = "4.26";
+  window.APP_VERSION = "4.27";
 
   function setTextIfVersionish(el){
     if(!el) return;
     const txt = (el.textContent || "").trim();
     if(/Version\s+\d+\.\d+|v\d+\.\d+/i.test(txt)){
-      el.textContent = txt.replace(/Version\s+\d+\.\d+/i, "Version 4.26").replace(/v\d+\.\d+/i, "v4.26");
+      el.textContent = txt.replace(/Version\s+\d+\.\d+/i, "Version 4.27").replace(/v\d+\.\d+/i, "v4.27");
     }
   }
 
@@ -2134,9 +2151,9 @@ function exportGoaliesTeams(){
 
 
 <script>
-/* v4.26: Heat Maps tab wording update */
+/* v4.27: Heat Maps tab wording update */
 (function(){
-  window.APP_VERSION = "4.26";
+  window.APP_VERSION = "4.27";
 
   function updateHeatMapLabels(){
     let changedTab = false;
@@ -2160,8 +2177,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.26")
-          .replace(/v4\.\d+/i, "v4.26");
+          .replace(/Version\s+4\.\d+/i, "Version 4.27")
+          .replace(/v4\.\d+/i, "v4.27");
       }
     });
   }
@@ -2181,9 +2198,9 @@ function exportGoaliesTeams(){
 
 
 <script>
-/* v4.26: separate Heat Maps view tab from Heat Map Editor tab */
+/* v4.27: separate Heat Maps view tab from Heat Map Editor tab */
 (function(){
-  window.APP_VERSION = "4.26";
+  window.APP_VERSION = "4.27";
 
   function normalizeHeatTabs(){
     const candidates = Array.from(document.querySelectorAll("button,a,.tab,span,div"))
@@ -2233,8 +2250,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.26")
-          .replace(/v4\.\d+/i, "v4.26");
+          .replace(/Version\s+4\.\d+/i, "Version 4.27")
+          .replace(/v4\.\d+/i, "v4.27");
       }
     });
   }
@@ -2264,9 +2281,9 @@ function exportGoaliesTeams(){
 
 
 <script>
-/* v4.26: fix Recorder import failure caused by editShot global reference */
+/* v4.27: fix Recorder import failure caused by editShot global reference */
 (function(){
-  window.APP_VERSION = "4.26";
+  window.APP_VERSION = "4.27";
 
   function safeEl(id){ return document.getElementById(id); }
 
@@ -2391,8 +2408,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.26")
-          .replace(/v4\.\d+/i, "v4.26");
+          .replace(/Version\s+4\.\d+/i, "Version 4.27")
+          .replace(/v4\.\d+/i, "v4.27");
       }
     });
   },0);
@@ -2401,9 +2418,9 @@ function exportGoaliesTeams(){
 
 
 <script>
-/* v4.26: show N/C for percentage stats with no attempts */
+/* v4.27: show N/C for percentage stats with no attempts */
 (function(){
-  window.APP_VERSION = "4.26";
+  window.APP_VERSION = "4.27";
 
   function pctNC(success, attempts){
     attempts = Number(attempts || 0);
@@ -2531,8 +2548,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.26")
-          .replace(/v4\.\d+/i, "v4.26");
+          .replace(/Version\s+4\.\d+/i, "Version 4.27")
+          .replace(/v4\.\d+/i, "v4.27");
       }
     });
   },0);
@@ -2541,9 +2558,9 @@ function exportGoaliesTeams(){
 
 
 <script>
-/* v4.26: correct N/C display inside existing Stats cards */
+/* v4.27: correct N/C display inside existing Stats cards */
 (function(){
-  window.APP_VERSION = "4.26";
+  window.APP_VERSION = "4.27";
 
   const zeroAttemptRateLabels = [
     "Save Rate",
@@ -2653,8 +2670,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.26")
-          .replace(/v4\.\d+/i, "v4.26");
+          .replace(/Version\s+4\.\d+/i, "Version 4.27")
+          .replace(/v4\.\d+/i, "v4.27");
       }
     });
   },0);
@@ -2663,9 +2680,9 @@ function exportGoaliesTeams(){
 
 
 <script>
-/* v4.26: core Stats calculation uses N/C for zero-attempt rate cards */
+/* v4.27: core Stats calculation uses N/C for zero-attempt rate cards */
 (function(){
-  window.APP_VERSION = "4.26";
+  window.APP_VERSION = "4.27";
 
   function pctText(success, attempts){
     attempts = Number(attempts || 0);
@@ -2826,7 +2843,7 @@ function exportGoaliesTeams(){
       const ms = typeof filterMatches === "function" ? filterMatches(g, period, year, home, opp) : [];
       out.innerHTML = '<div class="statgrid">' + statCards(calcStats(ms)) + '</div>' + matchTable(ms);
     }catch(e){
-      console.warn("v4.26 stats rerender warning", e);
+      console.warn("v4.27 stats rerender warning", e);
     }
   }
 
@@ -2860,8 +2877,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.26")
-          .replace(/v4\.\d+/i, "v4.26");
+          .replace(/Version\s+4\.\d+/i, "Version 4.27")
+          .replace(/v4\.\d+/i, "v4.27");
       }
     });
   }, 0);
@@ -2870,9 +2887,9 @@ function exportGoaliesTeams(){
 
 
 <script>
-/* v4.26: corrected Rate of Attempts at Goals Out Numbered */
+/* v4.27: corrected Rate of Attempts at Goals Out Numbered */
 (function(){
-  window.APP_VERSION = "4.26";
+  window.APP_VERSION = "4.27";
 
   function pctText(success, attempts){
     attempts = Number(attempts || 0);
@@ -3011,7 +3028,7 @@ function exportGoaliesTeams(){
         out.innerHTML = '<div class="statgrid">' + statCards(calcStats(ms)) + '</div>' + matchTable(ms);
       }
     } catch(e) {
-      console.warn("v4.26 stats rerender warning", e);
+      console.warn("v4.27 stats rerender warning", e);
     }
   }
 
@@ -3032,8 +3049,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.26")
-          .replace(/v4\.\d+/i, "v4.26");
+          .replace(/Version\s+4\.\d+/i, "Version 4.27")
+          .replace(/v4\.\d+/i, "v4.27");
       }
     });
   }, 0);
@@ -3042,7 +3059,7 @@ function exportGoaliesTeams(){
 
 
 <style>
-/* v4.26 timeline report and manual timeline markers */
+/* v4.27 timeline report and manual timeline markers */
 .timeline-strip{
   display:flex;
   flex-wrap:wrap;
@@ -3090,9 +3107,9 @@ function exportGoaliesTeams(){
 </style>
 
 <script>
-/* Hockey Goalie Stats v4.26: manual timelines + timeline report */
+/* Hockey Goalie Stats v4.27: manual timelines + timeline report */
 (function(){
-  window.APP_VERSION = "4.26";
+  window.APP_VERSION = "4.27";
 
   function ensureTimeline(match){
     if(!match) return [];
@@ -3395,8 +3412,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.26")
-          .replace(/v4\.\d+/i, "v4.26");
+          .replace(/Version\s+4\.\d+/i, "Version 4.27")
+          .replace(/v4\.\d+/i, "v4.27");
       }
     });
   },0);
@@ -3405,7 +3422,7 @@ function exportGoaliesTeams(){
 
 
 <style>
-/* v4.26 restored manual match timeline */
+/* v4.27 restored manual match timeline */
 .timeline-strip{
   display:flex;
   flex-wrap:wrap;
@@ -3453,9 +3470,9 @@ function exportGoaliesTeams(){
 </style>
 
 <script>
-/* Hockey Goalie Stats v4.26: restore timeline panel and place above Match Outcome */
+/* Hockey Goalie Stats v4.27: restore timeline panel and place above Match Outcome */
 (function(){
-  window.APP_VERSION = "4.26";
+  window.APP_VERSION = "4.27";
 
   function getDb(){
     try{ if(typeof DB !== "undefined") return DB; }catch(e){}
@@ -3759,8 +3776,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.26")
-          .replace(/v4\.\d+/i, "v4.26");
+          .replace(/Version\s+4\.\d+/i, "Version 4.27")
+          .replace(/v4\.\d+/i, "v4.27");
       }
     });
   }, 0);
@@ -3769,9 +3786,9 @@ function exportGoaliesTeams(){
 
 
 <script>
-/* Hockey Goalie Stats v4.26: Match Editor */
+/* Hockey Goalie Stats v4.27: Match Editor */
 (function(){
-  window.APP_VERSION = "4.26";
+  window.APP_VERSION = "4.27";
 
   let meShotId = "";
   let meOutcome = "Save";
@@ -4004,34 +4021,31 @@ function exportGoaliesTeams(){
       alert("Select a shot first.");
       return;
     }
-
-    if(!meDPoint){
-      alert("Tap the D heat map or keep the existing D point before saving.");
-      return;
-    }
-
-    if(meOutcome !== "Angle Closed Off" && !meGoalPoint){
-      alert("Tap the goal box heat map or keep the existing goal point before saving.");
-      return;
-    }
-
-    s.outcome = meOutcome;
+s.outcome = meOutcome;
     s.type = meType;
     s.shotCategory = meType;
     s.outnumbered = meOutnumbered;
     s.rebound = meRebound === "No rebound" ? "" : meRebound;
     s.note = me$("matchEditorNote") ? me$("matchEditorNote").value : "";
-    s.dX = meDPoint.x;
-    s.dY = meDPoint.y;
+    if(meDPoint){
+      s.dX = meDPoint.x;
+      s.dY = meDPoint.y;
+    }else{
+      delete s.dX;
+      delete s.dY;
+    }
 
     if(meOutcome === "Angle Closed Off"){
       delete s.gX;
       delete s.gY;
-    }else{
+    }else if(meGoalPoint){
       let gx = meGoalPoint.x;
       if(me$("matchEditorMirrorGoal") && me$("matchEditorMirrorGoal").checked) gx = 100 - gx;
       s.gX = gx;
       s.gY = meGoalPoint.y;
+    }else{
+      delete s.gX;
+      delete s.gY;
     }
 
     // Keep any timeline label in sync if the match has timeline data.
@@ -4130,8 +4144,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.26")
-          .replace(/v4\.\d+/i, "v4.26");
+          .replace(/Version\s+4\.\d+/i, "Version 4.27")
+          .replace(/v4\.\d+/i, "v4.27");
       }
     });
   },0);
@@ -4140,9 +4154,9 @@ function exportGoaliesTeams(){
 
 
 <script>
-/* Hockey Goalie Stats v4.26: restored Match Editor with Shot Situation and maps */
+/* Hockey Goalie Stats v4.27: restored Match Editor with Shot Situation and maps */
 (function(){
-  window.APP_VERSION = "4.26";
+  window.APP_VERSION = "4.27";
 
   let meShotId = "";
   let meOutcome = "Save";
@@ -4386,18 +4400,7 @@ function exportGoaliesTeams(){
       alert("Select a shot first.");
       return;
     }
-
-    if(!meDPoint){
-      alert("Tap the D heat map or keep the existing D point before saving.");
-      return;
-    }
-
-    if(meOutcome !== "Angle Closed Off" && !meGoalPoint){
-      alert("Tap the goal box heat map or keep the existing goal point before saving.");
-      return;
-    }
-
-    s.outcome = meOutcome;
+s.outcome = meOutcome;
     s.type = meType;
     s.shotCategory = meType;
     s.shotSituation = meSituation;
@@ -4405,17 +4408,25 @@ function exportGoaliesTeams(){
     s.outnumbered = meOutnumbered;
     s.rebound = meRebound === "No rebound" ? "" : meRebound;
     s.note = me$("matchEditorNote") ? me$("matchEditorNote").value : "";
-    s.dX = meDPoint.x;
-    s.dY = meDPoint.y;
+    if(meDPoint){
+      s.dX = meDPoint.x;
+      s.dY = meDPoint.y;
+    }else{
+      delete s.dX;
+      delete s.dY;
+    }
 
     if(meOutcome === "Angle Closed Off"){
       delete s.gX;
       delete s.gY;
-    }else{
+    }else if(meGoalPoint){
       let gx = meGoalPoint.x;
       if(me$("matchEditorMirrorGoal") && me$("matchEditorMirrorGoal").checked) gx = 100 - gx;
       s.gX = gx;
       s.gY = meGoalPoint.y;
+    }else{
+      delete s.gX;
+      delete s.gY;
     }
 
     if(Array.isArray(m.timeline)){
@@ -4513,8 +4524,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.26")
-          .replace(/v4\.\d+/i, "v4.26");
+          .replace(/Version\s+4\.\d+/i, "Version 4.27")
+          .replace(/v4\.\d+/i, "v4.27");
       }
     });
   },0);
@@ -4523,9 +4534,9 @@ function exportGoaliesTeams(){
 
 
 <script>
-/* Hockey Goalie Stats v4.26: consolidated heat maps inside Match Editor */
+/* Hockey Goalie Stats v4.27: consolidated heat maps inside Match Editor */
 (function(){
-  window.APP_VERSION = "4.26";
+  window.APP_VERSION = "4.27";
 
   function h$(id){ return document.getElementById(id); }
 
@@ -4735,8 +4746,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.26")
-          .replace(/v4\.\d+/i, "v4.26");
+          .replace(/Version\s+4\.\d+/i, "Version 4.27")
+          .replace(/v4\.\d+/i, "v4.27");
       }
     });
   }, 0);
@@ -4745,9 +4756,9 @@ function exportGoaliesTeams(){
 
 
 <script>
-/* Hockey Goalie Stats v4.26: restored consolidated heat maps in Match Editor */
+/* Hockey Goalie Stats v4.27: populate consolidated heat maps and add Save/Goal/Angle buttons */
 (function(){
-  window.APP_VERSION = "4.26";
+  window.APP_VERSION = "4.27";
 
   function h$(id){ return document.getElementById(id); }
 
@@ -4759,20 +4770,74 @@ function exportGoaliesTeams(){
     try{ return Array.isArray(db.goalies) ? db.goalies : []; }catch(e){ return []; }
   }
 
-  function hCurrentGoalie(){
-    const id = h$("matchEditorGoalie")?.value || currentGoalieId || "";
-    return hGoalies().find(g => g.id === id) || (typeof goalie === "function" ? goalie() : null) || hGoalies()[0] || null;
-  }
-
   function hMatches(g){
     return g && Array.isArray(g.matches) ? g.matches : [];
+  }
+
+  function hCurrentGoalie(){
+    const gs = hGoalies();
+    const gid = h$("matchEditorGoalie")?.value || currentGoalieId || "";
+    return gs.find(g => g.id === gid) || (typeof goalie === "function" ? goalie() : null) || gs[0] || null;
   }
 
   function hCurrentMatch(){
     const g = hCurrentGoalie();
     if(!g) return null;
-    const id = h$("matchEditorMatch")?.value || "";
-    return hMatches(g).find(m => m.id === id) || hMatches(g)[0] || null;
+    const ms = hMatches(g);
+    const mid = h$("matchEditorMatch")?.value || "";
+    return ms.find(m => m.id === mid) || ms.find(m => String(ms.indexOf(m)) === mid) || ms[0] || null;
+  }
+
+  function hNum(v){
+    if(v === "" || v === null || v === undefined) return null;
+    const n = Number(v);
+    return Number.isFinite(n) ? n : null;
+  }
+
+  function hPointFromPair(x, y){
+    x = hNum(x); y = hNum(y);
+    if(x === null || y === null) return null;
+    return {x, y};
+  }
+
+  function hNormalizePoint(p){
+    if(!p || typeof p !== "object") return null;
+    return hPointFromPair(
+      p.x ?? p.X ?? p.cx ?? p.left ?? p.dX ?? p.gX ?? p.pitchX ?? p.goalX ?? p.xPct ?? p.percentX,
+      p.y ?? p.Y ?? p.cy ?? p.top ?? p.dY ?? p.gY ?? p.pitchY ?? p.goalY ?? p.yPct ?? p.percentY
+    );
+  }
+
+  function hGetDPoint(s){
+    return hPointFromPair(s.dX, s.dY) ||
+      hPointFromPair(s.pitchX, s.pitchY) ||
+      hPointFromPair(s.fieldX, s.fieldY) ||
+      hPointFromPair(s.dMapX, s.dMapY) ||
+      hPointFromPair(s.dHeatX, s.dHeatY) ||
+      hNormalizePoint(s.dPoint) ||
+      hNormalizePoint(s.dPlacement) ||
+      hNormalizePoint(s.dHeatMap) ||
+      hNormalizePoint(s.pitchPoint) ||
+      hNormalizePoint(s.placementD) ||
+      hNormalizePoint(s.placement && (s.placement.d || s.placement.pitch || s.placement.field)) ||
+      hNormalizePoint(s.heatMap && (s.heatMap.d || s.heatMap.pitch || s.heatMap.field)) ||
+      null;
+  }
+
+  function hGetGoalPoint(s){
+    return hPointFromPair(s.gX, s.gY) ||
+      hPointFromPair(s.goalX, s.goalY) ||
+      hPointFromPair(s.goalBoxX, s.goalBoxY) ||
+      hPointFromPair(s.gMapX, s.gMapY) ||
+      hPointFromPair(s.goalHeatX, s.goalHeatY) ||
+      hNormalizePoint(s.gPoint) ||
+      hNormalizePoint(s.goalPoint) ||
+      hNormalizePoint(s.goalPlacement) ||
+      hNormalizePoint(s.goalBoxPoint) ||
+      hNormalizePoint(s.placementGoal) ||
+      hNormalizePoint(s.placement && (s.placement.g || s.placement.goal || s.placement.goalBox)) ||
+      hNormalizePoint(s.heatMap && (s.heatMap.g || s.heatMap.goal || s.heatMap.goalBox)) ||
+      null;
   }
 
   function hPointColor(s){
@@ -4783,28 +4848,27 @@ function exportGoaliesTeams(){
   }
 
   function hColorClass(s){
-    if(!s) return "";
     if(s.outcome === "Angle Closed Off") return "Angle";
     return s.outcome || "";
   }
 
-  function hClickableDot(s, i, x, y, kind){
-    const cls = hColorClass(s);
+  function hClickableDot(s, i, p, kind){
     const label = i + 1;
-    const safeId = hEsc(s.id);
+    const cls = hColorClass(s);
+    const safeId = hEsc(s.id || ("shot_" + i));
     return `
       <g onclick="selectMatchEditorHeatShot('${safeId}','${kind}')" data-shot-id="${safeId}" data-map-kind="${kind}">
-        <title>${hEsc(label + '. ' + (s.outcome || 'Shot') + ' • ' + (kind === 'd' ? 'D' : 'Goal') + ' point')}</title>
-        <circle class="consolidatedHeatDot ${cls}" cx="${x}" cy="${y}" r="4.4" fill="${hPointColor(s)}"></circle>
-        <text class="consolidatedHeatLabel" x="${x}" y="${y}">${label}</text>
+        <title>${hEsc(label + ". " + (s.outcome || "Shot") + " • " + (kind === "d" ? "D" : "Goal") + " point")}</title>
+        <circle class="consolidatedHeatDot ${cls}" cx="${p.x}" cy="${p.y}" r="4.4" fill="${hPointColor(s)}"></circle>
+        <text class="consolidatedHeatLabel" x="${p.x}" y="${p.y}">${label}</text>
       </g>`;
   }
 
   function hDOverlay(shots){
     const pts = [];
     (shots || []).forEach((s,i) => {
-      const x = Number(s.dX), y = Number(s.dY);
-      if(Number.isFinite(x) && Number.isFinite(y)) pts.push(hClickableDot(s,i,x,y,"d"));
+      const p = hGetDPoint(s);
+      if(p) pts.push(hClickableDot(s,i,p,"d"));
     });
     return pts.join("");
   }
@@ -4812,8 +4876,9 @@ function exportGoaliesTeams(){
   function hGoalOverlay(shots){
     const pts = [];
     (shots || []).forEach((s,i) => {
-      const x = Number(s.gX), y = Number(s.gY);
-      if(s.outcome !== "Angle Closed Off" && Number.isFinite(x) && Number.isFinite(y)) pts.push(hClickableDot(s,i,x,y,"g"));
+      if(s.outcome === "Angle Closed Off") return;
+      const p = hGetGoalPoint(s);
+      if(p) pts.push(hClickableDot(s,i,p,"g"));
     });
     return pts.join("");
   }
@@ -4838,10 +4903,8 @@ function exportGoaliesTeams(){
 
   function ensureConsolidatedCard(){
     if(h$("matchEditorConsolidatedHeatCard")) return;
-
     const section = h$("matchEditor");
     if(!section) return;
-
     const card = document.createElement("div");
     card.className = "card";
     card.id = "matchEditorConsolidatedHeatCard";
@@ -4863,7 +4926,11 @@ function exportGoaliesTeams(){
         <span><span class="dot" style="background:#ef5350"></span> Goal</span>
         <span><span class="dot" style="background:#ffca28"></span> Angle Closed Off</span>
       </div>
-      <button class="btn secondary" type="button" onclick="addNewShotFromMatchEditor()">Add New Shot To This Match</button>
+      <div class="v427AddShotButtons">
+        <button class="btn good" type="button" onclick="addNewShotFromMatchEditor('Save')">Add Save</button>
+        <button class="btn danger" type="button" onclick="addNewShotFromMatchEditor('Goal')">Add Goal</button>
+        <button class="btn warn" type="button" onclick="addNewShotFromMatchEditor('Angle Closed Off')">Add Angle Closed Off</button>
+      </div>
       <div id="matchEditorHeatStatus" class="small"></div>
     `;
     section.appendChild(card);
@@ -4889,8 +4956,8 @@ function exportGoaliesTeams(){
     dBox.innerHTML = hBasePitchWithShots(m.shots);
     gBox.innerHTML = hBaseGoalWithShots(m.shots);
 
-    const dCount = m.shots.filter(s => Number.isFinite(Number(s.dX)) && Number.isFinite(Number(s.dY))).length;
-    const gCount = m.shots.filter(s => s.outcome !== "Angle Closed Off" && Number.isFinite(Number(s.gX)) && Number.isFinite(Number(s.gY))).length;
+    const dCount = m.shots.filter(s => !!hGetDPoint(s)).length;
+    const gCount = m.shots.filter(s => s.outcome !== "Angle Closed Off" && !!hGetGoalPoint(s)).length;
     if(status) status.textContent = `Showing ${dCount} D point(s) and ${gCount} goal-box point(s). Click a dot to edit that shot.`;
   };
 
@@ -4906,19 +4973,20 @@ function exportGoaliesTeams(){
 
       const target = kind === "d" ? h$("matchEditorDMap") : h$("matchEditorGoalMap");
       if(target){
-        target.classList.add("v426-selected-map");
-        setTimeout(() => target.classList.remove("v426-selected-map"), 1400);
+        target.classList.add("v427-selected-map");
+        setTimeout(() => target.classList.remove("v427-selected-map"), 1400);
       }
     }, 80);
   };
 
-  window.addNewShotFromMatchEditor = function(){
+  window.addNewShotFromMatchEditor = function(outcome){
     const m = hCurrentMatch();
     if(!m){
       alert("Select a match first.");
       return;
     }
 
+    outcome = outcome || "Save";
     m.shots = m.shots || [];
     const shot = {
       id: uid(),
@@ -4926,7 +4994,7 @@ function exportGoaliesTeams(){
       shotCategory: "1st Shot",
       shotSituation: "None",
       situation: "None",
-      outcome: "Save",
+      outcome: outcome,
       outnumbered: "Not Out Numbered",
       rebound: "",
       note: "",
@@ -4942,47 +5010,56 @@ function exportGoaliesTeams(){
       if(typeof openMatchEditorShot === "function") openMatchEditorShot(shot.id);
       renderMatchEditorConsolidatedHeatMaps();
       const status = h$("matchEditorHeatStatus");
-      if(status) status.textContent = "New shot added. Add heat-map placement above if needed.";
+      if(status) status.textContent = `New ${outcome} added. Add heat-map placement above if needed.`;
     }, 80);
   };
 
-  // Keep saving optional for heat maps and refresh the consolidated card.
-  const oldSave = window.saveMatchEditorShot;
-  if(typeof oldSave === "function" && !oldSave.__v426Wrapped){
-    window.saveMatchEditorShot = function(){
-      // Remove old required placement validations by using the current v4.25 save if it exists;
-      // otherwise fall back to old save.
-      let result;
-      try{ result = oldSave.apply(this, arguments); }
-      catch(e){
-        if(String(e.message || e).includes("meDPoint") || String(e.message || e).includes("meGoalPoint")){
-          alert("Shot details could not be saved. Please reload this version and try again.");
-          return;
-        }
-        throw e;
+  // Keep heat-map placement optional on save and refresh maps.
+  const originalSave = window.saveMatchEditorShot;
+  window.saveMatchEditorShot = function(){
+    try{
+      if(typeof originalSave === "function"){
+        const result = originalSave.apply(this, arguments);
+        setTimeout(renderMatchEditorConsolidatedHeatMaps, 100);
+        return result;
       }
-      setTimeout(renderMatchEditorConsolidatedHeatMaps, 100);
-      return result;
-    };
-    window.saveMatchEditorShot.__v426Wrapped = true;
-  }
+    }catch(e){
+      const msg = String(e && e.message || e || "");
+      if(!msg.includes("meDPoint") && !msg.includes("meGoalPoint")) throw e;
+    }
+    alert("Could not save through the older editor code. Please reload v4.27 and try again.");
+  };
+
+  window.clearMatchEditorDPoint = function(){
+    try{
+      meDPoint = null;
+      if(typeof renderMatchEditorEditPanel === "function") renderMatchEditorEditPanel();
+    }catch(e){}
+  };
+
+  window.clearMatchEditorGoalPoint = function(){
+    try{
+      meGoalPoint = null;
+      if(typeof renderMatchEditorEditPanel === "function") renderMatchEditorEditPanel();
+    }catch(e){}
+  };
 
   function wrap(fnName){
     const old = window[fnName];
-    if(typeof old === "function" && !old.__v426HeatWrapped && fnName !== "saveMatchEditorShot"){
+    if(typeof old === "function" && !old.__v427HeatWrapped && fnName !== "saveMatchEditorShot"){
       window[fnName] = function(){
         const result = old.apply(this, arguments);
         setTimeout(renderMatchEditorConsolidatedHeatMaps, 100);
         return result;
       };
-      window[fnName].__v426HeatWrapped = true;
+      window[fnName].__v427HeatWrapped = true;
     }
   }
 
   ["renderMatchEditor","renderMatchEditorEditPanel","deleteMatchEditorShot","closeMatchEditorShot","openMatchEditorShot"].forEach(wrap);
 
   const oldRenderAll = window.renderAll;
-  if(typeof oldRenderAll === "function" && !window.__v426RenderAllWrapped){
+  if(typeof oldRenderAll === "function" && !window.__v427RenderAllWrapped){
     window.renderAll = function(){
       const result = oldRenderAll.apply(this, arguments);
       setTimeout(function(){
@@ -4993,7 +5070,7 @@ function exportGoaliesTeams(){
       }, 100);
       return result;
     };
-    window.__v426RenderAllWrapped = true;
+    window.__v427RenderAllWrapped = true;
   }
 
   document.addEventListener("click", function(){
@@ -5015,8 +5092,8 @@ function exportGoaliesTeams(){
     document.querySelectorAll("*").forEach(el => {
       if(el.children.length === 0 && /Version\s+4\.\d+|v4\.\d+/i.test(el.textContent || "")){
         el.textContent = el.textContent
-          .replace(/Version\s+4\.\d+/i, "Version 4.26")
-          .replace(/v4\.\d+/i, "v4.26");
+          .replace(/Version\s+4\.\d+/i, "Version 4.27")
+          .replace(/v4\.\d+/i, "v4.27");
       }
     });
   }, 0);
