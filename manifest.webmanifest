@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats: Data Driven Development",
   "short_name": "Goalie Stats",
-  "description": "Hockey Goalie Stats v4.24 moves heat-map editing into Match Editor with consolidated clickable game maps.",
+  "description": "Hockey Goalie Stats v4.25 fixes Match Editor heat-map saving and consolidated map display.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
