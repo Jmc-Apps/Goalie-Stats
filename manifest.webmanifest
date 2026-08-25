@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats: Data Driven Development",
   "short_name": "Goalie Stats",
-  "description": "Hockey Goalie Stats v4.16 unifies report stat-card formatting with darker text.",
+  "description": "Hockey Goalie Stats v4.17 fixes report stat cards at the generator level.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
