@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats: Data Driven Development",
   "short_name": "Goalie Stats",
-  "description": "Hockey Goalie Stats v4.35 fixes active match isolation, finalise/save reset, and timeline carry-over.",
+  "description": "Hockey Goalie Stats v4.36 fixes active match isolation and restores delete confirmation.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
