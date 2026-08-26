@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats: Data Driven Development",
   "short_name": "Goalie Stats",
-  "description": "Hockey Goalie Stats v4.37 adds Match Editor shot creation and fixes duplicate shot saving.",
+  "description": "Hockey Goalie Stats v4.38 removes duplicate Match Timeline panels and dedupes timeline reports.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
