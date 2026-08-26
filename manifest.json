@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats: Data Driven Development",
   "short_name": "Goalie Stats",
-  "description": "Hockey Goalie Stats v4.53 creates a dedicated Game Heat Map Editor card after recorded order.",
+  "description": "Hockey Goalie Stats v4.54 restores Match Editor sections and places the working Game Heat Map Editor below recorded order.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
