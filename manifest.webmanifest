@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats: Data Driven Development",
   "short_name": "Goalie Stats",
-  "description": "Hockey Goalie Stats v4.38 removes duplicate Match Timeline panels and dedupes timeline reports.",
+  "description": "Hockey Goalie Stats v4.39 restores Match Editor Add Shot/Add Period, makes Game Heat Map placement-only, and adds Match-tab End of Period button.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
