@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats: Data Driven Development",
   "short_name": "Goalie Stats",
-  "description": "Hockey Goalie Stats v4.59 clean controller repair.",
+  "description": "Hockey Goalie Stats v4.60 plain heat-map dots.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
