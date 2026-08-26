@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats: Data Driven Development",
   "short_name": "Goalie Stats",
-  "description": "Hockey Goalie Stats v4.56 restores match details and correct simple heat-map artwork.",
+  "description": "Hockey Goalie Stats v4.57 restores heat-map placement dots while keeping simple artwork.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
