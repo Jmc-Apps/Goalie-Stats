@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats: Data Driven Development",
   "short_name": "Goalie Stats",
-  "description": "Hockey Goalie Stats v4.54 restores Match Editor sections and places the working Game Heat Map Editor below recorded order.",
+  "description": "Hockey Goalie Stats v4.55 targeted Match Editor fixes.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
