@@ -1,7 +1,7 @@
 {
-  "name": "Hockey Goalie Stats: Data Driven Development",
+  "name": "Hockey Goalie Stats",
   "short_name": "Goalie Stats",
-  "description": "Hockey Goalie Stats v4.63 restores Defence Rate after Save Rate.",
+  "description": "Hockey Goalie Stats v4.64 with new branding artwork.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
@@ -10,16 +10,14 @@
   "orientation": "portrait",
   "icons": [
     {
-      "src": "icons/icon-192.png",
+      "src": "icon-192.png",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     },
     {
-      "src": "icons/icon-512.png",
+      "src": "icon-512.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     }
   ]
 }
