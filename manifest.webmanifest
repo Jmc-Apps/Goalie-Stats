@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats: Data Driven Development",
   "short_name": "Goalie Stats",
-  "description": "Hockey Goalie Stats v4.61 smaller 50% opacity heat-map dots.",
+  "description": "Hockey Goalie Stats v4.62 heat-map dots at 75 percent opacity.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
