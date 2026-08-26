@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats",
   "short_name": "Goalie Stats",
-  "description": "Hockey Goalie Stats v4.64 with new branding artwork.",
+  "description": "Hockey Goalie Stats v4.66",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
