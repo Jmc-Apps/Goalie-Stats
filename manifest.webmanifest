@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats: Data Driven Development",
   "short_name": "Goalie Stats",
-  "description": "Hockey Goalie Stats v4.52 uses unique self-contained heat-map editor action controls.",
+  "description": "Hockey Goalie Stats v4.53 creates a dedicated Game Heat Map Editor card after recorded order.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
