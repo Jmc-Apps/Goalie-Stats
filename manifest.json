@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats: Data Driven Development",
   "short_name": "Goalie Stats",
-  "description": "Hockey Goalie Stats v4.43 fixes Match tab outcomes, End Period button, and heat-map placement modes.",
+  "description": "Hockey Goalie Stats v4.44 cleans up the Game Heat Map Editor and fixes placement clicks.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
