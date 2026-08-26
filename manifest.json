@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats: Data Driven Development",
   "short_name": "Goalie Stats",
-  "description": "Hockey Goalie Stats v4.41 fixes Game Heat Map Editor click placement saving.",
+  "description": "Hockey Goalie Stats v4.42 fixes heat-map dot colours, outcome counts, and adds remove placement mode.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
