@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats: Data Driven Development",
   "short_name": "Goalie Stats",
-  "description": "Hockey Goalie Stats v4.62 heat-map dots at 75 percent opacity.",
+  "description": "Hockey Goalie Stats v4.63 restores Defence Rate after Save Rate.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
