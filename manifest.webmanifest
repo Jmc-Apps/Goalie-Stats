@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats: Data Driven Development",
   "short_name": "Goalie Stats",
-  "description": "Hockey Goalie Stats v4.45 restores heat-map placement buttons and fixes placement controls.",
+  "description": "Hockey Goalie Stats v4.46 replaces duplicate heat-map controls with one working placement controller.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
