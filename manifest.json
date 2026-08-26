@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats: Data Driven Development",
   "short_name": "Goalie Stats",
-  "description": "Hockey Goalie Stats v4.50 restores toggleable Game Heat Map Editor placement buttons.",
+  "description": "Hockey Goalie Stats v4.51 restores visible toggleable heat-map placement buttons.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
