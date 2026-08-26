@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats: Data Driven Development",
   "short_name": "Goalie Stats",
-  "description": "Hockey Goalie Stats v4.58 fixes Match Editor Game Heat Map placements and controls.",
+  "description": "Hockey Goalie Stats v4.59 clean controller repair.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
