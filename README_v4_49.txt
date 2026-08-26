@@ -1,9 +1,10 @@
-Hockey Goalie Stats v4.48
+Hockey Goalie Stats v4.49
 
-Self-contained Game Heat Map Editor rebuild:
-- Recreates the D Heat Map and Goal Box Heat Map using correct built-in artwork assets.
-- Recreates the Save / Goal / Angle Closed Off legend.
-- Recreates one clean Heat-map placement controls section.
+Game Heat Map Editor fixes:
+- Uses one controlled self-contained Game Heat Map Editor section.
+- Hides all old duplicate heat-map editor controls inside the same card.
+- Shows the correct D Heat Map and Goal Box artwork.
+- Shows one count/control section only.
 - Restores all four controls:
   - Place Save
   - Place Goal
@@ -17,6 +18,6 @@ Self-contained Game Heat Map Editor rebuild:
   - Remove orange
 - Clicking a placement button and then a heat map places a dot on an existing recorded shot.
 - Counts update by map and outcome.
-- Remove Placement removes only the clicked placement.
-- Heat-map placement does not create new shots or timeline entries.
+- Remove Placement removes only the clicked map point.
+- No new shots or timeline entries are created by heat-map placement.
 - Match-tab End of Period button is retained.
