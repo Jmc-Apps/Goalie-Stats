@@ -1,7 +1,7 @@
 {
   "name": "Hockey Goalie Stats",
   "short_name": "Goalie Stats",
-  "description": "Hockey Goalie Stats v4.97",
+  "description": "Hockey Goalie Stats v4.98",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
