@@ -4,7 +4,7 @@ This package contains the current Hockey Goalie Stats Progressive Web App and it
 
 Included:
 - index.html
-- goalie_stats_app_v5_16.html
+- goalie_stats_app_v5_18.html
 - app icons and PWA manifest
 - service worker
 - app assets
@@ -16,9 +16,12 @@ Included:
 Resources:
 Open the app and click Resources after the version number in the footer to access the included PDF resources and manuals.
 
-Build notes:
-- Data Driven Development Report Training Focus now hides rows with a 0/100 score or insufficient event data.
-- If no useful training focus rows exist, the report displays a short message instead of filler rows.
+Current build notes:
+- Report timeline dots keep the clean S/G/A outcome labels.
+- Multi-match report timeline text still shows report shot number and match shot number in the format ReportShotNumber (MatchShotNumber).
+- Timeline markers continue using the same Shot Situation outlines as heat maps.
+- Data Driven Development heat-map labels continue using only the matches included in the selected report.
+- Data Driven Development Training Focus hides rows with 0/100 score or insufficient event data.
 - The ZIP is intentionally packaged with one consolidated README.txt only.
 
 Recommended use:
