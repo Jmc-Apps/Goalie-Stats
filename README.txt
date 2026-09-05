@@ -1,6 +1,118 @@
 Hockey Goalie Stats - Main App Package
 
-Version 5.65 adds controlled period selection and preserves historical teams in reporting.
+Version 5.73 connects anonymous benchmarking to the prepared Cloudflare Worker API and moves version information into the sidebar.
+
+Version 5.73 additions:
+
+- Added anonymous upload and benchmark-download connections for the configured Worker address.
+- Uploads use permanent anonymous goalkeeper and match identifiers.
+- Unchanged data is not uploaded repeatedly, and server upserts prevent duplicate matches.
+- Finalising a match schedules an updated anonymous upload for opted-in users.
+- Added a manual Upload Data & Refresh Benchmarks button.
+- Opting out removes that goalkeeper's anonymous central records when a connection is available.
+- Downloaded benchmark cohorts feed the existing Stats and Benchmark Report comparisons.
+- Moved the app name and current version to the bottom of the sidebar.
+- Removed the old footer and duplicate Resources text link.
+- Included the matching Cloudflare Worker code and D1 schema in cloudflare-worker.
+
+Important: the live Worker currently returns the default Hello World response. Deploy cloudflare-worker/worker.js and run cloudflare-worker/schema.sql before using uploads.
+
+Version 5.72 fixes the Video Stats Review opening freeze while retaining context-aware return navigation and keeping Cloudflare disconnected.
+
+Version 5.72 fix:
+
+- Stopped the return-button observer from repeatedly rewriting the same label.
+- Opening Video Stats Review no longer creates a continuous page-update loop.
+- Both Match and Match Editor opening routes retain their correct return destinations.
+
+Version 5.71 adds context-aware Video Stats Review return navigation and removes Video Review from the sidebar without connecting to Cloudflare.
+
+Version 5.71 additions:
+
+- Removed Video Review from desktop and mobile sidebar navigation.
+- Video Stats Review remains available from Match and Match Editor.
+- Opening from Match changes the review return action to Back to Match.
+- Opening from Match Editor changes the review return action to Back to Match Editor.
+- The selected match and saved video-review state are preserved when returning.
+- Cloudflare remains disconnected and no benchmark data can leave the device.
+
+Version 5.70 adds sidebar navigation, historical Team Profile repair and Stats benchmark overlays without connecting to Cloudflare.
+
+Version 5.70 additions:
+
+- Replaced the horizontal navigation row with a sticky left sidebar on desktop.
+- Added a collapsible compact sidebar and a slide-out mobile menu.
+- Added Video Review and Resources to the main navigation.
+- Automatically fills missing home-team classifications in previous matches from matching Team Profiles.
+- Preserves previous-match classifications that already contain valid information.
+- Added Apply to Previous Matches to each Team Profile for deliberate historical corrections.
+- Added Include Benchmarks to Stats, locked until benchmarking is activated by a successful eligible upload.
+- Applicable Stats rate cards can show the matching benchmark and percentage-point difference.
+- Added matching cohort sample sizes and Limited Data labelling to Stats.
+- Cloudflare remains disconnected and no benchmark data can leave the device.
+
+Version 5.69 adds the gated Benchmark Report framework without connecting to Cloudflare.
+
+Version 5.69 additions:
+
+- Added Benchmark Report to the Reports selector.
+- Benchmark Report remains locked unless the goalkeeper has opted in and completed a successful eligible upload.
+- Added Full Year and Last 5 Matches report periods.
+- Added All or specific Team Level and Team Tier filters.
+- Prepared same-age-group and same-gender cohort matching.
+- Prepared overall, shot-situation, shot-type, outnumbered and rebound comparisons.
+- Prepared all-shot benchmark heat maps and sample-size labels.
+- Added Limited Data labelling for small benchmark samples.
+- Added ranked training-focus recommendations for below-benchmark areas.
+- Cloudflare remains disconnected and no benchmark data can leave the device.
+
+Version 5.68 adds saved Team Profiles and removes selective match benchmarking without connecting to Cloudflare.
+
+Version 5.68 additions:
+
+- Replaced the goalkeeper's plain team-name list with editable Team Profiles.
+- Each Team Profile stores name, age group, team level and team tier.
+- Migrated existing team names into Team Profiles without changing saved matches.
+- Changed tiers to A / 1st, B / 2nd, C / 3rd and D / 4th.
+- Migrated existing A, B, C and D tier values to the new labels.
+- Home-team classification is populated from the selected Team Profile.
+- Home classification is read-only in Match setup and Match Editor.
+- Opposition classification initially copies the home profile values.
+- Each opposition field stops auto-copying after the user changes that field.
+- Removed per-match benchmark inclusion controls from Match setup and Match Editor.
+- Opted-in goalkeepers contribute every objectively eligible finalised match.
+- Master-data export now includes Team Profiles.
+- Cloudflare remains disconnected and no benchmark data can leave the device.
+
+Version 5.67 corrects legacy match finalisation and adds Derby as a match type without connecting to Cloudflare.
+
+Version 5.67 additions:
+
+- Added Derby to Match Type in Match setup and Match Editor.
+- Added an explicit Draft / Finalised status to saved matches.
+- New matches begin as Draft and become Finalised when the match outcome is saved.
+- Older saved matches are migrated to Finalised unless they are an identifiable current-day unfinished draft.
+- Added Match Status to Match Editor for manual correction.
+- Benchmark eligibility now uses the stored match status instead of relying on legacy score fields.
+- Cloudflare remains disconnected and no benchmark data can leave the device.
+
+Version 5.66 prepares anonymous benchmarking locally without connecting to Cloudflare.
+
+Version 5.66 additions:
+
+- Corrected and centralised the displayed/exported application version.
+- Added stable anonymous goalkeeper and match benchmark identifiers.
+- Added goalkeeper team and opposition age group, level and tier snapshots to matches.
+- Added match type, goalkeeper participation and minutes-played fields.
+- Added the same benchmark classification fields to Match Editor.
+- Added per-goalkeeper Opt In / Opt Out benchmarking choices.
+- Benchmark access remains locked until a successful eligible upload in a future connected build.
+- Added local eligibility checks and an anonymous payload preview.
+- Team names, goalkeeper names, dates of birth, notes and video data are excluded from the preview.
+- Save Rate and Defence Rate are prepared for equal goalkeeper-level aggregation.
+- Heat-map benchmarking retains every anonymous shot from qualifying matches.
+- Small benchmark samples will be displayed with a Limited Data label.
+- No network endpoint is configured and no benchmark data can leave the device.
 
 Version 5.65 additions:
 
@@ -152,7 +264,7 @@ Playback and match updates:
 
 Included:
 - index.html
-- goalie_stats_app_v5_65.html
+- goalie_stats_app_v5_73.html
 - app icons and PWA manifest
 - service worker
 - app assets

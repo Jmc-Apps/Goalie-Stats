@@ -1,0 +1,8 @@
+name = "hgs-benchmark-api"
+main = "worker.js"
+compatibility_date = "2026-09-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "hgs-benchmarks-prod"
+database_id = "REPLACE_WITH_YOUR_EXISTING_D1_DATABASE_ID"

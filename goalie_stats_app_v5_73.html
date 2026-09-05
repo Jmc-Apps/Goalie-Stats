@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Hockey Goalie Stats: Data Driven Development v5.65</title>
+<title>Hockey Goalie Stats: Data Driven Development v5.73</title>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#1f1f1f">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1732,6 +1732,52 @@ body.videoReviewMode .v521VRStage{height:min(68vh,760px);min-height:420px}
 .v541SyncMarker.v549MarkerHandle:after{content:""!important;display:block!important;position:absolute!important;inset:0!important;border-radius:999px!important;background:var(--marker-color)!important;opacity:.25!important;pointer-events:none!important}
 .v541SyncMarker.v549MarkerHandle:before{content:""!important;display:block!important;position:absolute!important;top:-1px!important;bottom:-1px!important;left:50%!important;width:3px!important;transform:translateX(-50%)!important;border-radius:2px!important;background:var(--marker-color)!important;opacity:1!important;pointer-events:none!important;z-index:2!important}
 @media(max-width:420px){.titleLogo{max-width:min(765px,72vw)}.v539Break{grid-template-columns:1fr!important}.v539Break button{width:100%!important}}
+.benchmarkStatus{display:grid;gap:12px;padding:16px;border:1px solid #385466;border-radius:14px;background:#101c23}
+.benchmarkState{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.benchmarkDot{width:12px;height:12px;border-radius:50%;background:#83939d}.benchmarkDot.in{background:#36d88b}.benchmarkDot.out{background:#ff7a7a}.benchmarkDot.wait{background:#ffc857}
+.benchmarkChoice{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.benchmarkChoice button[aria-pressed="true"]{border-color:#42dff5;background:#173b46;color:#ecfdff;box-shadow:0 0 0 2px rgba(66,223,245,.16)}
+.benchmarkMetrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.benchmarkMetric{padding:14px;border:1px solid #344854;border-radius:12px;background:#0c151a}.benchmarkMetric b{display:block;font-size:1.45rem;color:#8feafa}.benchmarkMetric span{color:#b8c5cc}
+.benchmarkPreview{white-space:pre-wrap;overflow:auto;max-height:420px;padding:14px;border:1px solid #344854;border-radius:12px;background:#071015;color:#c9f6ff;font:13px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace}
+.benchmarkBadge{display:inline-flex;align-items:center;padding:5px 10px;border-radius:999px;font-weight:800;background:#3a3030;color:#ffd7d7}.benchmarkBadge.ready{background:#123b31;color:#a8f4d5}.benchmarkBadge.limited{background:#403617;color:#ffe29a}
+@media(max-width:700px){.benchmarkChoice,.benchmarkMetrics{grid-template-columns:1fr}}
+.teamProfileList{display:grid;gap:12px;margin:12px 0}.teamProfileCard{padding:14px;border:1px solid #3d515c;border-radius:14px;background:#111b20}.teamProfileGrid{display:grid;grid-template-columns:2fr repeat(3,minmax(130px,1fr));gap:10px;align-items:end}.teamProfileActions{display:flex;justify-content:flex-end;margin-top:10px}.teamProfileEmpty{padding:16px;border:1px dashed #41535d;border-radius:12px;color:#aebbc2}
+@media(max-width:850px){.teamProfileGrid{grid-template-columns:1fr 1fr}}@media(max-width:520px){.teamProfileGrid{grid-template-columns:1fr}.teamProfileActions .btn{width:100%}}
+</style>
+<style>
+/* v5.69 benchmark report */
+.v569BenchmarkState{border:1px solid #38505c;border-radius:14px;padding:14px;background:#101d23;display:grid;gap:8px}
+.v569BenchmarkState.locked{border-color:#806d2c;background:#241f0f}
+.v569BenchmarkState.ready{border-color:#2d8d61;background:#0d2119}
+.v569BenchmarkState strong{font-size:1.05rem}.v569BenchmarkState p{margin:0;color:#c7d2d8}
+.v569BenchmarkGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:12px}
+.v569Cohort{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.v569Cohort span{border:1px solid #49616d;border-radius:999px;padding:6px 10px;background:#17262d}
+.v569CompareTable td:nth-child(n+2),.v569CompareTable th:nth-child(n+2){text-align:right}
+.v569Above{color:#15784b;font-weight:800}.v569Below{color:#b42318;font-weight:800}.v569Even{color:#52606a;font-weight:800}
+.v569FocusGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.v569FocusCard{border:1px solid #cad3d9;border-radius:12px;padding:12px;background:#f7f9fa}.v569FocusCard h3{margin:0 0 6px;color:#111}.v569FocusCard p{margin:5px 0;color:#303b43}
+.v569HeatGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.v569HeatGrid svg{width:100%;height:auto;background:#eef7f1;border:1px solid #8aa497;border-radius:10px}
+.v569Limited{display:inline-block;border:1px solid #9b7a13;background:#fff4c2;color:#614d0d;border-radius:999px;padding:4px 9px;font-weight:800}
+@media(max-width:760px){.v569BenchmarkGrid,.v569FocusGrid,.v569HeatGrid{grid-template-columns:1fr}}
+@media print{.v569FocusCard{break-inside:avoid}.v569Above{color:#14633f!important}.v569Below{color:#8f1d14!important}}
+</style>
+<style>
+/* v5.71 responsive sidebar, contextual video-review return, stats benchmarks and team-profile repair controls */
+body>header{display:flex;align-items:center;gap:12px}.v570MobileMenu{display:none;border:1px solid #596b75;border-radius:999px;background:#2f3539;color:#fff;padding:10px 16px;font-weight:900;font-size:15px}
+main{width:100%;max-width:1600px;display:grid;grid-template-columns:230px minmax(0,1fr);gap:18px;align-items:start}
+main>.tabs{grid-column:1;display:flex;flex-direction:column;gap:7px;position:sticky;top:calc(var(--v570-header-height,120px) + 10px);margin:10px 0;padding:10px;border:1px solid var(--line);border-radius:18px;background:#1e2427;max-height:calc(100vh - var(--v570-header-height,120px) - 24px);overflow-y:auto}
+main>.tabs .tab{width:100%;min-height:46px;padding:11px 13px;text-align:left;font-size:15px;border:1px solid transparent;border-radius:12px}
+main>.tabs .tab.active{border-color:#b4c5ce;box-shadow:inset 4px 0 0 #45d8ee}
+main>.panel{grid-column:2;min-width:0;margin-top:0}
+.v570SidebarToggle{min-height:38px;border:1px solid #52616a;border-radius:11px;background:#101719;color:#dbe5e9;font-weight:850}.v570Narrow{display:none;font-size:24px;line-height:1}
+body.v570SidebarCollapsed main{grid-template-columns:76px minmax(0,1fr)}
+body.v570SidebarCollapsed main>.tabs .tab{display:grid;place-items:center;text-align:center;padding:9px 3px;font-size:0}
+body.v570SidebarCollapsed main>.tabs .tab::after{content:attr(data-short);font-size:13px;font-weight:900}
+body.v570SidebarCollapsed .v570Wide{display:none}body.v570SidebarCollapsed .v570Narrow{display:inline-block;transform:rotate(180deg)}
+.teamProfileActions{gap:8px}.teamProfileActions .btn{width:auto;flex:0 1 auto;padding-inline:18px}
+.v570StatsActions{display:grid;grid-template-columns:1fr 1fr;gap:9px}.v570StatsActions .btn[aria-pressed="true"]{background:#1e6d78;color:#edfdff;box-shadow:inset 0 0 0 2px #55dced}.v570StatsActions .btn:disabled{opacity:.55;cursor:not-allowed}
+.v570BenchmarkValue{margin-top:9px;padding-top:8px;border-top:1px solid #52616a;color:#8feafa;font-size:13px;font-weight:800}.v570BenchmarkValue small{display:block;margin-top:2px;color:#c1cbd0;font-size:12px}.v570BenchmarkValue .above{color:#8ff0b9}.v570BenchmarkValue .below{color:#ffadad}.v570BenchmarkSummary{margin:0 0 12px;padding:11px 13px;border:1px solid #376d78;border-radius:12px;background:#102229;color:#d9f8fc}.v570BenchmarkSummary.limited{border-color:#8a731f;background:#28230e;color:#ffe49a}
+@media(max-width:800px){body>header{padding-right:10px}.titleLogoWrap{min-width:0;flex:1}.v570MobileMenu{display:block;flex:0 0 auto}main{display:block;max-width:none}.v570SidebarToggle{display:none}main>.tabs{position:fixed;z-index:50;left:0;top:0;bottom:0;width:min(82vw,300px);max-height:none;margin:0;padding:18px 12px;border-radius:0 18px 18px 0;transform:translateX(-105%);transition:transform .2s ease;box-shadow:12px 0 32px #000b;overflow-y:auto}body.v570SidebarOpen main>.tabs{transform:translateX(0)}main>.tabs .tab{text-align:left;font-size:16px;min-height:48px}main>.panel{width:100%}.v570StatsActions{grid-template-columns:1fr}.teamProfileActions{display:grid;grid-template-columns:1fr}.teamProfileActions .btn{width:100%}body.v570SidebarCollapsed main{display:block}.videoReviewMode .v570MobileMenu{display:none!important}}
+@media print{main{display:block!important;max-width:none!important}main>.panel{width:100%!important}.v570MobileMenu{display:none!important}}
+body.videoReviewMode main{display:block!important;max-width:none!important}
+.v573SidebarMeta{margin-top:auto;padding:13px 8px 4px;border-top:1px solid #3c474c;color:#b7c2c7;font-size:12px;line-height:1.4;text-align:center}.v573SidebarMeta .v573Compact{display:none;font-weight:900;color:#dbe5e9}body.v570SidebarCollapsed .v573SidebarMeta{padding:10px 2px 3px}body.v570SidebarCollapsed .v573SidebarMeta .v573Full{display:none}body.v570SidebarCollapsed .v573SidebarMeta .v573Compact{display:block}.v573BenchmarkActions{display:grid;grid-template-columns:minmax(220px,1fr);gap:8px;margin-top:12px}.v573NetworkStatus{min-height:22px;color:var(--muted);font-size:13px}.v573NetworkStatus.good{color:#72e6a0}.v573NetworkStatus.bad{color:#ff9292}
 </style>
 </head>
 <body>
@@ -1739,10 +1785,13 @@ body.videoReviewMode .v521VRStage{height:min(68vh,760px);min-height:420px}
   <div class="titleLogoWrap">
     <img src="assets/title-logo.png" alt="Hockey Goalie Stats Data Driven Development" class="titleLogo">
   </div>
+  <button type="button" id="v570MobileMenu" class="v570MobileMenu noPrint" aria-expanded="false" aria-controls="v570Sidebar">Menu</button>
 </header>
 <main>
-<nav class="tabs noPrint">
-<button class="tab active" data-tab="home">Home</button><button class="tab" data-tab="goalies">Goalies</button><button class="tab" data-tab="match">Match</button><button class="tab" data-tab="matchEditor">Match Editor</button><button class="tab" data-tab="stats">Stats</button><button class="tab" data-tab="heat">Heat Maps</button><button class="tab" data-tab="reports">Reports</button><button class="tab" data-tab="backup">Backup</button>
+<nav id="v570Sidebar" class="tabs noPrint" aria-label="Main navigation">
+<button type="button" id="v570SidebarToggle" class="v570SidebarToggle" aria-expanded="true"><span class="v570Wide">Collapse Menu</span><span class="v570Narrow" aria-hidden="true">›</span></button>
+<button class="tab active" data-tab="home" data-short="H"><span>Home</span></button><button class="tab" data-tab="goalies" data-short="G"><span>Goalies</span></button><button class="tab" data-tab="match" data-short="M"><span>Match</span></button><button class="tab" data-tab="matchEditor" data-short="ME"><span>Match Editor</span></button><button class="tab" data-tab="stats" data-short="S"><span>Stats</span></button><button class="tab" data-tab="heat" data-short="HM"><span>Heat Maps</span></button><button class="tab" data-tab="reports" data-short="R"><span>Reports</span></button><button class="tab" data-tab="benchmarking" data-short="BM"><span>Benchmarking</span></button><button class="tab" data-tab="backup" data-short="BK"><span>Backup</span></button><button class="tab" data-tab="resources" data-short="?"><span>Resources</span></button>
+<div class="v573SidebarMeta"><span class="v573Full">Hockey Goalie Stats: Data Driven Development<br>Version 5.73</span><span class="v573Compact">v5.73</span></div>
 </nav>
 
 <section id="home" class="panel active">
@@ -1751,17 +1800,17 @@ body.videoReviewMode .v521VRStage{height:min(68vh,760px);min-height:420px}
       <img src="assets/home-logo.png" alt="Hockey Goalie Stats Data Driven Development" class="homeLogo">
     </div>
     <div class="versionBox">
-      <b>Version 5.62</b>
-      <div class="small">Build Date: 2026-09-04</div>
+      <b>Version 5.73</b>
+      <div class="small">Build Date: 2026-09-05</div>
     </div>
     <div id="homeSummary" class="hiddenHomeSummary"></div>
   </div>
 </section>
 
-<section id="goalies" class="panel"><div class="card"><h2>Goalie Profile</h2><label>Selected Goalie</label><select id="goalieSelect"></select><div class="grid2"><div><label>Name</label><input id="goalieName"></div><div><label>Date of Birth</label><input id="goalieDob" type="date"></div></div><div class="grid2"><div><label>Gender</label><select id="goalieGender"><option>Male</option><option>Female</option></select></div><div><label>Age Group</label><input id="goalieAgeGroup" readonly></div></div><label>Teams they play for (one per line)</label><textarea id="goalieTeams"></textarea><button class="btn good" onclick="saveGoalieProfile()">Save Goalie</button><button class="btn secondary" onclick="newGoalie()">New Goalie</button><button class="btn danger" onclick="deleteGoalie()">Delete Selected Goalie</button><div class="small">Deleting a goalie requires a randomly generated six-digit confirmation code.</div></div><div class="card"><h3>Goalie History</h3><div id="goalieHistory"></div></div></section>
+<section id="goalies" class="panel"><div class="card"><h2>Goalie Profile</h2><label>Selected Goalie</label><select id="goalieSelect"></select><div class="grid2"><div><label>Name</label><input id="goalieName"></div><div><label>Date of Birth</label><input id="goalieDob" type="date"></div></div><div class="grid2"><div><label>Gender</label><select id="goalieGender"><option>Male</option><option>Female</option></select></div><div><label>Age Group</label><input id="goalieAgeGroup" readonly></div></div><h3>Current Team Profiles</h3><div id="goalieTeamProfiles" class="teamProfileList"></div><button type="button" class="btn secondary" onclick="addTeamProfile568()">Add Team</button><button class="btn good" onclick="saveGoalieProfile()">Save Goalie</button><button class="btn secondary" onclick="newGoalie()">New Goalie</button><button class="btn danger" onclick="deleteGoalie()">Delete Selected Goalie</button><div class="small">Deleting a goalie requires a randomly generated six-digit confirmation code.</div></div><div class="card"><h3>Goalie History</h3><div id="goalieHistory"></div></div></section>
 
 <section id="match" class="panel">
-<div class="card"><h2>Match Details</h2><label>Goalie</label><select id="matchGoalie"></select><div class="grid2"><div><label>Date</label><input id="matchDate" type="date"></div><div><label>Match Name</label><input id="matchName" readonly></div></div><div class="grid2"><div><label>Home Team</label><select id="homeTeam"></select></div><div><label>Opponent</label><input id="opponentTeam" list="opponentList"><datalist id="opponentList"></datalist></div></div><div class="grid2"><div><label>Number of Periods</label><select id="matchPeriods"><option value="1">1</option><option value="2">2</option><option value="4" selected>4</option><option value="custom">Custom</option></select></div><div></div></div><button class="btn good" onclick="startOrUpdateMatch()">Start / Save Match Details</button><div id="activeMatchInfo" class="small"></div></div>
+<div class="card"><h2>Match Details</h2><label>Goalie</label><select id="matchGoalie"></select><div class="grid2"><div><label>Date</label><input id="matchDate" type="date"></div><div><label>Match Name</label><input id="matchName" readonly></div></div><div class="grid2"><div><label>Home Team</label><select id="homeTeam"></select></div><div><label>Opponent</label><input id="opponentTeam" list="opponentList"><datalist id="opponentList"></datalist></div></div><div class="grid3"><div><label>Number of Periods</label><select id="matchPeriods"><option value="1">1</option><option value="2">2</option><option value="4" selected>4</option><option value="custom">Custom</option></select></div><div><label>Match Type</label><select id="matchType"><option>League</option><option>Tournament</option><option>Friendly</option><option>Derby</option><option>Training</option><option>Trial</option><option>Other</option><option selected>Not specified</option></select></div><div><label>Goalkeeper Participation</label><select id="matchParticipation"><option>Full match</option><option>Partial match</option><option selected>Not specified</option></select></div></div><div class="grid2"><div><label>Minutes Played</label><input id="matchMinutesPlayed" type="number" min="0" step="1" placeholder="Optional for a full match"></div><div></div></div><h3>Home Team Classification</h3><div class="grid3"><div><label>Age Group</label><input id="matchGoalieAgeGroup" readonly></div><div><label>Team Level</label><input id="matchGoalieLevel" readonly></div><div><label>Team Tier</label><input id="matchGoalieTier" readonly></div></div><h3>Opposition Classification</h3><div class="grid3"><div><label>Age Group</label><select id="matchOpponentAgeGroup"><option>U10</option><option>U11</option><option>U13</option><option>U14</option><option>U16</option><option>U19</option><option>U20</option><option>Senior</option><option>Open</option><option selected>Not specified</option></select></div><div><label>Team Level</label><select id="matchOpponentLevel"><option>School</option><option>Club</option><option>Provincial</option><option>National</option><option>Other</option><option selected>Not specified</option></select></div><div><label>Team Tier</label><select id="matchOpponentTier"><option>A / 1st</option><option>B / 2nd</option><option>C / 3rd</option><option>D / 4th</option><option>Other</option><option selected>Not specified</option></select></div></div><button class="btn good" onclick="startOrUpdateMatch()">Start / Save Match Details</button><div id="activeMatchInfo" class="small"></div></div>
 
 <div class="card"><h2>Record Shot</h2><label>Shot Outcome</label><div id="outcomeButtons" class="chiprow"></div><label>Shot Situation</label><div id="shotSituationButtons" class="chiprow"></div><label>Shot Type</label><div id="shotTypeButtons" class="chiprow"></div><label>Out Numbered</label><div id="outnumberedButtons" class="chiprow"></div><label>Rebound Result</label><div id="reboundButtons" class="chiprow"></div><label>Notes</label><input id="shotNote"><button class="btn good" onclick="saveShotWithoutHeat()">Save Shot Without Heat Map</button><div class="small">Use this during live play. Add the heat map locations later in the Heat Map Editor.</div><div class="grid2"><div><h3>D Heat Map</h3><div class="mapBox" id="dTap"></div></div><div><h3>Goal Box Heat Map</h3><div class="mapBox" id="goalTap"></div><div class="small">Angle Closed Off is D heat map only and cannot be placed on the goal-box heat map.</div><label><input id="mirrorGoal" type="checkbox" style="width:auto"> Mirror goal-box tap when recording from behind goal</label></div></div><button class="btn good" onclick="saveShot()">Save Shot With Heat Map</button><button class="btn secondary" onclick="resetShotInputs()">Clear Shot Options</button><div id="shotStatus" class="small"></div></div>
 
@@ -1776,7 +1825,7 @@ body.videoReviewMode .v521VRStage{height:min(68vh,760px);min-height:420px}
   </div>
 </section>
 
-<section id="stats" class="panel"><div class="card"><h2>Stats</h2><div class="grid3"><div><label>Goalie</label><select id="statsGoalie"></select></div><div><label>Home Team</label><select id="statsHome"></select></div><div><label>Opponent</label><select id="statsOpp"></select></div></div><div class="grid3"><div><label>Period</label><select id="statsPeriod"><option value="match">Match</option><option value="year">Year</option><option value="last5">Last 5 Games</option><option value="all">All Matches</option></select></div><div><label>Calendar Year</label><select id="statsYear"></select></div><div><label>Match</label><select id="statsMatch"></select></div></div><button class="btn secondary" onclick="renderStats()">Update Stats</button></div><div class="card"><div id="statsOutput"></div></div></section>
+<section id="stats" class="panel"><div class="card"><h2>Stats</h2><div class="grid3"><div><label>Goalie</label><select id="statsGoalie"></select></div><div><label>Home Team</label><select id="statsHome"></select></div><div><label>Opponent</label><select id="statsOpp"></select></div></div><div class="grid3"><div><label>Period</label><select id="statsPeriod"><option value="match">Match</option><option value="year">Year</option><option value="last5">Last 5 Games</option><option value="all">All Matches</option></select></div><div><label>Calendar Year</label><select id="statsYear"></select></div><div><label>Match</label><select id="statsMatch"></select></div></div><div class="v570StatsActions"><button class="btn secondary" onclick="renderStats()">Update Stats</button><button id="v570IncludeBenchmarks" class="btn secondary" type="button" onclick="toggleStatsBenchmarks570()" disabled>Benchmarks Locked</button></div></div><div class="card"><div id="statsOutput"></div></div></section>
 
 <section id="heat" class="panel"><div class="card"><h2>Select Heat Map</h2><div class="grid3"><div><label>Goalie</label><select id="heatGoalie"></select></div><div><label>View</label><select id="heatView"><option value="match">Match</option><option value="last5">Last 5 Games</option><option value="year">Year</option></select></div><div><label>Year</label><select id="heatYear"></select></div></div><label>Match</label><select id="heatMatch"></select><button class="btn secondary" onclick="renderHeatMaps()">Update Heat Map Editor</button></div><div class="card"><div class="grid2"><div><h3>D Heat Map</h3><div class="mapBox" id="dHeat"></div></div><div><h3>Goal Box Heat Map</h3><div class="mapBox" id="goalHeat"></div></div></div><div class="legend"><span><span class="dot" style="background:#2fd17c"></span> Save</span><span><span class="dot" style="background:#ef5350"></span> Goal</span><span><span class="dot" style="background:#ffca28"></span> Angle Closed Off</span></div></div></section>
 
@@ -1803,6 +1852,7 @@ body.videoReviewMode .v521VRStage{height:min(68vh,760px);min-height:420px}
         <option value="period">Period Report</option>
         <option value="training">Training Focus Report</option>
         <option value="ddd">Data Driven Development Report</option>
+        <option value="benchmark">Benchmark Report</option>
       </select>
     </div>
     <div id="v471ReportHint" class="muted" style="align-self:end">Select a report, then generate it.</div>
@@ -1814,6 +1864,37 @@ body.videoReviewMode .v521VRStage{height:min(68vh,760px);min-height:420px}
   </div>
 </div>
 </div><div id="reportCard" class="card"><div id="reportOutput" class="reportDoc"></div></div></section>
+
+<section id="benchmarking" class="panel">
+  <div class="card">
+    <h2>Anonymous Benchmarking</h2>
+    <label>Goalkeeper</label><select id="benchmarkGoalie"></select>
+    <div id="benchmarkStatus" class="benchmarkStatus"></div>
+    <h3>Participation Choice</h3>
+    <div class="benchmarkChoice">
+      <button type="button" class="btn good" id="benchmarkOptIn" onclick="setBenchmarkConsent566('opted_in')">Opt In</button>
+      <button type="button" class="btn secondary" id="benchmarkOptOut" onclick="setBenchmarkConsent566('opted_out')">Opt Out</button>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Data Readiness</h2>
+    <div id="benchmarkReadiness" class="benchmarkMetrics"></div>
+    <div id="benchmarkMatchList"></div>
+    <div class="v573BenchmarkActions"><button type="button" class="btn good" id="v573UploadBenchmarks" onclick="uploadBenchmarkData573({force:true})">Upload Data &amp; Refresh Benchmarks</button><div id="v573BenchmarkNetworkStatus" class="v573NetworkStatus" role="status" aria-live="polite"></div></div>
+    <button type="button" class="btn secondary" onclick="previewBenchmarkData566()">Preview Anonymous Data</button>
+    <pre id="benchmarkPreview" class="benchmarkPreview" hidden></pre>
+  </div>
+  <div class="card">
+    <h2>Benchmark Calculation Rules</h2>
+    <ul>
+      <li>Save Rate and Defence Rate use each goalkeeper's average across qualifying matches, so one goalkeeper cannot dominate the benchmark by contributing more matches.</li>
+      <li>Benchmark heat maps include every anonymised shot from qualifying matches.</li>
+      <li>Small samples remain visible and are marked <b>Limited Data</b>.</li>
+      <li>Benchmark figures unlock only after opting in and completing a successful eligible upload.</li>
+    </ul>
+    <div class="benchmarkBadge limited">Limited Data: fewer than 5 goalkeepers, 15 matches or 100 shots</div>
+  </div>
+</section>
 
 <section id="backup" class="panel"><div class="card"><h2>Backup & Restore</h2><button class="btn good" onclick="downloadBackup()">Download JSON Backup</button><label>Restore from JSON Backup</label><input type="file" id="restoreFile" accept="application/json,.json"><button class="btn secondary" onclick="restoreBackup()">Restore Backup</button><button class="btn danger" onclick="clearAllData()">Clear All Local Data</button><div id="backupStatus" class="small"></div></div>
 <div class="card">
@@ -1856,10 +1937,11 @@ body.videoReviewMode .v521VRStage{height:min(68vh,760px);min-height:420px}
   </div>
 </section>
 
-<div class="footer"><span>Hockey Goalie Stats: Data Driven Development • Version 5.62</span> <span>•</span> <button type="button" class="resourcesLink" onclick="showTab('resources')">Resources</button></div>
 </main>
 
 <script>
+const APP_VERSION_566='5.73';
+window.APP_VERSION=APP_VERSION_566;
 const STORAGE_KEY='hockeyGoalieStatsV3';
 const ratings=['Positioning','Communication','Rebound Control','Decision Making'];
 const shotTypes=['1st Shot','Rebound','In Game 1v1','Own Goal','Other'];
@@ -1874,7 +1956,7 @@ function uid(){return 'id_'+Math.random().toString(36).slice(2)+Date.now().toStr
 function today(){return new Date().toISOString().slice(0,10)}
 function esc(s){return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 function loadDB(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||{goalies:[]}}catch(e){return {goalies:[]}}}
-function saveDB(){refreshCustomPeriodCounts565();db.currentGoalieId=currentGoalieId;db.activeMatchId=activeMatchId;localStorage.setItem(STORAGE_KEY,JSON.stringify(db))}
+function saveDB(){refreshCustomPeriodCounts565();ensureBenchmarkModel566();db.currentGoalieId=currentGoalieId;db.activeMatchId=activeMatchId;localStorage.setItem(STORAGE_KEY,JSON.stringify(db))}
 function randomSixDigitCode(){try{const a=new Uint32Array(1);crypto.getRandomValues(a);return String(100000+(a[0]%900000))}catch(e){return String(100000+Math.floor(Math.random()*900000))}}
 function confirmSixDigit(action){const code=randomSixDigitCode();const typed=prompt(action+'\n\nThis cannot be undone. To continue, type this 6-digit code exactly:\n\n'+code);if(typed===null)return false;if(String(typed).trim()!==code){alert('The code did not match. Nothing was deleted.');return false}return true}
 function goalie(id=currentGoalieId){return db.goalies.find(g=>g.id===id)||null}
@@ -1883,7 +1965,7 @@ function matchById(g,id){return (g?.matches||[]).find(m=>m.id===id)||null}
 function activeMatch(){return matchById(goalie(),activeMatchId)}
 function yearOf(m){return String(m?.date||'').slice(0,4)}
 function yearsFor(g){const y=[...new Set((g?.matches||[]).map(yearOf).filter(Boolean))].sort((a,b)=>b-a);return y.length?y:[String(new Date().getFullYear())]}
-function teamsFor(g){return (g?.teams||[]).filter(Boolean)}
+function teamsFor(g){ensureTeamProfiles568(g);return (g?.teamProfiles||[]).map(t=>t.name).filter(Boolean)}
 function periodMarkerCount565(m){return Array.isArray(m?.periodMarkers)?m.periodMarkers.length:0}
 function periodChoice565(m){if(m?.periodMode==='custom'||m?.periodOption==='custom')return 'custom';const n=Number(m?.periodOption??m?.periods??m?.periodCount??4);return [1,2,4].includes(n)?String(n):'custom'}
 function applyPeriodChoice565(m,choice){if(!m)return 4;choice=String(choice||periodChoice565(m));if(choice==='custom'){m.periodMode='custom';m.periodOption='custom';m.customPeriodCount=periodMarkerCount565(m);m.periods=Math.max(1,m.customPeriodCount);m.periodCount=m.periods}else{const n=[1,2,4].includes(Number(choice))?Number(choice):4;m.periodMode='fixed';m.periodOption=String(n);delete m.customPeriodCount;m.periods=n;m.periodCount=n}return m.periods}
@@ -1894,6 +1976,40 @@ function ageOnJan1(dob,year=new Date().getFullYear()){if(!dob)return null;const 
 function ageGroupFromAge(age){if(age===null||isNaN(age))return'';if(age<=9)return'U10';if(age===10)return'U11';if(age>=11&&age<=12)return'U13';if(age===13)return'U14';if(age>=14&&age<=15)return'U16';if(age>=16&&age<=18)return'U19';if(age>=20)return'Senior';return'U20'}
 function ageGroup(g,year=new Date().getFullYear()){return ageGroupFromAge(ageOnJan1(g?.dob,year))}
 
+const BENCHMARK_SCHEMA_VERSION_566='1.0';
+const BENCHMARK_NOT_SPECIFIED_566='Not specified';
+const BENCHMARK_AGE_GROUPS_566=['U10','U11','U13','U14','U16','U19','U20','Senior','Open',BENCHMARK_NOT_SPECIFIED_566];
+const BENCHMARK_LEVELS_566=['School','Club','Provincial','National','Other',BENCHMARK_NOT_SPECIFIED_566];
+const BENCHMARK_TIERS_566=['A / 1st','B / 2nd','C / 3rd','D / 4th','Other',BENCHMARK_NOT_SPECIFIED_566];
+const BENCHMARK_MATCH_TYPES_566=['League','Tournament','Friendly','Derby','Training','Trial','Other',BENCHMARK_NOT_SPECIFIED_566];
+const BENCHMARK_PARTICIPATION_566=['Full match','Partial match',BENCHMARK_NOT_SPECIFIED_566];
+function benchmarkOptions566(items,value){return items.map(x=>'<option value="'+esc(x)+'" '+(x===(value||BENCHMARK_NOT_SPECIFIED_566)?'selected':'')+'>'+esc(x)+'</option>').join('')}
+function benchmarkUuid566(prefix){try{return prefix+crypto.randomUUID()}catch(e){return prefix+uid()}}
+function benchmarkAgeAtMatch566(g,m){const year=Number(String(m?.date||'').slice(0,4))||new Date().getFullYear();return ageGroup(g,year)||BENCHMARK_NOT_SPECIFIED_566}
+function normalizeTier568(value){const v=String(value||'').trim();return ({A:'A / 1st',B:'B / 2nd',C:'C / 3rd',D:'D / 4th','1st':'A / 1st','2nd':'B / 2nd','3rd':'C / 3rd','4th':'D / 4th'})[v]||v||BENCHMARK_NOT_SPECIFIED_566}
+function ensureTeamProfiles568(g){if(!g)return [];if(!Array.isArray(g.teamProfiles)){g.teamProfiles=(g.teams||[]).filter(Boolean).map(name=>({id:benchmarkUuid566('team_'),name:String(name),ageGroup:ageGroup(g)||BENCHMARK_NOT_SPECIFIED_566,level:BENCHMARK_NOT_SPECIFIED_566,tier:BENCHMARK_NOT_SPECIFIED_566}))}g.teamProfiles=g.teamProfiles.map(t=>({id:t.id||benchmarkUuid566('team_'),name:String(t.name||'').trim(),ageGroup:t.ageGroup||ageGroup(g)||BENCHMARK_NOT_SPECIFIED_566,level:t.level||BENCHMARK_NOT_SPECIFIED_566,tier:normalizeTier568(t.tier)}));g.teams=g.teamProfiles.map(t=>t.name).filter(Boolean);return g.teamProfiles}
+function ensureBenchmarkGoalie566(g){if(!g)return null;ensureTeamProfiles568(g);if(!g.benchmarkGoalieId)g.benchmarkGoalieId=benchmarkUuid566('goalie_');if(!['undecided','opted_in','opted_out'].includes(g.benchmarkConsent))g.benchmarkConsent='undecided';if(typeof g.benchmarkAccess!=='boolean')g.benchmarkAccess=!!g.benchmarkLastSuccessfulUpload;return g}
+function ensureBenchmarkMatch566(g,m,isNew=false){if(!m)return null;if(!m.benchmarkMatchId)m.benchmarkMatchId=benchmarkUuid566('match_');delete m.benchmarkInclude;m.goalieAgeGroupAtMatch=m.goalieAgeGroupAtMatch||benchmarkAgeAtMatch566(g,m);m.goalieTeamLevel=m.goalieTeamLevel||BENCHMARK_NOT_SPECIFIED_566;m.goalieTeamTier=normalizeTier568(m.goalieTeamTier);m.opponentAgeGroup=m.opponentAgeGroup||BENCHMARK_NOT_SPECIFIED_566;m.opponentTeamLevel=m.opponentTeamLevel||BENCHMARK_NOT_SPECIFIED_566;m.opponentTeamTier=normalizeTier568(m.opponentTeamTier);m.matchType=m.matchType||BENCHMARK_NOT_SPECIFIED_566;m.goalkeeperParticipation=m.goalkeeperParticipation||(isNew?'Full match':BENCHMARK_NOT_SPECIFIED_566);if(m.minutesPlayed===undefined||m.minutesPlayed===null)m.minutesPlayed='';if(!['draft','finalised'].includes(m.matchStatus)){const sameDayActive=m.id===activeMatchId&&String(m.date||'')===today(),hasCompletedResult=!!m.result||m.homeGoals!==null&&m.homeGoals!==undefined;m.matchStatus=isNew||sameDayActive&&!hasCompletedResult?'draft':'finalised';if(m.matchStatus==='finalised'&&!m.finalizedAt){m.finalizedAt=(m.date?String(m.date)+'T23:59:59.000Z':new Date().toISOString());m.finalizedAtSource='legacy_migration'}}return m}
+function ensureBenchmarkModel566(){try{(db.goalies||[]).forEach(g=>{ensureBenchmarkGoalie566(g);(g.matches||[]).forEach(m=>ensureBenchmarkMatch566(g,m,false))})}catch(e){}}
+function benchmarkFormValue566(id,fallback=BENCHMARK_NOT_SPECIFIED_566){const el=document.getElementById(id);return el?(el.value||fallback):fallback}
+function benchmarkFieldsFromForm566(g,m){return {goalieAgeGroupAtMatch:benchmarkFormValue566('matchGoalieAgeGroup',benchmarkAgeAtMatch566(g,m)),goalieTeamLevel:benchmarkFormValue566('matchGoalieLevel'),goalieTeamTier:normalizeTier568(benchmarkFormValue566('matchGoalieTier')),opponentAgeGroup:benchmarkFormValue566('matchOpponentAgeGroup'),opponentTeamLevel:benchmarkFormValue566('matchOpponentLevel'),opponentTeamTier:normalizeTier568(benchmarkFormValue566('matchOpponentTier')),matchType:benchmarkFormValue566('matchType'),goalkeeperParticipation:benchmarkFormValue566('matchParticipation'),minutesPlayed:document.getElementById('matchMinutesPlayed')?.value===''?'':Number(document.getElementById('matchMinutesPlayed')?.value||0)}}
+function setBenchmarkField566(id,value){const el=document.getElementById(id);if(el)el.value=value??''}
+function teamProfileFor568(g,name){ensureTeamProfiles568(g);return (g?.teamProfiles||[]).find(t=>t.name===name)||null}
+function oppositionPairs568(){return [['matchGoalieAgeGroup','matchOpponentAgeGroup'],['matchGoalieLevel','matchOpponentLevel'],['matchGoalieTier','matchOpponentTier']]}
+function resetOppositionTouch568(){oppositionPairs568().forEach(([,opp])=>{const el=document.getElementById(opp);if(el)delete el.dataset.manuallyChanged})}
+function applyHomeTeamProfile568(copyOpposition=true){const g=goalie(),profile=teamProfileFor568(g,document.getElementById('homeTeam')?.value||''),values=[profile?.ageGroup||BENCHMARK_NOT_SPECIFIED_566,profile?.level||BENCHMARK_NOT_SPECIFIED_566,normalizeTier568(profile?.tier)];oppositionPairs568().forEach(([home,opp],i)=>{setBenchmarkField566(home,values[i]);const el=document.getElementById(opp);if(copyOpposition&&el&&el.dataset.manuallyChanged!=='1')el.value=values[i]});return profile}
+function loadBenchmarkMatchFields566(g,m){if(!m){resetOppositionTouch568();setBenchmarkField566('matchType',BENCHMARK_NOT_SPECIFIED_566);setBenchmarkField566('matchParticipation','Full match');setBenchmarkField566('matchMinutesPlayed','');applyHomeTeamProfile568(true);return}ensureBenchmarkMatch566(g,m);setBenchmarkField566('matchGoalieAgeGroup',m.goalieAgeGroupAtMatch);setBenchmarkField566('matchGoalieLevel',m.goalieTeamLevel);setBenchmarkField566('matchGoalieTier',m.goalieTeamTier);setBenchmarkField566('matchOpponentAgeGroup',m.opponentAgeGroup);setBenchmarkField566('matchOpponentLevel',m.opponentTeamLevel);setBenchmarkField566('matchOpponentTier',m.opponentTeamTier);setBenchmarkField566('matchType',m.matchType);setBenchmarkField566('matchParticipation',m.goalkeeperParticipation);setBenchmarkField566('matchMinutesPlayed',m.minutesPlayed);oppositionPairs568().forEach(([,opp])=>{const el=document.getElementById(opp);if(el)el.dataset.manuallyChanged='1'})}
+function resetBenchmarkMatchForm566(){loadBenchmarkMatchFields566(goalie(),null)}
+function benchmarkRequiredComplete566(m){const required=[m.goalieAgeGroupAtMatch,m.goalieTeamLevel,m.goalieTeamTier,m.opponentAgeGroup,m.opponentTeamLevel,m.opponentTeamTier,m.matchType,m.goalkeeperParticipation];return required.every(v=>v&&v!==BENCHMARK_NOT_SPECIFIED_566)&&!(m.goalkeeperParticipation==='Partial match'&&!(Number(m.minutesPlayed)>0))}
+function benchmarkFinalized566(m){return m?.matchStatus==='finalised'||!!m?.finalizedAt}
+function benchmarkEligibility566(m){if(!benchmarkFinalized566(m))return {eligible:false,reason:'Not finalised'};if(!(m.shots||[]).length)return {eligible:false,reason:'No recorded shots'};if(!benchmarkRequiredComplete566(m))return {eligible:false,reason:'Classification incomplete'};return {eligible:true,reason:'Ready'}}
+function benchmarkRates566(m){const shots=m.shots||[],saves=shots.filter(s=>s.outcome==='Save').length,goals=shots.filter(s=>s.outcome==='Goal').length,angles=shots.filter(s=>s.outcome==='Angle Closed Off').length;return {saveRate:(saves+goals)?saves/(saves+goals):null,defenceRate:shots.length?(saves+angles)/shots.length:null}}
+function anonymousBenchmarkMatch566(g,m){const rates=benchmarkRates566(m);return {benchmarkMatchId:m.benchmarkMatchId,season:String(m.date||'').slice(0,4),goalkeeperAgeGroup:m.goalieAgeGroupAtMatch,goalkeeperGender:g.gender||BENCHMARK_NOT_SPECIFIED_566,goalkeeperTeamLevel:m.goalieTeamLevel,goalkeeperTeamTier:m.goalieTeamTier,opponentAgeGroup:m.opponentAgeGroup,opponentTeamLevel:m.opponentTeamLevel,opponentTeamTier:m.opponentTeamTier,matchType:m.matchType,participation:m.goalkeeperParticipation,minutesPlayed:m.minutesPlayed===''?null:Number(m.minutesPlayed),periods:effectivePeriodCount565(m),saveRate:rates.saveRate,defenceRate:rates.defenceRate,shots:(m.shots||[]).map(s=>({outcome:s.outcome||'',shotType:s.shotType||s.type||'',situation:s.shotSituation||s.situation||'',outnumbered:s.outnumbered||'',rebound:s.rebound||'',dPoint:(s.dPoint||Number.isFinite(Number(s.dX))&&Number.isFinite(Number(s.dY))?{x:Number(s.dPoint?.x??s.dX),y:Number(s.dPoint?.y??s.dY)}:null),goalPoint:(s.goalPoint||Number.isFinite(Number(s.gX))&&Number.isFinite(Number(s.gY))?{x:Number(s.goalPoint?.x??s.gX),y:Number(s.goalPoint?.y??s.gY)}:null)}))}}
+function benchmarkPayload566(g){ensureBenchmarkGoalie566(g);const matches=(g.matches||[]).filter(m=>benchmarkEligibility566(m).eligible).map(m=>anonymousBenchmarkMatch566(g,m));return {sourceApp:'Hockey Goalie Stats',sourceVersion:APP_VERSION_566,schemaVersion:BENCHMARK_SCHEMA_VERSION_566,benchmarkGoalieId:g.benchmarkGoalieId,generatedAt:new Date().toISOString(),matches}}
+function benchmarkSampleQuality566(goalkeepers,matches,shots){return Number(goalkeepers)<5||Number(matches)<15||Number(shots)<100?'Limited Data':'Benchmark'}
+window.benchmarkSampleQuality566=benchmarkSampleQuality566;
+ensureBenchmarkModel566();
+
 function showTab(id){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById(id)?.classList.add('active');document.querySelector(`[data-tab="${id}"]`)?.classList.add('active');renderAll()}
 document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
 
@@ -1902,23 +2018,32 @@ function setOptions(id,items,selected='',empty=''){const el=document.getElementB
 function statCards(obj){return Object.entries(obj).map(([k,v])=>`<div class="stat"><b>${esc(v)}</b><span>${esc(k)}</span></div>`).join('')}
 function showStatus(id,msg){const el=document.getElementById(id);if(el)el.textContent=msg}
 
-function renderAll(){try{normalizeDuplicateMatchNames523(goalie())}catch(e){}renderSelectors();renderGoalieForm();renderHome();renderStats();renderHeatMaps();renderEditorSelectors();renderCoachingSliders();renderShotButtons();renderShotMaps();}
-function renderSelectors(){if(!currentGoalieId&&db.goalies[0])currentGoalieId=db.goalies[0].id;['goalieSelect','matchGoalie','statsGoalie','heatGoalie','editGoalie','reportGoalie'].forEach(id=>setOptions(id,db.goalies,currentGoalieId,db.goalies.length?'':'No goalies yet'));const g=goalie(),teams=teamsFor(g);setOptions('homeTeam',teams,document.getElementById('homeTeam')?.value||teams[0]||'','Select team');const home=document.getElementById('homeTeam')?.value||'';document.getElementById('opponentList').innerHTML=opponentsFor(g,home).map(o=>`<option value="${esc(o)}">`).join('');populateYearsAndMatches();updateMatchName();updateActiveMatchInfo();}
+function renderAll(){try{normalizeDuplicateMatchNames523(goalie())}catch(e){}ensureBenchmarkModel566();renderSelectors();renderGoalieForm();renderHome();renderStats();renderHeatMaps();renderEditorSelectors();renderCoachingSliders();renderShotButtons();renderShotMaps();renderBenchmarking566();}
+function renderSelectors(){if(!currentGoalieId&&db.goalies[0])currentGoalieId=db.goalies[0].id;['goalieSelect','matchGoalie','statsGoalie','heatGoalie','editGoalie','reportGoalie','benchmarkGoalie'].forEach(id=>setOptions(id,db.goalies,currentGoalieId,db.goalies.length?'':'No goalies yet'));const g=goalie(),teams=teamsFor(g);setOptions('homeTeam',teams,document.getElementById('homeTeam')?.value||teams[0]||'','Select team');const home=document.getElementById('homeTeam')?.value||'';document.getElementById('opponentList').innerHTML=opponentsFor(g,home).map(o=>`<option value="${esc(o)}">`).join('');populateYearsAndMatches();updateMatchName();updateActiveMatchInfo();}
 function populateYearsAndMatches(){const g=goalie(),years=yearsFor(g);['statsYear','heatYear','reportYear'].forEach(id=>setOptions(id,years,document.getElementById(id)?.value||years[0]));const ms=allMatches(g);['heatMatch','editMatch','reportMatch','statsMatch'].forEach(id=>setOptions(id,ms,document.getElementById(id)?.value||ms[0]?.id||'','Select match'));setOptions('statsHome',['All',...teamsFor(g)],document.getElementById('statsHome')?.value||'All');setOptions('statsOpp',['All',...opponentsFor(g)],document.getElementById('statsOpp')?.value||'All');}
-function renderHome(){const gs=db.goalies.length,ms=db.goalies.reduce((n,g)=>n+(g.matches||[]).length,0),shots=db.goalies.reduce((n,g)=>n+(g.matches||[]).reduce((s,m)=>s+(m.shots||[]).length,0),0);homeSummary.innerHTML=statCards({'Goalies':gs,'Matches':ms,'Shot Records':shots,'Version':'3.01'})}
-function renderGoalieForm(){const g=goalie();goalieName.value=g?.name||'';goalieDob.value=g?.dob||'';goalieGender.value=g?.gender||'Male';goalieTeams.value=(g?.teams||[]).join('\n');goalieAgeGroup.value=ageGroup({dob:goalieDob.value})||ageGroup(g)||'';const rows=allMatches(g).map(m=>`<tr><td>${esc(m.date)}</td><td>${esc(m.name)}</td><td>${esc(window.v511ReportScore?window.v511ReportScore(m):((m.homeGoals??'')+'-'+(m.oppGoals??'')))}</td><td>${esc(window.v511ReportResult?window.v511ReportResult(m):(m.result||''))}</td></tr>`).join('');goalieHistory.innerHTML=rows?`<table><tr><th>Date</th><th>Match</th><th>Score</th><th>Result</th></tr>${rows}</table>`:'<p class="muted">No match history yet.</p>'}
-function newGoalie(){const g={id:uid(),name:'',dob:'',gender:'Male',teams:[],matches:[]};db.goalies.push(g);currentGoalieId=g.id;saveDB();renderAll()}
-function saveGoalieProfile(){let g=goalie();if(!g){g={id:uid(),matches:[]};db.goalies.push(g);currentGoalieId=g.id}g.name=goalieName.value.trim()||'Unnamed Goalie';g.dob=goalieDob.value;g.gender=goalieGender.value;g.teams=goalieTeams.value.split('\n').map(s=>s.trim()).filter(Boolean);saveDB();renderAll()}
+function renderHome(){const gs=db.goalies.length,ms=db.goalies.reduce((n,g)=>n+(g.matches||[]).length,0),shots=db.goalies.reduce((n,g)=>n+(g.matches||[]).reduce((s,m)=>s+(m.shots||[]).length,0),0);homeSummary.innerHTML=statCards({'Goalies':gs,'Matches':ms,'Shot Records':shots,'Version':APP_VERSION_566})}
+function renderTeamProfiles568(g){const root=document.getElementById('goalieTeamProfiles');if(!root)return;const profiles=ensureTeamProfiles568(g);root.innerHTML=profiles.length?profiles.map(t=>`<div class="teamProfileCard" data-team-profile="${esc(t.id)}"><div class="teamProfileGrid"><label>Team Name<input data-team-name value="${esc(t.name)}"></label><label>Age Group<select data-team-age>${benchmarkOptions566(BENCHMARK_AGE_GROUPS_566,t.ageGroup)}</select></label><label>Team Level<select data-team-level>${benchmarkOptions566(BENCHMARK_LEVELS_566,t.level)}</select></label><label>Team Tier<select data-team-tier>${benchmarkOptions566(BENCHMARK_TIERS_566,t.tier)}</select></label></div><div class="teamProfileActions"><button type="button" class="btn secondary" data-apply-team-profile="${esc(t.id)}">Apply to Previous Matches</button><button type="button" class="btn danger" data-remove-team-profile="${esc(t.id)}">Remove Team</button></div></div>`).join(''):'<div class="teamProfileEmpty">No current teams saved.</div>'}
+function collectTeamProfiles568(){return [...document.querySelectorAll('[data-team-profile]')].map(card=>({id:card.dataset.teamProfile||benchmarkUuid566('team_'),name:card.querySelector('[data-team-name]')?.value.trim()||'',ageGroup:card.querySelector('[data-team-age]')?.value||BENCHMARK_NOT_SPECIFIED_566,level:card.querySelector('[data-team-level]')?.value||BENCHMARK_NOT_SPECIFIED_566,tier:normalizeTier568(card.querySelector('[data-team-tier]')?.value)})).filter(t=>t.name)}
+function addTeamProfile568(){const g=goalie();if(!g){alert('Add or select a goalkeeper first.');return}g.teamProfiles=collectTeamProfiles568();g.teamProfiles.push({id:benchmarkUuid566('team_'),name:'',ageGroup:ageGroup(g)||BENCHMARK_NOT_SPECIFIED_566,level:BENCHMARK_NOT_SPECIFIED_566,tier:BENCHMARK_NOT_SPECIFIED_566});renderTeamProfiles568(g)}
+function removeTeamProfile568(id){const g=goalie();if(!g||!confirm('Remove this team from the current team list? Saved matches and reports will keep their historical team information.'))return;g.teamProfiles=collectTeamProfiles568().filter(t=>t.id!==id);g.teams=g.teamProfiles.map(t=>t.name);const anchor=document.getElementById('matchGoalieAgeGroup');if(anchor)delete anchor.dataset.loadedFor;saveDB();renderAll()}
+document.addEventListener('click',e=>{const b=e.target.closest?.('[data-remove-team-profile]');if(b)removeTeamProfile568(b.dataset.removeTeamProfile)});
+function renderGoalieForm(){const g=goalie();goalieName.value=g?.name||'';goalieDob.value=g?.dob||'';goalieGender.value=g?.gender||'Male';goalieAgeGroup.value=ageGroup({dob:goalieDob.value})||ageGroup(g)||'';renderTeamProfiles568(g);const rows=allMatches(g).map(m=>`<tr><td>${esc(m.date)}</td><td>${esc(m.name)}</td><td>${esc(window.v511ReportScore?window.v511ReportScore(m):((m.homeGoals??'')+'-'+(m.oppGoals??'')))}</td><td>${esc(window.v511ReportResult?window.v511ReportResult(m):(m.result||''))}</td></tr>`).join('');goalieHistory.innerHTML=rows?`<table><tr><th>Date</th><th>Match</th><th>Score</th><th>Result</th></tr>${rows}</table>`:'<p class="muted">No match history yet.</p>'}
+function newGoalie(){const g={id:uid(),name:'',dob:'',gender:'Male',teams:[],teamProfiles:[],matches:[],benchmarkConsent:'undecided'};ensureBenchmarkGoalie566(g);db.goalies.push(g);currentGoalieId=g.id;saveDB();renderAll()}
+function saveGoalieProfile(){let g=goalie();if(!g){g={id:uid(),matches:[],teamProfiles:[],benchmarkConsent:'undecided'};ensureBenchmarkGoalie566(g);db.goalies.push(g);currentGoalieId=g.id}g.name=goalieName.value.trim()||'Unnamed Goalie';g.dob=goalieDob.value;g.gender=goalieGender.value;g.teamProfiles=collectTeamProfiles568();g.teams=g.teamProfiles.map(t=>t.name);ensureBenchmarkGoalie566(g);const anchor=document.getElementById('matchGoalieAgeGroup');if(anchor)delete anchor.dataset.loadedFor;saveDB();renderAll()}
 function deleteGoalie(){const g=goalie();if(!g)return;if(!confirmSixDigit('Delete the selected goalie and all matches linked to this goalie?'))return;db.goalies=db.goalies.filter(x=>x.id!==g.id);currentGoalieId=db.goalies[0]?.id||'';activeMatchId='';saveDB();renderAll()}
 
-document.addEventListener('change',e=>{if(['goalieSelect','matchGoalie','statsGoalie','heatGoalie','editGoalie','reportGoalie'].includes(e.target.id)){currentGoalieId=e.target.value;saveDB();renderAll()} if(['statsHome','statsOpp','statsPeriod','statsYear','statsMatch'].includes(e.target.id))renderStats(); if(['heatView','heatYear','heatMatch'].includes(e.target.id))renderHeatMaps(); if(['editMatch','editShot'].includes(e.target.id))renderEditorSelectors(); if(['homeTeam','opponentTeam','matchDate'].includes(e.target.id)){updateMatchName();renderSelectors()} });
+document.addEventListener('change',e=>{if(['goalieSelect','matchGoalie','statsGoalie','heatGoalie','editGoalie','reportGoalie','benchmarkGoalie'].includes(e.target.id)){currentGoalieId=e.target.value;saveDB();renderAll()}if(['matchOpponentAgeGroup','matchOpponentLevel','matchOpponentTier'].includes(e.target.id))e.target.dataset.manuallyChanged='1';if(['statsHome','statsOpp','statsPeriod','statsYear','statsMatch'].includes(e.target.id))renderStats();if(['heatView','heatYear','heatMatch'].includes(e.target.id))renderHeatMaps();if(['editMatch','editShot'].includes(e.target.id))renderEditorSelectors();if(['homeTeam','opponentTeam','matchDate'].includes(e.target.id)){updateMatchName();renderSelectors();if(e.target.id==='homeTeam')applyHomeTeamProfile568(true)}});
 document.addEventListener('input',e=>{if(e.target.id==='goalieDob')goalieAgeGroup.value=ageGroup({dob:e.target.value}); if(['homeTeam','opponentTeam','matchDate'].includes(e.target.id))updateMatchName()});
 
 function updateMatchName(){const d=matchDate.value||today(),h=homeTeam.value||'',o=opponentTeam.value.trim()||'';matchName.value=(d&&h&&o)?`${d} - ${h} VS ${o}`:''}
 function matchBaseName523(date,home,opp){return `${date} - ${home} VS ${opp}`}
 function duplicateMatchName523(g,date,home,opp,excludeId){const base=matchBaseName523(date,home,opp);let used=new Set((g?.matches||[]).filter(x=>x&&x.id!==excludeId&&String(x.date||'')===String(date||'')&&String(x.homeTeam||'')===String(home||'')&&String(x.opponentTeam||x.opponent||'')===String(opp||'')).map(x=>String(x.name||'')));if(!used.has(base))return base;let n=2;while(used.has(base+' '+n))n++;return base+' '+n}
-function startOrUpdateMatch(){const g=goalie();if(!g){alert('Add/select a goalie first.');return}const date=matchDate.value||today(),home=homeTeam.value,opp=opponentTeam.value.trim(),periodChoice=document.getElementById('matchPeriods')?.value||'4';if(!home||!opp){alert('Select a home team and enter opponent.');return}let m=activeMatch();const name=duplicateMatchName523(g,date,home,opp,m?.id||'');if(!m){m={id:uid(),date,homeTeam:home,opponentTeam:opp,name,shots:[],ratings:{},homeGoals:null,oppGoals:null,result:'',periodMarkers:[]};g.matches=g.matches||[];g.matches.push(m);activeMatchId=m.id}Object.assign(m,{date,homeTeam:home,opponentTeam:opp,name});applyPeriodChoice565(m,periodChoice);saveDB();renderAll();showStatus('activeMatchInfo','Match saved and active.')}
-function updateActiveMatchInfo(){const m=activeMatch();activeMatchInfo.textContent=m?`Active match: ${m.name}`:'No active match. Save match details to start.';const mp=document.getElementById('matchPeriods');if(mp)mp.value=m?periodChoice565(m):(mp.value||'4');updateOpponentGoalsDisplay()}
+function startOrUpdateMatch(){const g=goalie();if(!g){alert('Add/select a goalie first.');return}const date=matchDate.value||today(),home=homeTeam.value,opp=opponentTeam.value.trim(),periodChoice=document.getElementById('matchPeriods')?.value||'4';if(!home||!opp){alert('Select a home team and enter opponent.');return}let m=activeMatch(),isNew=!m;const name=duplicateMatchName523(g,date,home,opp,m?.id||'');if(!m){m={id:uid(),date,homeTeam:home,opponentTeam:opp,name,shots:[],ratings:{},homeGoals:null,oppGoals:null,result:'',periodMarkers:[],matchStatus:'draft'};ensureBenchmarkMatch566(g,m,true);g.matches=g.matches||[];g.matches.push(m);activeMatchId=m.id}Object.assign(m,{date,homeTeam:home,opponentTeam:opp,name,matchStatus:'draft'},benchmarkFieldsFromForm566(g,m));delete m.finalizedAt;delete m.finalizedAtSource;if(isNew&&!m.goalieAgeGroupAtMatch)m.goalieAgeGroupAtMatch=benchmarkAgeAtMatch566(g,m);applyPeriodChoice565(m,periodChoice);saveDB();renderAll();showStatus('activeMatchInfo','Match saved and active.')}
+function updateActiveMatchInfo(){const m=activeMatch(),g=goalie();activeMatchInfo.textContent=m?`Active match: ${m.name}`:'No active match. Save match details to start.';const mp=document.getElementById('matchPeriods');if(mp)mp.value=m?periodChoice565(m):(mp.value||'4');const form=document.getElementById('matchGoalieAgeGroup'),token=m?.id||('new:'+String(g?.id||''));if(form&&form.dataset.loadedFor!==token){loadBenchmarkMatchFields566(g,m);form.dataset.loadedFor=token}updateOpponentGoalsDisplay()}
+
+function setBenchmarkConsent566(choice){const g=goalie();if(!g){alert('Add or select a goalkeeper first.');return}ensureBenchmarkGoalie566(g);if(!['opted_in','opted_out'].includes(choice))return;g.benchmarkConsent=choice;g.benchmarkConsentUpdatedAt=new Date().toISOString();if(choice==='opted_out')g.benchmarkAccess=false;saveDB();renderBenchmarking566()}
+function renderBenchmarking566(){const g=goalie(),status=document.getElementById('benchmarkStatus'),readiness=document.getElementById('benchmarkReadiness'),list=document.getElementById('benchmarkMatchList');if(!status||!readiness||!list)return;if(!g){status.innerHTML='<div class="benchmarkState"><span class="benchmarkDot"></span><b>Add a goalkeeper to configure benchmarking.</b></div>';readiness.innerHTML='';list.innerHTML='';return}ensureBenchmarkGoalie566(g);const matches=g.matches||[],results=matches.map(m=>({m,state:benchmarkEligibility566(m)})),ready=results.filter(x=>x.state.eligible),shots=ready.reduce((n,x)=>n+(x.m.shots||[]).length,0),consent=g.benchmarkConsent||'undecided',active=consent==='opted_in'&&!!g.benchmarkLastSuccessfulUpload;let label=consent==='undecided'?'Decision required':consent==='opted_out'?'Opted out':active?'Active — benchmark access enabled':'Opted in — eligible upload required',dot=consent==='opted_out'?'out':consent==='opted_in'?'wait':'';status.innerHTML='<div class="benchmarkState"><span class="benchmarkDot '+dot+'"></span><b>'+esc(label)+'</b></div><div>'+(consent==='opted_in'?'Cloudflare connection is intentionally disabled in this version. No data can leave this device.':'Normal app features remain available regardless of this choice.')+'</div>';const inBtn=document.getElementById('benchmarkOptIn'),outBtn=document.getElementById('benchmarkOptOut');if(inBtn)inBtn.setAttribute('aria-pressed',String(consent==='opted_in'));if(outBtn)outBtn.setAttribute('aria-pressed',String(consent==='opted_out'));readiness.innerHTML='<div class="benchmarkMetric"><b>'+ready.length+'</b><span>Eligible matches</span></div><div class="benchmarkMetric"><b>'+shots+'</b><span>Eligible shots</span></div><div class="benchmarkMetric"><b>'+matches.filter(m=>!benchmarkEligibility566(m).eligible).length+'</b><span>Matches needing attention</span></div>';list.innerHTML=results.length?'<table><thead><tr><th>Match</th><th>Benchmark status</th></tr></thead><tbody>'+results.map(x=>'<tr><td>'+esc(x.m.name||x.m.date||'Match')+'</td><td><span class="benchmarkBadge '+(x.state.eligible?'ready':'')+'">'+esc(x.state.reason)+'</span></td></tr>').join('')+'</tbody></table>':'<p class="muted">No matches recorded yet.</p>'}
+function previewBenchmarkData566(){const g=goalie(),el=document.getElementById('benchmarkPreview');if(!g||!el)return;el.textContent=JSON.stringify(benchmarkPayload566(g),null,2);el.hidden=false}
 
 function shotTypeDotColor(x){
   if(x==='1st Shot')return '#2fd17c';
@@ -1994,8 +2119,8 @@ function updateOpponentGoalsDisplay(){
 }
 
 function renderCoachingSliders(){const m=activeMatch();coachingSliders.innerHTML=ratings.map(r=>{const v=m?.ratings?.[r]||3,id='rv_'+r.replaceAll(' ','_');return `<div class="sliderBox"><div class="sliderHead"><b>${r}</b><span class="sliderValue" id="${id}">${v}</span></div><input type="range" min="1" max="5" value="${v}" data-rating="${r}" oninput="document.getElementById('${id}').textContent=this.value"></div>`}).join('')}
-function completeMatch(){const m=activeMatch();if(!m){alert('No active match.');return}applyPeriodChoice565(m,document.getElementById('matchPeriods')?.value||periodChoice565(m));m.homeGoals=Number(homeGoals.value||0);m.oppGoals=calculatedOpponentGoals(m);oppGoals.value=m.oppGoals;m.result=m.homeGoals>m.oppGoals?'Win':m.homeGoals<m.oppGoals?'Loss':'Draw';m.ratings={};document.querySelectorAll('[data-rating]').forEach(i=>m.ratings[i.dataset.rating]=Number(i.value));activeMatchId='';matchDate.value=today();opponentTeam.value='';homeGoals.value=0;oppGoals.value=0;saveDB();resetShotInputs();renderAll();alert('Match saved. Ready for next match.')}
-function clearActiveMatchProgress(){const g=goalie(),m=activeMatch();if(!g||!m){alert('Start or select an active match first.');return}if(!confirmSixDigit('Clear the active match completely and start again without saving it?'))return;g.matches=(g.matches||[]).filter(x=>x.id!==m.id);activeMatchId='';homeGoals.value=0;oppGoals.value=0;saveDB();resetShotInputs();renderAll();matchDate.value='';matchName.value='';homeTeam.value='';opponentTeam.value='';matchPeriods.value=4;homeGoals.value=0;oppGoals.value=0;showStatus('activeMatchInfo','No active match. Enter new match details to start again.');if(window.v531ResetVideoReview)window.v531ResetVideoReview();alert('The active match and all of its Video Stats Review information have been cleared. Enter new match details to start again.')}
+function completeMatch(){const m=activeMatch(),g=goalie();if(!m){alert('No active match.');return}Object.assign(m,benchmarkFieldsFromForm566(g,m));applyPeriodChoice565(m,document.getElementById('matchPeriods')?.value||periodChoice565(m));m.homeGoals=Number(homeGoals.value||0);m.oppGoals=calculatedOpponentGoals(m);oppGoals.value=m.oppGoals;m.result=m.homeGoals>m.oppGoals?'Win':m.homeGoals<m.oppGoals?'Loss':'Draw';m.matchStatus='finalised';m.finalizedAt=new Date().toISOString();delete m.finalizedAtSource;m.ratings={};document.querySelectorAll('[data-rating]').forEach(i=>m.ratings[i.dataset.rating]=Number(i.value));activeMatchId='';matchDate.value=today();opponentTeam.value='';homeGoals.value=0;oppGoals.value=0;const form=document.getElementById('matchGoalieAgeGroup');if(form)delete form.dataset.loadedFor;saveDB();resetShotInputs();renderAll();alert('Match saved. Ready for next match.')}
+function clearActiveMatchProgress(){const g=goalie(),m=activeMatch();if(!g||!m){alert('Start or select an active match first.');return}if(!confirmSixDigit('Clear the active match completely and start again without saving it?'))return;g.matches=(g.matches||[]).filter(x=>x.id!==m.id);activeMatchId='';homeGoals.value=0;oppGoals.value=0;const form=document.getElementById('matchGoalieAgeGroup');if(form)delete form.dataset.loadedFor;saveDB();resetShotInputs();renderAll();matchDate.value='';matchName.value='';homeTeam.value='';opponentTeam.value='';matchPeriods.value=4;homeGoals.value=0;oppGoals.value=0;showStatus('activeMatchInfo','No active match. Enter new match details to start again.');if(window.v531ResetVideoReview)window.v531ResetVideoReview();alert('The active match and all of its Video Stats Review information have been cleared. Enter new match details to start again.')}
 
 function shotsFor(ms){return ms.flatMap(m=>m.shots||[])}
 function pct(n,d){return d?Math.round(n/d*100):0}
@@ -2086,8 +2211,8 @@ if ('serviceWorker' in navigator && location.protocol !== 'file:') {
 
 <script>
 function exportGoaliesTeams(){
- const payload={sourceApp:'Hockey Goalie Stats',sourceVersion:'5.62',exportType:'MasterData',exportedAt:new Date().toISOString(),
- goalies:(db.goalies||[]).map(g=>({name:g.name||'',dob:g.dob||'',gender:g.gender||'',teams:g.teams||[]}))};
+ const payload={sourceApp:'Hockey Goalie Stats',sourceVersion:APP_VERSION_566,exportType:'MasterData',exportedAt:new Date().toISOString(),
+ goalies:(db.goalies||[]).map(g=>({name:g.name||'',dob:g.dob||'',gender:g.gender||'',teams:teamsFor(g),teamProfiles:ensureTeamProfiles568(g).map(t=>({...t}))}))};
  const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
  const d=new Date(),p=n=>String(n).padStart(2,'0');
@@ -2195,7 +2320,7 @@ function exportGoaliesTeams(){
 <script>
 /* Hockey Goalie Stats v5.23: single clean controller */
 (function(){
-  window.APP_VERSION = "5.62";
+  window.APP_VERSION = APP_VERSION_566;
 
   const state = {mode:"", outcome:"", message:"", editingShotId:""};
   const OUTCOMES = ["Save","Goal","Angle Closed Off"];
@@ -2614,6 +2739,7 @@ function exportGoaliesTeams(){
     const g=selectedGoalie();
     const ms=sortedMatches(g);
     const m=selectedMatch();
+    if(m)ensureBenchmarkMatch566(g,m,false);
     const gOpts=gs.map(x=>`<option value="${esc(x.id)}" ${g&&x.id===g.id?'selected':''}>${esc(x.name||x.goalieName||"Goalie")}</option>`).join("");
     const mOpts=ms.map(x=>`<option value="${esc(x.id)}" ${m&&x.id===m.id?'selected':''}>${esc((dateVal(x)||"") + " - " + (x.homeTeam||"") + " VS " + oppVal(x))}</option>`).join("");
     return `<div class="card" id="v459MatchDetailsCard">
@@ -2628,6 +2754,22 @@ function exportGoaliesTeams(){
         <label class="v459Field">Home Goals<input id="v459EditHomeGoals" class="v459Input" type="number" value="${esc(homeGoalsVal(m))}"></label>
         <label class="v459Field">Opponent Goals<input id="v459EditOpponentGoals" class="v459Input" type="number" value="${esc(oppGoalsVal(m))}"></label>
         <label class="v459Field">Periods<select id="v459EditPeriods" class="v459Select"><option value="1" ${periodChoice565(m)==='1'?'selected':''}>1</option><option value="2" ${periodChoice565(m)==='2'?'selected':''}>2</option><option value="4" ${periodChoice565(m)==='4'?'selected':''}>4</option><option value="custom" ${periodChoice565(m)==='custom'?'selected':''}>Custom</option></select></label>
+        <label class="v459Field">Match Status<select id="v567EditMatchStatus" class="v459Select"><option value="draft" ${m?.matchStatus==='draft'?'selected':''}>Draft</option><option value="finalised" ${m?.matchStatus!=='draft'?'selected':''}>Finalised</option></select></label>
+        <label class="v459Field">Match Type<select id="v566EditMatchType" class="v459Select">${benchmarkOptions566(BENCHMARK_MATCH_TYPES_566,m?.matchType)}</select></label>
+        <label class="v459Field">Participation<select id="v566EditParticipation" class="v459Select">${benchmarkOptions566(BENCHMARK_PARTICIPATION_566,m?.goalkeeperParticipation)}</select></label>
+        <label class="v459Field">Minutes Played<input id="v566EditMinutes" class="v459Input" type="number" min="0" step="1" value="${esc(m?.minutesPlayed??'')}"></label>
+      </div>
+      <h3>Home Team Classification</h3>
+      <div class="v459Grid2">
+        <label class="v459Field">Age Group at Match<input class="v459Input" value="${esc(m?.goalieAgeGroupAtMatch||BENCHMARK_NOT_SPECIFIED_566)}" readonly></label>
+        <label class="v459Field">Team Level<input class="v459Input" value="${esc(m?.goalieTeamLevel||BENCHMARK_NOT_SPECIFIED_566)}" readonly></label>
+        <label class="v459Field">Team Tier<input class="v459Input" value="${esc(normalizeTier568(m?.goalieTeamTier))}" readonly></label>
+      </div>
+      <h3>Opposition Classification</h3>
+      <div class="v459Grid2">
+        <label class="v459Field">Age Group<select id="v566EditOpponentAge" class="v459Select">${benchmarkOptions566(BENCHMARK_AGE_GROUPS_566,m?.opponentAgeGroup)}</select></label>
+        <label class="v459Field">Team Level<select id="v566EditOpponentLevel" class="v459Select">${benchmarkOptions566(BENCHMARK_LEVELS_566,m?.opponentTeamLevel)}</select></label>
+        <label class="v459Field">Team Tier<select id="v566EditOpponentTier" class="v459Select">${benchmarkOptions566(BENCHMARK_TIERS_566,m?.opponentTeamTier)}</select></label>
       </div>
       <button class="v459Btn v459Save" data-v459-save-match="1">Save Match Changes</button>
       <div class="v459Divider"></div>
@@ -2767,6 +2909,14 @@ function exportGoaliesTeams(){
     m.oppGoals=m.opponentGoals;
     m.goalsAgainst=m.opponentGoals;
     applyPeriodChoice565(m,$("v459EditPeriods")?.value||periodChoice565(m));
+    m.matchStatus=$("v567EditMatchStatus")?.value==='draft'?'draft':'finalised';
+    if(m.matchStatus==='finalised'){if(!m.finalizedAt)m.finalizedAt=new Date().toISOString()}else{delete m.finalizedAt;delete m.finalizedAtSource}
+    m.matchType=$("v566EditMatchType")?.value||BENCHMARK_NOT_SPECIFIED_566;
+    m.goalkeeperParticipation=$("v566EditParticipation")?.value||BENCHMARK_NOT_SPECIFIED_566;
+    m.minutesPlayed=$("v566EditMinutes")?.value===''?'':Number($("v566EditMinutes")?.value||0);
+    m.opponentAgeGroup=$("v566EditOpponentAge")?.value||BENCHMARK_NOT_SPECIFIED_566;
+    m.opponentTeamLevel=$("v566EditOpponentLevel")?.value||BENCHMARK_NOT_SPECIFIED_566;
+    m.opponentTeamTier=normalizeTier568($("v566EditOpponentTier")?.value);
     m.name = `${m.date||""} - ${m.homeTeam||""} VS ${m.opponentTeam||""}`;
     rebuildTimeline(m); saveNow(); renderClean(); showMsg("v459MatchStatus","Match changes saved.");
   }
@@ -2885,12 +3035,12 @@ function exportGoaliesTeams(){
   function updateVersionText(){
     document.querySelectorAll("*").forEach(el=>{
       if(el.children.length===0 && /Version\s+\d+\.\d+|v\d+\.\d+/.test(el.textContent||"")){
-        el.textContent=el.textContent.replace(/Version\s+\d+\.\d+/g,"Version 5.62").replace(/v\d+\.\d+/g,"v5.62");
+        el.textContent=el.textContent.replace(/Version\s+\d+\.\d+/g,"Version "+APP_VERSION_566).replace(/v\d+\.\d+/g,"v"+APP_VERSION_566);
       }
     });
     const hs=window.homeSummary;
     if(hs){
-      hs.innerHTML=hs.innerHTML.replace(/<b>[^<]*<\/b><span>Version<\/span>/, "<b>4.64</b><span>Version</span>");
+      hs.innerHTML=hs.innerHTML.replace(/<b>[^<]*<\/b><span>Version<\/span>/, "<b>"+APP_VERSION_566+"</b><span>Version</span>");
     }
   }
 
@@ -2902,7 +3052,7 @@ function exportGoaliesTeams(){
 
   // Import/Export compatibility in one controller.
   window.exportGoaliesTeams = window.exportGoaliesTeams || function(){
-    const payload={sourceApp:"Hockey Goalie Stats",sourceVersion:"4.65",exportType:"MasterData",exportedAt:new Date().toISOString(),goalies:goalies().map(g=>({name:g.name||"",dob:g.dob||"",gender:g.gender||"",teams:g.teams||[]}))};
+    const payload={sourceApp:"Hockey Goalie Stats",sourceVersion:APP_VERSION_566,exportType:"MasterData",exportedAt:new Date().toISOString(),goalies:goalies().map(g=>({name:g.name||"",dob:g.dob||"",gender:g.gender||"",teams:teamsFor(g),teamProfiles:ensureTeamProfiles568(g).map(t=>({...t}))}))};
     const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
     const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="goalie_stats_master_data.json"; a.click(); URL.revokeObjectURL(a.href);
     showMsg("masterExportStatus","Master data exported.");
@@ -4658,7 +4808,7 @@ function boot(){patch();if($('matchEditorRoot')||$('matchEditorShell')||$('match
 <script>
 /* Hockey Goalie Stats v5.23: clean safeguards from v4.98 base */
 (function(){
-  window.APP_VERSION = "5.62";
+  window.APP_VERSION = APP_VERSION_566;
   window.v503PSpot={x:50,y:26};
   window.v503RecordShotFieldOrder="End of Period, Shot Outcome, Shot Situation, Shot Type, Out Numbered, Rebound Result, Notes";
 })();
@@ -5631,7 +5781,7 @@ window.v520FixTimelineIconSquares=fixTimelineIconSquares520;
 <script>
 /* Hockey Goalie Stats v5.23: Integrated Video Stats Review */
 (function(){
-const VR_VERSION='5.62';
+const VR_VERSION=APP_VERSION_566;
 let vrMatchId='', vrDraft=null, vrClipIn=null, vrClipOut=null, vrExporting=false, vrCancelExport=false, vrMoreTargetId='', vrPlaybackRate=1, vrSelectedShotId='', vrLastVideoEl=null, vrNoCoverage=false, vrVirtualPlaying=false, vrVirtualLast=0, vrWaveformsVisible=false, vrAutoSuggestions=[];
 const vrWaveCache=new Map();
 let vrPanDrag=null;
@@ -5739,7 +5889,7 @@ function syncShootoutControls(){let m=currentMatchV();if(!m?.shootout)return;doc
 function saveOutcome(){let m=currentMatchV();if(!m)return;let h=Number($('v521HomeGoals')?.value||m.homeGoals||0);m.homeGoals=h;m.oppGoals=(m.shots||[]).filter(s=>s.outcome==='Goal').length;m.result=h>m.oppGoals?'Win':h<m.oppGoals?'Loss':'Draw';saveV();renderV();renderVideoReview();}
 function renderVideoReview(){pauseAllVideoAudio522(null,true);let root=$('v521VideoReviewRoot');if(!root)return;let m=currentMatchV();if(!m){root.innerHTML='<div class="card"><h2>Video Stats Review</h2><p>Select or start a match from the Match tab, then open Video Stats Review.</p><button class="btn secondary" onclick="showTab(\'match\')">Return to Match Setup</button></div>';return}vrMatchId=m.id;activeMatchId=m.id;let vr=ensureReview(m),a=activeAngle(m);root.innerHTML='<div class="card"><div class="v521VRHeader"><img class="v521VRBanner" src="assets/video-stats-review-banner.png" alt="Video Stats Review"><div><button type="button" class="btn secondary" data-v521-return-match>Return to Match</button></div></div><div class="v521VRMatchInfo"><b>'+escV(m.name||((m.date||'')+' - '+(m.homeTeam||'')+' VS '+(m.opponentTeam||m.opponent||'')))+'</b><br>Goalie: '+escV(activeG()?.name||'')+' - '+escV(m.homeTeam||'Home')+' vs '+escV(m.opponentTeam||m.opponent||'Opponent')+'<div class="v521VRGrid3"><div><label>Home Goals</label><input id="v521HomeGoals" type="number" min="0" value="'+escV(m.homeGoals??0)+'"></div><div><label>Opponent Goals</label><input readonly value="'+escV((m.shots||[]).filter(s=>s.outcome==='Goal').length)+'"></div><div><label>Status</label><input readonly value="'+escV(m.result||'In progress')+'"></div></div><button type="button" class="btn good" data-v521-save-outcome>Save Match Outcome</button> '+(((Number(m.homeGoals||0)===(m.shots||[]).filter(s=>s.outcome==='Goal').length)&&m.result==='Draw')?'<button type="button" class="btn secondary" data-v521-open-so>Record Shootout</button>':'')+'</div><div class="v521VRLayout"><div><div class="v521VRStage" id="v521Stage"><div id="v521Empty" class="v521VREmpty"><strong>No video loaded</strong><br>Add a video angle on the right.</div><video id="v521Video" playsinline></video><div class="v521VRBadge" id="v521Badge">'+escV(sourceBadge(a))+'</div></div><div class="v523ControlSection"><div class="v523ControlRow"><button type="button" id="v521Play" class="primary">Play</button><button type="button" data-v521-back5>-5s</button><button type="button" data-v521-frame-back>Frame -</button><button type="button" data-v521-frame-forward>Frame +</button><span class="v523SpeedGroup"><button type="button" data-v521-speed="0.25">0.25x</button><button type="button" data-v521-speed="0.5">0.5x</button><button type="button" data-v521-speed="2">2x</button><button type="button" data-v521-speed="5">5x</button><button type="button" data-v521-speed="10">10x</button></span></div><div class="v523TimelineWrap"><input id="v521Seek" type="range" min="0" step="0.01" value="0"><span class="v523TimeReadout"><span id="v521Now">00:00</span>/<span id="v521Total">00:00</span></span></div><div class="v522VideoTimeline"><div class="v522VideoTimelineHead"><b>Video Timeline</b><span>Save / Goal / Angle markers show when shots were taken. Tap a marker to jump to that moment.</span></div><div class="v522VideoTrack" id="v522VideoTrack"><div class="v522ClipBands" id="v522ClipBands"></div><div class="v522VideoPlayhead" id="v522VideoPlayhead"></div><div id="v522VideoTimelineMarkers"></div></div></div><div class="v523ControlRow"><span class="v523ZoomGroup"><button type="button" data-v521-zoom-out>Zoom -</button><span id="v521ZoomLabel" class="v521Small">100%</span><button type="button" data-v521-zoom-in>Zoom +</button><button type="button" data-v521-reset-view>Reset Framing</button><button type="button" data-v521-fullscreen>Full Screen</button><label>FPS <input id="v521Fps" type="number" value="25" min="1" max="120"></label></span></div><div class="v523ControlRow"><span id="v521PeriodLabel"></span><span class="v523SyncGroup"><button type="button" data-v521-end-period>End Period</button><button type="button" data-v521-sync>Set Sync</button><button type="button" data-v521-clear-sync>Clear Sync</button><span id="v521SyncStatus" class="v521Small"></span></span></div></div></div><aside class="v521VRSide"><h3>Video Angles</h3><div class="v521AddAngle"><input id="v521AngleName" placeholder="Angle name"><input id="v521Files" type="file" accept="video/*,.mp4,.mov,.m4v" multiple class="v521Hidden"><button type="button" class="primary" data-v521-add-angle>Add Angle Videos</button><button type="button" data-v521-reconnect>Reconnect Videos</button><input id="v521MoreFiles" type="file" accept="video/*,.mp4,.mov,.m4v" multiple class="v521Hidden"><div class="v522AddHint">Add Angle Videos opens the file picker, creates the angle, and appends selected videos in order. Use ＋ Videos on an angle to append more videos.</div></div><div id="v521Angles" class="v521Angles"></div><p class="v521Small">Only one angle plays at a time. Each angle remembers zoom, pan, sync point, playlist and position. Local video files may need to be reselected after a browser refresh.</p></aside></div><div id="v521RecordPanel" class="v521RecordPanel"></div><div class="v521MapPanel"><h3>Heat Maps</h3><div class="v521VRGrid2"><div><h4>D Heat Map</h4><div class="v521MapHint">Tap the exact D location.</div><div id="v521DMap" class="v521MapBox"></div></div><div><h4>Goal Box Heat Map</h4><div class="v521MapHint">Required for Saves and Goals. Not used for Angle Closed Off.</div><div id="v521GMap" class="v521MapBox"></div></div></div></div><div class="v521TimelinePanel"><h3>Match Timeline</h3><div id="v521MatchTimeline"></div></div><div class="v521ExportPanel"><h3>Export Clips</h3><div class="v521VRClipTools"><button type="button" data-v521-clip-in>Set Clip In</button><span id="v521ClipInLabel">In: '+fmt(vr.clipIn||0)+'</span><button type="button" data-v521-clip-out>Set Clip Out</button><span id="v521ClipOutLabel">Out: '+fmt(vr.clipOut||0)+'</span><label>Before shot <input id="v521BeforeShot" type="number" value="5" min="0" style="width:62px"></label><label>After shot <input id="v521AfterShot" type="number" value="8" min="0" style="width:62px"></label><button type="button" class="primary" data-v521-export-active>Export Selected Clip</button><button type="button" data-v521-export-shot>Export Current Shot Clip</button><button type="button" data-v521-export-all-current>Export Every Shot - Current Angle</button><button type="button" data-v521-export-all-angles>Export Every Shot - Every Angle</button><button type="button" class="v521Danger" data-v521-cancel-export>Cancel Batch</button></div><div class="v523DownloadNotice">Batch exports download each shot as a separate MP4. Your browser may show a pop-up asking whether to allow multiple downloads - choose Allow.</div><div id="v521ExportStatus" class="v521Status">MP4 export uses the browser MediaRecorder engine and stays local on this device.</div></div></div>';renderAngles();renderRecordPanel();renderVideoTimeline();renderLongVideoTimeline522();if(a&&a.clips.length)loadClip(a,a.activeClipIndex||0,a.position||0,false);updateVideoUI();}
 function openVideoReview(matchId){let g=activeG();if(!g){alert('Add/select a goalie first.');return}let requestedId=String(matchId||''),m=requestedId?matchByAnyId(requestedId):activeMatch();if(!m&&!requestedId){try{startOrUpdateMatch();m=activeMatch()}catch(e){}}if(!m){alert('Select the match you want to review first.');return}pauseAllVideoAudio522(null,true);vrMatchId=m.id;activeMatchId=m.id;vrDraft=null;vrSelectedShotId='';vrNoCoverage=false;vrVirtualPlaying=false;let vr=ensureReview(m);vr.matchName=m.name||((m.date||'')+' - '+(m.homeTeam||'')+' VS '+(m.opponentTeam||m.opponent||''));let a=activeAngle(m),loc=a&&resolveAtMaster(a,Number(vr.masterTime)||0),missing=!!(a&&a.clips.length&&!loc);if(loc){a.activeClipIndex=loc.index;a.position=loc.time}saveV();document.body.classList.add('videoReviewMode');showTab('videoReview');renderVideoReview();if(missing)showNoCoverage(a,vr.masterTime,false);window.scrollTo(0,0);}
-function installButtons(){let details=Array.from(document.querySelectorAll('#match .card')).find(c=>/Match Details/i.test(c.textContent||''));if(details&&!$('v521OpenVideoFromMatch')){let b=document.createElement('button');b.id='v521OpenVideoFromMatch';b.type='button';b.className='btn secondary v521VideoButton';b.textContent='Open Video Stats Review';b.onclick=()=>openVideoReview(activeMatch()?.id||'');details.appendChild(b)}let editor=$('matchEditorShell');if(editor&&!$('v521OpenVideoFromEditor')){let b=document.createElement('button');b.id='v521OpenVideoFromEditor';b.type='button';b.className='btn secondary v521VideoButton';b.textContent='Open Selected Match in Video Stats Review';b.onclick=()=>{let id=$('v459EditMatch')?.value||$('editMatch')?.value||$('reportMatch')?.value||'';openVideoReview(id)};editor.insertBefore(b,editor.children[2]||null)}}
+function installButtons(){let details=Array.from(document.querySelectorAll('#match .card')).find(c=>/Match Details/i.test(c.textContent||''));if(details&&!$('v521OpenVideoFromMatch')){let b=document.createElement('button');b.id='v521OpenVideoFromMatch';b.type='button';b.className='btn secondary v521VideoButton';b.textContent='Open Video Stats Review';b.onclick=()=>{window.v571SetVideoReviewReturn?.('match');openVideoReview(activeMatch()?.id||'')};details.appendChild(b)}let editor=$('matchEditorShell');if(editor&&!$('v521OpenVideoFromEditor')){let b=document.createElement('button');b.id='v521OpenVideoFromEditor';b.type='button';b.className='btn secondary v521VideoButton';b.textContent='Open Selected Match in Video Stats Review';b.onclick=()=>{window.v571SetVideoReviewReturn?.('matchEditor');let id=$('v459EditMatch')?.value||$('editMatch')?.value||$('reportMatch')?.value||'';openVideoReview(id)};editor.insertBefore(b,editor.children[2]||null)}}
 function seekPlaylist(masterT){let m=currentMatchV(),a=m&&activeAngle(m),v=videoEl();if(!a)return;let was=vrVirtualPlaying||!!(v&&!v.paused&&!v.ended),vr=ensureReview(m);vr.masterTime=Number(masterT)||0,loc=resolveAtMaster(a,vr.masterTime);if(!loc){showNoCoverage(a,vr.masterTime,was);return}vrNoCoverage=false;vrVirtualPlaying=false;loadClip(a,loc.index,loc.time,was);renderLongVideoTimeline522();updateLongTimelinePlayhead522();}
 function setClipInOut(which){let m=currentMatchV();if(!m)return;let vr=ensureReview(m);if(which==='in')vr.clipIn=currentPlaylistTime();else vr.clipOut=currentPlaylistTime();saveV();renderVideoReview();}
 function displayedStream(a){let v=videoEl();let canvas=document.createElement('canvas'),w=v.videoWidth||1280,h=v.videoHeight||720;canvas.width=w;canvas.height=h;let ctx=canvas.getContext('2d');let stopped=false;function draw(){if(stopped)return;ctx.save();ctx.fillStyle='black';ctx.fillRect(0,0,w,h);let view=a?.view||{zoom:1,x:0,y:0};ctx.translate(w/2+(view.x||0),h/2+(view.y||0));ctx.scale(view.zoom||1,view.zoom||1);ctx.drawImage(v,-w/2,-h/2,w,h);ctx.restore();requestAnimationFrame(draw)}draw();let stream=canvas.captureStream(30);return {stream,stop:()=>{stopped=true}}}
@@ -6444,7 +6594,7 @@ let saveVideoShotBefore563=saveVideoShot;
 saveVideoShot=function(){let out=saveVideoShotBefore563.apply(this,arguments),m=currentMatchV();refreshShotPeriods563(m);saveV();installShotSelect549();renderVideoTimeline();return out};
 let importMatchFolderBefore563=importMatchFolder555;
 importMatchFolder555=async function(){let out=await importMatchFolderBefore563.apply(this,arguments);if(vrWaveformsVisible)await renderWaveforms530();return out};
-window.openVideoStatsReview=openVideoReview;window.v521OpenVideoReview=openVideoReview;window.v521VideoReviewVersion='5.65';
+window.openVideoStatsReview=openVideoReview;window.v521OpenVideoReview=openVideoReview;window.v521VideoReviewVersion=APP_VERSION_566;
 bindEvents();[0,300,1000,2500].forEach(ms=>setTimeout(()=>{installButtons();if($('videoReview')?.classList.contains('active'))renderVideoReview();},ms));requestAnimationFrame(tick);
 })();
 </script>
@@ -6472,6 +6622,204 @@ window.v534MatchResult=result534;window.v534RepairMatchResults=repair534;
 try{let old=renderAll;if(typeof old==='function'&&!old.v534){let fn=function(){repair534(false);return old.apply(this,arguments)};fn.v534=true;renderAll=fn;window.renderAll=fn}}catch(e){}
 document.addEventListener('click',function(e){if(e.target&&/Generate Report|Print Report|View Report|Update Stats/i.test(e.target.textContent||''))repair534(true)},true);
 setTimeout(function(){if(repair534(true)){try{renderAll()}catch(e){}}},0);
+})();
+</script>
+
+<script>
+/* v5.69 offline Benchmark Report framework. No endpoint or network request is configured. */
+(function(){
+const LEVELS=['School','Club','Provincial','National','Other'];
+const TIERS=['A / 1st','B / 2nd','C / 3rd','D / 4th','Other'];
+const $=id=>document.getElementById(id);
+const e=value=>String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+const num=value=>{const n=Number(value);return Number.isFinite(n)?n:null};
+const pct=value=>{let n=num(value);if(n===null)return null;if(Math.abs(n)<=1)n*=100;return n};
+const pctText=value=>{const n=pct(value);return n===null?'N/C':n.toFixed(1)+'%'};
+const allMatches=g=>(g?.matches||[]).slice();
+const date=m=>String(m?.date||m?.matchDate||'');
+const tier=value=>typeof normalizeTier568==='function'?normalizeTier568(value):String(value||'Not specified');
+function selectedGoalie(){try{return goalie()}catch(x){return null}}
+function activated(g){return !!(g&&g.benchmarkConsent==='opted_in'&&g.benchmarkLastSuccessfulUpload)}
+function status(g){if(!g)return {kind:'locked',title:'Select a goalkeeper',text:'Choose a goalkeeper to prepare a Benchmark Report.'};if(g.benchmarkConsent!=='opted_in')return {kind:'locked',title:'Benchmark Report locked',text:'Benchmarking must be activated before this report is available.'};if(!g.benchmarkLastSuccessfulUpload)return {kind:'locked',title:'Eligible upload required',text:'Benchmark access will activate after this goalkeeper completes a successful eligible upload.'};return {kind:'ready',title:'Benchmark Report available',text:'Prepare a comparison using the controls below.'}}
+function years(g){let values=[...new Set(allMatches(g).map(m=>date(m).slice(0,4)).filter(Boolean))].sort().reverse();return values.length?values:[String(new Date().getFullYear())]}
+function matchAgeGroups(ms,g){let out=[...new Set(ms.map(m=>m.goalieAgeGroupAtMatch).filter(v=>v&&v!=='Not specified'))];if(!out.length){try{let a=ageGroup(g);if(a)out=[a]}catch(x){}}return out}
+function renderFields(){
+  const g=selectedGoalie(),wrap=$('v471ReportFields'),hint=$('v471ReportHint');if(!wrap)return;
+  const s=status(g);if(hint)hint.textContent=s.kind==='ready'?'Compare this goalkeeper with matching anonymous benchmark cohorts.':'Benchmark access is required.';
+  if(s.kind!=='ready'){wrap.innerHTML='<div class="v569BenchmarkState locked"><strong>'+e(s.title)+'</strong><p>'+e(s.text)+'</p></div>';return}
+  const ys=years(g),gender=g.gender||'Not specified',ages=matchAgeGroups(allMatches(g),g);
+  wrap.innerHTML='<div class="v569BenchmarkState ready"><strong>'+e(s.title)+'</strong><p>'+e(s.text)+'</p></div>'+
+    '<div class="v569Cohort"><span>Age: '+e(ages.join(' / ')||'Not specified')+'</span><span>Gender: '+e(gender)+'</span></div>'+
+    '<div class="v569BenchmarkGrid">'+
+      '<label>Goalkeeper Matches<select id="v569BenchmarkRange"><option value="year">Full Year</option><option value="last5">Last 5 Matches</option></select></label>'+
+      '<label id="v569BenchmarkYearLabel">Year<select id="v569BenchmarkYear">'+ys.map(y=>'<option value="'+e(y)+'">'+e(y)+'</option>').join('')+'</select></label>'+
+      '<label>Team Level<select id="v569BenchmarkLevel"><option value="all">All Team Levels</option>'+LEVELS.map(v=>'<option>'+e(v)+'</option>').join('')+'</select></label>'+
+      '<label>Team Tier<select id="v569BenchmarkTier"><option value="all">All Team Tiers</option>'+TIERS.map(v=>'<option>'+e(v)+'</option>').join('')+'</select></label>'+
+    '</div>';
+  const range=$('v569BenchmarkRange'),yearLabel=$('v569BenchmarkYearLabel');if(range&&yearLabel)range.addEventListener('change',()=>{yearLabel.hidden=range.value==='last5'});
+}
+function selectedMatches(g){
+  const range=$('v569BenchmarkRange')?.value||'year',year=$('v569BenchmarkYear')?.value||years(g)[0],level=$('v569BenchmarkLevel')?.value||'all',selectedTier=$('v569BenchmarkTier')?.value||'all';
+  let ms=allMatches(g).filter(m=>m.matchStatus==='finalised'||m.finalizedAt||m.result);
+  if(level!=='all')ms=ms.filter(m=>String(m.goalieTeamLevel||'')===level);
+  if(selectedTier!=='all')ms=ms.filter(m=>tier(m.goalieTeamTier)===selectedTier);
+  ms.sort((a,b)=>date(b).localeCompare(date(a))||String(b.id||'').localeCompare(String(a.id||'')));
+  if(range==='last5')return ms.slice(0,5).reverse();
+  return ms.filter(m=>date(m).slice(0,4)===year).reverse();
+}
+function shots(ms){return ms.flatMap(m=>(m.shots||[]).map(s=>({...s,_match:m}))) }
+function outcome(s){let o=String(s?.outcome||'').toLowerCase();return o==='goal'?'Goal':o.startsWith('angle')?'Angle Closed Off':'Save'}
+function ownMetrics(ms){const a=shots(ms),s=a.filter(x=>outcome(x)==='Save').length,g=a.filter(x=>outcome(x)==='Goal').length,ang=a.filter(x=>outcome(x)==='Angle Closed Off').length,danger=a.filter(x=>/^dangerous/i.test(String(x.rebound||''))).length,outn=a.filter(x=>['2 vs 1','3 vs 1','4+ vs 1'].includes(x.outnumbered)).length,pc=a.filter(x=>x.shotSituation==='Penalty Corner'||x.situation==='Penalty Corner').length,ps=a.filter(x=>x.shotSituation==='Penalty Stroke'||x.situation==='Penalty Stroke').length;return {matches:ms.length,records:a.length,saves:s,goals:g,angles:ang,attempts:s+g,saveRate:s+g?s/(s+g):null,defenceRate:a.length?(s+ang)/a.length:null,dangerousRebounds:danger,dangerousReboundRate:s?danger/s:null,outnumberedAttempts:outn,penaltyCorners:pc,penaltyStrokes:ps}}
+function reportStore(g){return g?.benchmarkReportCache||g?.benchmarkReportData||g?.benchmarkSnapshot||null}
+function resolveBenchmark(g,ms){
+  const store=reportStore(g);if(!store)return null;if(store.metrics||store.summary)return store;
+  const entries=store.reports||store.cohorts||[],level=$('v569BenchmarkLevel')?.value||'all',selectedTier=$('v569BenchmarkTier')?.value||'all',gender=String(g.gender||'').toLowerCase(),ages=matchAgeGroups(ms,g);
+  let candidates=entries.filter(x=>(!x.gender||String(x.gender).toLowerCase()===gender)&&(!x.ageGroup||ages.includes(x.ageGroup))&&(level==='all'||!x.teamLevel||x.teamLevel===level)&&(selectedTier==='all'||!x.teamTier||tier(x.teamTier)===selectedTier));
+  return candidates.find(x=>(x.teamLevel||'all')===level&&(tier(x.teamTier||'all')===selectedTier||selectedTier==='all'&&!x.teamTier))||candidates[0]||null;
+}
+function benchmarkMetrics(data){return data?.metrics||data?.summary||data||{}}
+function deltaClass(value,higher=true){const n=num(value);if(n===null||Math.abs(n)<.05)return 'v569Even';return (higher?n>0:n<0)?'v569Above':'v569Below'}
+function compareRow(label,own,bench,type='number',higher=true){const ov=type==='pct'?pct(own):num(own),bv=type==='pct'?pct(bench):num(bench),diff=ov===null||bv===null?null:ov-bv,formatted=v=>type==='pct'?(v===null?'N/C':v.toFixed(1)+'%'):(v===null?'N/C':v.toFixed(1).replace(/\.0$/,''));return '<tr><td>'+e(label)+'</td><td>'+formatted(ov)+'</td><td>'+formatted(bv)+'</td><td class="'+deltaClass(diff,higher)+'">'+(diff===null?'N/C':(diff>0?'+':'')+diff.toFixed(1)+(type==='pct'?' pts':''))+'</td></tr>'}
+function comparisonTable(own,bm){return '<h2>Overall Comparison</h2><table class="v569CompareTable"><tr><th>Measure</th><th>Goalkeeper</th><th>Benchmark</th><th>Difference</th></tr>'+[
+  compareRow('Save Rate',own.saveRate,bm.saveRate,'pct',true),compareRow('Defence Rate',own.defenceRate,bm.defenceRate,'pct',true),compareRow('Shot Records',own.records,bm.recordsPerGoalkeeper??bm.averageShotRecords),compareRow('Saves',own.saves,bm.savesPerGoalkeeper??bm.averageSaves),compareRow('Goals Conceded',own.goals,bm.goalsPerGoalkeeper??bm.averageGoals,'number',false),compareRow('Angles Closed Off',own.angles,bm.anglesPerGoalkeeper??bm.averageAngles),compareRow('Dangerous Rebound Rate',own.dangerousReboundRate,bm.dangerousReboundRate,'pct',false),compareRow('Outnumbered Attempts',own.outnumberedAttempts,bm.outnumberedAttemptsPerGoalkeeper??bm.averageOutnumberedAttempts),compareRow('Penalty Corners',own.penaltyCorners,bm.penaltyCornersPerGoalkeeper??bm.averagePenaltyCorners),compareRow('Penalty Strokes',own.penaltyStrokes,bm.penaltyStrokesPerGoalkeeper??bm.averagePenaltyStrokes)
+].join('')+'</table>'}
+function groupOwn(ms,key){const map={};shots(ms).forEach(s=>{let name=key==='shotSituation'?(s.shotSituation||s.situation||'Normal Game Play'):key==='shotType'?(s.type||s.shotType||'1st Shot'):key==='outnumbered'?(s.outnumbered||'Not Out Numbered'):(s.rebound||'No rebound'),r=map[name]||(map[name]={records:0,saves:0,goals:0,angles:0});r.records++;let o=outcome(s);if(o==='Save')r.saves++;else if(o==='Goal')r.goals++;else r.angles++});Object.values(map).forEach(r=>{r.saveRate=r.saves+r.goals?r.saves/(r.saves+r.goals):null;r.defenceRate=r.records?(r.saves+r.angles)/r.records:null});return map}
+function breakdownTable(ms,data,key,title){const own=groupOwn(ms,key),bench=data?.breakdowns?.[key]||data?.[key]||{},names=[...new Set([...Object.keys(own),...Object.keys(bench)])].sort();if(!names.length)return '';return '<h2>'+e(title)+'</h2><table class="v569CompareTable"><tr><th>Area</th><th>Goalkeeper Save</th><th>Benchmark Save</th><th>Goalkeeper Defence</th><th>Benchmark Defence</th><th>Records</th></tr>'+names.map(name=>{let o=own[name]||{},b=bench[name]||{};return '<tr><td>'+e(name)+'</td><td>'+pctText(o.saveRate)+'</td><td>'+pctText(b.saveRate)+'</td><td>'+pctText(o.defenceRate)+'</td><td>'+pctText(b.defenceRate)+'</td><td>'+Number(o.records||0)+'</td></tr>'}).join('')+'</table>'}
+function focusAdvice(name){const n=name.toLowerCase();if(n.includes('rebound'))return 'Practise directing saves away from central scoring areas and recovering into the next set position.';if(n.includes('penalty corner'))return 'Prioritise first-save positioning, vision through traffic and rapid recovery after the initial phase.';if(n.includes('outnumber'))return 'Train depth control, patience and passing-lane management in overload situations.';if(n.includes('save rate'))return 'Review goal patterns and build position-specific repetition around the most common scoring locations.';if(n.includes('defence'))return 'Work on starting position, angle management and decisions that prevent a shot reaching the goal.';return 'Review the matching clips and use focused repetitions for this situation.'}
+function trainingFocus(ms,data,own,bm){let items=[];function add(name,ov,bv,higher=true,sample=own.records){let a=pct(ov),b=pct(bv);if(a===null||b===null)return;let gap=higher?b-a:a-b;if(gap>0)items.push({name,gap,sample})}add('Overall Save Rate',own.saveRate,bm.saveRate,true,own.attempts);add('Overall Defence Rate',own.defenceRate,bm.defenceRate,true,own.records);add('Dangerous Rebound Control',own.dangerousReboundRate,bm.dangerousReboundRate,false,own.saves);['shotSituation','shotType','outnumbered','rebound'].forEach(key=>{let o=groupOwn(ms,key),b=data?.breakdowns?.[key]||data?.[key]||{};Object.keys(o).forEach(name=>{add(name+' Save Rate',o[name].saveRate,b[name]?.saveRate,true,o[name].records);add(name+' Defence Rate',o[name].defenceRate,b[name]?.defenceRate,true,o[name].records)})});items.sort((a,b)=>b.gap-a.gap);if(!items.length)return '<h2>Training Focus</h2><p>No below-benchmark areas can be calculated from the available sample.</p>';return '<div class="reportPageBreakBefore"><h2>Training Focus</h2><div class="v569FocusGrid">'+items.slice(0,3).map(x=>'<div class="v569FocusCard"><h3>'+e(x.name)+'</h3><p><b>'+x.gap.toFixed(1)+' percentage points below benchmark</b></p><p>'+e(focusAdvice(x.name))+'</p><p>Goalkeeper sample: '+x.sample+' record(s)</p></div>').join('')+'</div></div>'}
+function heatPoints(list,colour){return (list||[]).map(p=>{let x=Math.max(0,Math.min(100,Number(p.x??p.dX??p.gX)||0)),y=Math.max(0,Math.min(100,Number(p.y??p.dY??p.gY)||0));return '<circle cx="'+x+'" cy="'+y+'" r="1.6" fill="'+colour+'" fill-opacity=".55"/>'}).join('')}
+function heatMaps(data){let h=data?.heatMaps||data?.heatmaps;if(!h)return '';let d=h.d||h.dShots||[],g=h.goal||h.goalShots||[];return '<div class="reportPageBreakBefore"><h2>Benchmark Heat Maps</h2><p>Every qualifying anonymous shot in the selected cohort is included. '+d.length+' D placements and '+g.length+' goal placements.</p><div class="v569HeatGrid"><div><h3>D Placements</h3><svg viewBox="0 0 100 100" aria-label="Benchmark D heat map"><rect x="1" y="1" width="98" height="98" fill="none" stroke="#567568"/><path d="M10 100 A40 40 0 0 1 90 100" fill="none" stroke="#567568"/>'+heatPoints(d,'#1677d2')+'</svg></div><div><h3>Goal Placements</h3><svg viewBox="0 0 100 100" aria-label="Benchmark goal heat map"><rect x="10" y="8" width="80" height="84" fill="none" stroke="#567568"/>'+heatPoints(g,'#d23d32')+'</svg></div></div></div>'}
+function generate(){
+  const g=selectedGoalie();if(!activated(g)){alert(status(g).text);return}
+  const ms=selectedMatches(g);if(!ms.length){alert('No finalised matches match the selected report period, level and tier.');return}
+  const data=resolveBenchmark(g,ms);if(!data){alert('Benchmark access is active, but no matching benchmark cohort has been downloaded yet. Open Benchmarking and select Upload Data & Refresh Benchmarks.');return}
+  const own=ownMetrics(ms),bm=benchmarkMetrics(data),ages=matchAgeGroups(ms,g),range=$('v569BenchmarkRange')?.value==='last5'?'Last 5 Matches':'Full Year '+($('v569BenchmarkYear')?.value||''),level=$('v569BenchmarkLevel')?.value||'all',selectedTier=$('v569BenchmarkTier')?.value||'all',goalkeepers=Number(data.goalkeepers??data.sample?.goalkeepers??0),matches=Number(data.matches??data.sample?.matches??0),records=Number(data.shots??data.sample?.shots??0),limited=data.limitedData===true||goalkeepers<5||matches<15||records<100;
+  const cohort='<h2>Report Selection</h2><div class="v471ProfileGrid"><div><b>Goalkeeper Matches</b><br>'+e(range)+'</div><div><b>Age Group</b><br>'+e(ages.join(' / ')||'Not specified')+'</div><div><b>Gender</b><br>'+e(g.gender||'Not specified')+'</div><div><b>Team Level</b><br>'+e(level==='all'?'All Team Levels':level)+'</div><div><b>Team Tier</b><br>'+e(selectedTier==='all'?'All Team Tiers':selectedTier)+'</div><div><b>Benchmark Sample</b><br>'+goalkeepers+' goalkeepers · '+matches+' matches · '+records+' shots</div></div>'+(limited?'<p><span class="v569Limited">Limited Data</span> Interpret this benchmark carefully because the comparison sample is small.</p>':'');
+  const body=cohort+comparisonTable(own,bm)+breakdownTable(ms,data,'shotSituation','Shot Situation Comparison')+breakdownTable(ms,data,'shotType','Shot Type Comparison')+breakdownTable(ms,data,'outnumbered','Outnumbered Comparison')+breakdownTable(ms,data,'rebound','Rebound Comparison')+heatMaps(data)+trainingFocus(ms,data,own,bm);
+  const root=$('reportOutput'),header=typeof reportHeader==='function'?reportHeader('Benchmark Report',g,ms.length+' match(es)'):'<h1>Benchmark Report</h1><p><b>'+e(g.name||'')+'</b></p>';root.style.display='block';root.innerHTML='<table class="reportPrintTable"><thead class="reportPrintHeader"><tr><td><img class="reportHeaderLogo" src="assets/title-logo.png" alt="Hockey Goalie Stats Data Driven Development"></td></tr></thead><tbody class="reportPrintBody"><tr><td><div class="reportMainContent">'+header+body+'</div></td></tr></tbody></table>';showTab('reports')
+}
+const oldUpdate=window.updateV471ReportFields;
+window.updateV471ReportFields=function(){const type=$('v471ReportType')?.value;if(type==='benchmark')return renderFields();return typeof oldUpdate==='function'?oldUpdate.apply(this,arguments):undefined};
+const oldGenerate=window.generateV471SelectedReport;
+window.generateV471SelectedReport=function(){if($('v471ReportType')?.value==='benchmark')return generate();return typeof oldGenerate==='function'?oldGenerate.apply(this,arguments):undefined};
+window.v569BenchmarkReport={activated,status,selectedMatches,ownMetrics,resolveBenchmark,generate};
+setTimeout(()=>{if($('v471ReportType')?.value==='benchmark')renderFields()},0);
+})();
+</script>
+<script>
+/* v5.71 sidebar navigation, historical Team Profile repair and Stats benchmark overlay. */
+(function(){
+const $=id=>document.getElementById(id);
+const normalTeam=value=>String(value||'').trim().replace(/\s+/g,' ').toLocaleLowerCase();
+const missing=value=>!String(value||'').trim()||String(value).trim()==='Not specified';
+function profiles(g){try{return ensureTeamProfiles568(g)}catch(x){return Array.isArray(g?.teamProfiles)?g.teamProfiles:[]}}
+function repairMissing(g){if(!g)return 0;const map=new Map(profiles(g).filter(p=>p.name).map(p=>[normalTeam(p.name),p]));let changed=0;(g.matches||[]).forEach(m=>{const p=map.get(normalTeam(m.homeTeam));if(!p)return;if(missing(m.goalieAgeGroupAtMatch)&&!missing(p.ageGroup)){m.goalieAgeGroupAtMatch=p.ageGroup;changed++}if(missing(m.goalieTeamLevel)&&!missing(p.level)){m.goalieTeamLevel=p.level;changed++}if(missing(m.goalieTeamTier)&&!missing(p.tier)){m.goalieTeamTier=typeof normalizeTier568==='function'?normalizeTier568(p.tier):p.tier;changed++}});return changed}
+function repairAll(){let changed=0;try{(db.goalies||[]).forEach(g=>changed+=repairMissing(g))}catch(x){}return changed}
+function applyProfile(id){
+  const g=goalie();if(!g)return;g.teamProfiles=collectTeamProfiles568();g.teams=g.teamProfiles.map(p=>p.name).filter(Boolean);const p=g.teamProfiles.find(x=>String(x.id)===String(id));if(!p||!p.name){alert('Enter and save the team name first.');return}
+  const matches=(g.matches||[]).filter(m=>normalTeam(m.homeTeam)===normalTeam(p.name));if(!matches.length){alert('No previous matches use '+p.name+'.');return}
+  if(!confirm('Apply the '+p.name+' Team Profile to '+matches.length+' previous match'+(matches.length===1?'':'es')+'? This replaces the saved home age group, level and tier for those matches.'))return;
+  matches.forEach(m=>{m.goalieAgeGroupAtMatch=p.ageGroup||'Not specified';m.goalieTeamLevel=p.level||'Not specified';m.goalieTeamTier=typeof normalizeTier568==='function'?normalizeTier568(p.tier):p.tier||'Not specified'});saveDB();renderAll();alert('Updated '+matches.length+' previous match'+(matches.length===1?'':'es')+'.')
+}
+document.addEventListener('click',event=>{const button=event.target.closest?.('[data-apply-team-profile]');if(button)applyProfile(button.dataset.applyTeamProfile)});
+try{const oldRenderAll=renderAll;renderAll=function(){if(repairAll())saveDB();return oldRenderAll.apply(this,arguments)};window.renderAll=renderAll}catch(x){}
+if(repairAll()){try{saveDB();renderAll()}catch(x){}}
+window.v570TeamProfileRepair={repairMissing,applyProfile};
+
+const sidebar=$('v570Sidebar'),collapse=$('v570SidebarToggle'),mobile=$('v570MobileMenu');
+function updateSidebarTop(){const header=document.querySelector('body>header');if(header)document.documentElement.style.setProperty('--v570-header-height',Math.ceil(header.getBoundingClientRect().height)+'px')}
+function setCollapsed(value){document.body.classList.toggle('v570SidebarCollapsed',!!value);collapse?.setAttribute('aria-expanded',String(!value));try{localStorage.setItem('hgs-sidebar-collapsed',value?'1':'0')}catch(x){}}
+function setMobileOpen(value){document.body.classList.toggle('v570SidebarOpen',!!value);mobile?.setAttribute('aria-expanded',String(!!value))}
+try{setCollapsed(localStorage.getItem('hgs-sidebar-collapsed')==='1')}catch(x){setCollapsed(false)}
+collapse?.addEventListener('click',()=>setCollapsed(!document.body.classList.contains('v570SidebarCollapsed')));
+mobile?.addEventListener('click',()=>setMobileOpen(!document.body.classList.contains('v570SidebarOpen')));
+updateSidebarTop();window.addEventListener('resize',updateSidebarTop,{passive:true});setTimeout(updateSidebarTop,100);
+sidebar?.querySelectorAll('.tab').forEach(button=>button.addEventListener('click',()=>setMobileOpen(false)));
+document.addEventListener('keydown',event=>{if(event.key==='Escape')setMobileOpen(false)});
+
+const percent=value=>{let n=Number(value);if(!Number.isFinite(n))return null;if(Math.abs(n)<=1)n*=100;return n};
+const statsActive=g=>!!(g&&g.benchmarkConsent==='opted_in'&&g.benchmarkLastSuccessfulUpload);
+const store=g=>g?.benchmarkReportCache||g?.benchmarkReportData||g?.benchmarkSnapshot||null;
+function statsMatches(g){try{return filterMatches(g,statsPeriod.value,statsYear.value,statsHome.value,statsOpp.value)}catch(x){return []}}
+function cohortAges(g,ms){let ages=[...new Set(ms.map(m=>m.goalieAgeGroupAtMatch).filter(v=>v&&v!=='Not specified'))];if(!ages.length){try{let a=ageGroup(g);if(a)ages=[a]}catch(x){}}return ages}
+function statsBenchmark(g,ms){
+  const data=store(g);if(!data)return null;if(data.metrics||data.summary)return data;
+  const entries=data.reports||data.cohorts||[],gender=String(g.gender||'').toLowerCase(),ages=cohortAges(g,ms),levels=[...new Set(ms.map(m=>m.goalieTeamLevel).filter(v=>v&&v!=='Not specified'))],tiers=[...new Set(ms.map(m=>typeof normalizeTier568==='function'?normalizeTier568(m.goalieTeamTier):m.goalieTeamTier).filter(v=>v&&v!=='Not specified'))];
+  return entries.find(x=>(!x.gender||String(x.gender).toLowerCase()===gender)&&(!x.ageGroup||ages.includes(x.ageGroup))&&(!x.teamLevel||levels.includes(x.teamLevel))&&(!x.teamTier||tiers.includes(typeof normalizeTier568==='function'?normalizeTier568(x.teamTier):x.teamTier)))||null
+}
+function rate(data,path,fallback){let value=path.reduce((o,k)=>o?.[k],data);if(value===undefined&&fallback)value=fallback.reduce((o,k)=>o?.[k],data);return percent(value)}
+function mapping(data){const bm=data?.metrics||data?.summary||data||{},breakdowns=data?.breakdowns||{};return {
+  'Save Rate':percent(bm.saveRate),
+  '1st Shot Save Rate':rate(breakdowns,['shotType','1st Shot','saveRate']),
+  'Rebound Save Rate':rate(breakdowns,['shotType','Rebound','saveRate']),
+  'Penalty Corner Save Rate':rate(breakdowns,['shotSituation','Penalty Corner','saveRate']),
+  'Penalty Stroke Save Rate':rate(breakdowns,['shotSituation','Penalty Stroke','saveRate']),
+  'In Game 1v1 Save Rate':rate(breakdowns,['shotSituation','In Game 1v1','saveRate']),
+  '8 Second 1v1 Save Rate':rate(breakdowns,['shotSituation','8 Second 1v1','saveRate']),
+  'Safe Rebound Rate':percent(bm.safeReboundRate),
+  'Rate of Attempts at Goals Out Numbered':percent(bm.outnumberedAttemptRate)
+}}
+function updateStatsButton(g){const button=$('v570IncludeBenchmarks');if(!button)return;const active=statsActive(g);button.disabled=!active;button.textContent=!active?'Benchmarks Locked':g.statsIncludeBenchmarks?'Hide Benchmarks':'Include Benchmarks';button.setAttribute('aria-pressed',String(active&&!!g.statsIncludeBenchmarks));button.title=!active?'Activate benchmarking and complete a successful eligible upload to unlock this option.':''}
+function decorateStats(g,ms){
+  if(!g?.statsIncludeBenchmarks||!statsActive(g))return;const output=$('statsOutput'),data=statsBenchmark(g,ms);if(!output)return;
+  if(!data){output.insertAdjacentHTML('afterbegin','<div class="v570BenchmarkSummary">No matching downloaded benchmark cohort is stored on this device.</div>');return}
+  const goalkeepers=Number(data.goalkeepers??data.sample?.goalkeepers??0),matches=Number(data.matches??data.sample?.matches??0),shotCount=Number(data.shots??data.sample?.shots??0),limited=data.limitedData===true||goalkeepers<5||matches<15||shotCount<100,values=mapping(data);let shown=0;
+  output.querySelectorAll('.stat').forEach(card=>{const label=card.querySelector('span')?.textContent?.trim(),benchmark=values[label];if(benchmark===null||benchmark===undefined)return;const own=percent(card.querySelector('b')?.textContent),difference=own===null?null:own-benchmark,cls=difference===null?'':difference>=0?'above':'below';card.insertAdjacentHTML('beforeend','<div class="v570BenchmarkValue">Benchmark '+benchmark.toFixed(1)+'%<small class="'+cls+'">'+(difference===null?'Difference N/C':(difference>=0?'+':'')+difference.toFixed(1)+' percentage points')+'</small></div>');shown++});
+  output.insertAdjacentHTML('afterbegin','<div class="v570BenchmarkSummary '+(limited?'limited':'')+'">'+(limited?'<b>Limited Data</b> · ':'')+'Same age group and gender · '+goalkeepers+' goalkeepers · '+matches+' matches · '+shotCount+' shots'+(shown?'':' · No applicable rate comparisons in this view')+'</div>')
+}
+window.toggleStatsBenchmarks570=function(){const g=goalie();if(!statsActive(g)){alert('Benchmarking must be activated by a successful eligible upload before benchmark figures are available.');return}if(!store(g)){alert('No downloaded benchmark dataset is stored on this device yet. Open Benchmarking and select Upload Data & Refresh Benchmarks.');return}g.statsIncludeBenchmarks=!g.statsIncludeBenchmarks;saveDB();renderStats()};
+try{const oldRenderStats=renderStats;renderStats=function(){const result=oldRenderStats.apply(this,arguments),g=goalie();updateStatsButton(g);if(g)decorateStats(g,statsMatches(g));return result};window.renderStats=renderStats}catch(x){}
+try{updateStatsButton(goalie());if($('stats')?.classList.contains('active'))renderStats()}catch(x){}
+window.v570StatsBenchmarks={active:statsActive,resolve:statsBenchmark,mapping};
+})();
+</script>
+<script>
+/* v5.71 context-aware Video Stats Review return navigation. */
+(function(){
+const STORAGE_KEY='hgs-video-review-return-v571';
+const validTarget=value=>value==='matchEditor'?'matchEditor':'match';
+function target(){try{return validTarget(sessionStorage.getItem(STORAGE_KEY))}catch(x){return 'match'}}
+function label(){return target()==='matchEditor'?'Back to Match Editor':'Back to Match'}
+function refreshButton(){const button=document.querySelector('[data-v521-return-match]');if(!button)return;const next=label();if(button.textContent!==next)button.textContent=next;if(button.getAttribute('aria-label')!==next)button.setAttribute('aria-label',next)}
+window.v571SetVideoReviewReturn=function(value){const next=validTarget(value);try{sessionStorage.setItem(STORAGE_KEY,next)}catch(x){}refreshButton();return next};
+window.v571VideoReviewReturnLabel=label;
+window.v571ReturnFromVideoReview=function(){const next=target();try{if(typeof saveAngleState==='function')saveAngleState()}catch(x){}try{vrVirtualPlaying=false}catch(x){}showTab(next);window.scrollTo(0,0);return next};
+window.addEventListener('click',event=>{const button=event.target?.closest?.('[data-v521-return-match]');if(!button)return;event.preventDefault();event.stopImmediatePropagation();window.v571ReturnFromVideoReview()},true);
+const review=document.getElementById('videoReview');if(review)new MutationObserver(refreshButton).observe(review,{childList:true,subtree:true});
+refreshButton();
+window.v571VideoReviewNavigation={target,label,returnToOrigin:window.v571ReturnFromVideoReview};
+})();
+</script>
+<script>
+/* v5.73 Cloudflare benchmark upload and cohort download connection. */
+(function(){
+const API='https://hgs-benchmark-api.datadrivendevelopmenthgs.workers.dev';
+let busy=false,networkMessage='',networkKind='';
+function setNetwork(message,kind=''){networkMessage=message;networkKind=kind;decorateBenchmark573()}
+function statusTime(value){if(!value)return '';try{return new Date(value).toLocaleString()}catch(x){return String(value)}}
+function decorateBenchmark573(){
+  const g=goalie(),status=document.getElementById('benchmarkStatus'),network=document.getElementById('v573BenchmarkNetworkStatus'),button=document.getElementById('v573UploadBenchmarks');if(!g)return;
+  const consent=g.benchmarkConsent||'undecided',active=consent==='opted_in'&&!!g.benchmarkLastSuccessfulUpload,label=consent==='undecided'?'Decision required':consent==='opted_out'?'Opted out':active?'Active — benchmark access enabled':'Opted in — upload required';
+  if(status)status.innerHTML='<div class="benchmarkState"><span class="benchmarkDot '+(consent==='opted_out'?'out':consent==='opted_in'?'wait':'')+'"></span><b>'+esc(label)+'</b></div><div>'+(consent==='opted_in'?(active?'Anonymous data last uploaded '+esc(statusTime(g.benchmarkLastSuccessfulUpload))+'.':'Upload eligible anonymous match data to unlock benchmark figures.'):'Normal app features remain available without benchmarking.')+'</div>';
+  if(network){network.textContent=networkMessage||(!navigator.onLine?'Offline — upload will be available when the connection returns.':active?'Benchmark data is connected.':'');network.className='v573NetworkStatus '+networkKind}
+  if(button){button.disabled=busy||consent!=='opted_in';button.textContent=busy?'Working…':'Upload Data & Refresh Benchmarks'}
+}
+async function jsonRequest(url,options={}){const response=await fetch(url,options),text=await response.text();let data=null;try{data=text?JSON.parse(text):{}}catch(x){throw new Error(response.ok?'The Cloudflare Worker is not configured with the benchmark API yet.':'The benchmark service returned an unreadable response.')}if(!response.ok||data?.ok===false)throw new Error(data?.error||data?.message||('Benchmark service error '+response.status));return data}
+function fallbackHash(text){let h=2166136261;for(let i=0;i<text.length;i++){h^=text.charCodeAt(i);h=Math.imul(h,16777619)}return (h>>>0).toString(16)}
+async function payloadHash(payload){const text=JSON.stringify({schemaVersion:payload.schemaVersion,benchmarkGoalieId:payload.benchmarkGoalieId,matches:payload.matches});try{const bytes=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text));return [...new Uint8Array(bytes)].map(x=>x.toString(16).padStart(2,'0')).join('')}catch(x){return fallbackHash(text)}}
+async function downloadBenchmarks573(g){const query=new URLSearchParams({gender:g.gender||'Not specified',excludeGoalkeeperId:g.benchmarkGoalieId});const data=await jsonRequest(API+'/api/v1/benchmarks?'+query.toString(),{headers:{Accept:'application/json'}});g.benchmarkReportCache={schemaVersion:data.schemaVersion||'1.0',downloadedAt:new Date().toISOString(),cohorts:Array.isArray(data.cohorts)?data.cohorts:[]};g.benchmarkLastDownload=new Date().toISOString();return g.benchmarkReportCache}
+async function uploadBenchmarkData573(options={}){
+  const g=goalie();if(!g)return;if(g.benchmarkConsent!=='opted_in'){setNetwork('Opt in before uploading benchmark data.','bad');return}const payload=benchmarkPayload566(g);if(!payload.matches.length){setNetwork('No eligible finalised matches are ready to upload.','bad');return}
+  if(busy)return;busy=true;setNetwork('Preparing anonymous benchmark upload…');
+  try{const hash=await payloadHash(payload),changed=options.force||hash!==g.benchmarkLastPayloadHash;if(changed){setNetwork('Uploading '+payload.matches.length+' eligible match'+(payload.matches.length===1?'':'es')+'…');const result=await jsonRequest(API+'/api/v1/upload',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(payload)});g.benchmarkLastPayloadHash=hash;g.benchmarkLastUploadCount=Number(result.matchesUpserted??payload.matches.length);g.benchmarkLastSuccessfulUpload=new Date().toISOString();g.benchmarkAccess=true;saveDB()}setNetwork('Refreshing benchmark figures…');await downloadBenchmarks573(g);saveDB();setNetwork((changed?'Upload complete. ':'No data changes to upload. ')+(g.benchmarkReportCache.cohorts.length||0)+' benchmark cohort'+(g.benchmarkReportCache.cohorts.length===1?'':'s')+' downloaded.','good');renderAll()}catch(error){setNetwork(error.message||'Benchmark connection failed.','bad');if(!options.silent)alert(error.message||'Benchmark connection failed.')}finally{busy=false;decorateBenchmark573()}
+}
+async function removeBenchmarkData573(g){if(!g?.benchmarkGoalieId)return;busy=true;setNetwork('Removing anonymous benchmark data…');try{await jsonRequest(API+'/api/v1/goalkeepers/'+encodeURIComponent(g.benchmarkGoalieId),{method:'DELETE',headers:{Accept:'application/json'}});delete g.benchmarkLastSuccessfulUpload;delete g.benchmarkLastPayloadHash;delete g.benchmarkReportCache;delete g.benchmarkLastDownload;g.benchmarkAccess=false;saveDB();setNetwork('Anonymous benchmark data removed.','good');renderAll()}catch(error){setNetwork('Opted out locally. Central deletion could not be confirmed: '+(error.message||'connection failed')+'.','bad')}finally{busy=false;decorateBenchmark573()}}
+const renderBefore573=renderBenchmarking566;renderBenchmarking566=function(){const result=renderBefore573.apply(this,arguments);decorateBenchmark573();return result};window.renderBenchmarking566=renderBenchmarking566;
+const consentBefore573=setBenchmarkConsent566;setBenchmarkConsent566=function(choice){const g=goalie(),wasUploaded=!!g?.benchmarkLastSuccessfulUpload;const result=consentBefore573.apply(this,arguments);if(choice==='opted_in')setTimeout(()=>uploadBenchmarkData573({silent:false}),0);else if(choice==='opted_out'&&wasUploaded)setTimeout(()=>removeBenchmarkData573(g),0);decorateBenchmark573();return result};window.setBenchmarkConsent566=setBenchmarkConsent566;
+const completeBefore573=completeMatch;completeMatch=function(){const g=goalie(),result=completeBefore573.apply(this,arguments);if(g?.benchmarkConsent==='opted_in')setTimeout(()=>uploadBenchmarkData573({silent:true}),250);return result};window.completeMatch=completeMatch;
+window.uploadBenchmarkData573=uploadBenchmarkData573;window.downloadBenchmarks573=downloadBenchmarks573;window.v573BenchmarkConnection={api:API,upload:uploadBenchmarkData573,download:downloadBenchmarks573,remove:removeBenchmarkData573};
+window.addEventListener('online',()=>{decorateBenchmark573();const g=goalie();if(g?.benchmarkConsent==='opted_in')uploadBenchmarkData573({silent:true})});window.addEventListener('offline',decorateBenchmark573);
+setTimeout(()=>{decorateBenchmark573();const g=goalie();if(g?.benchmarkConsent==='opted_in')uploadBenchmarkData573({silent:true})},1200);
 })();
 </script>
 </body>

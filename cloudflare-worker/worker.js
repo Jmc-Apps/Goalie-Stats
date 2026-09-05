@@ -1,0 +1,59 @@
+const CORS={
+  'Access-Control-Allow-Origin':'*',
+  'Access-Control-Allow-Methods':'GET,POST,DELETE,OPTIONS',
+  'Access-Control-Allow-Headers':'Content-Type,Accept',
+  'Access-Control-Max-Age':'86400'
+};
+const json=(value,status=200)=>new Response(JSON.stringify(value),{status,headers:{...CORS,'Content-Type':'application/json;charset=UTF-8','Cache-Control':'no-store'}});
+const clean=(value,max=120)=>String(value??'').trim().slice(0,max);
+const numberOrNull=value=>value===null||value===undefined||value===''?null:Number.isFinite(Number(value))?Number(value):null;
+const validId=(value,prefix)=>typeof value==='string'&&value.startsWith(prefix)&&value.length>=12&&value.length<=100;
+const outcome=value=>{const text=clean(value,40).toLowerCase();return text==='goal'?'Goal':text.startsWith('angle')?'Angle Closed Off':'Save'};
+
+function validateUpload(body){
+  if(!body||body.schemaVersion!=='1.0')throw new Error('Unsupported benchmark schema version.');
+  if(!validId(body.benchmarkGoalieId,'goalie_'))throw new Error('Invalid anonymous goalkeeper identifier.');
+  if(!Array.isArray(body.matches)||body.matches.length>500)throw new Error('Invalid match collection.');
+  body.matches.forEach(match=>{if(!validId(match?.benchmarkMatchId,'match_'))throw new Error('Invalid anonymous match identifier.');if(!Array.isArray(match.shots)||match.shots.length>5000)throw new Error('Invalid shot collection.');});
+}
+
+async function upload(request,env){
+  const length=Number(request.headers.get('content-length')||0);if(length>8_000_000)return json({ok:false,error:'Upload is too large.'},413);
+  let body;try{body=await request.json();validateUpload(body)}catch(error){return json({ok:false,error:error.message||'Invalid upload.'},400)}
+  const goalieId=body.benchmarkGoalieId,now=new Date().toISOString(),gender=clean(body.matches[0]?.goalkeeperGender||'Not specified',40);
+  await env.DB.prepare('INSERT INTO benchmark_goalkeepers(goalkeeper_id,gender,created_at,updated_at) VALUES(?,?,?,?) ON CONFLICT(goalkeeper_id) DO UPDATE SET gender=excluded.gender,updated_at=excluded.updated_at').bind(goalieId,gender,now,now).run();
+  const incoming=new Set(body.matches.map(match=>match.benchmarkMatchId));
+  const current=await env.DB.prepare('SELECT benchmark_match_id FROM benchmark_matches WHERE goalkeeper_id=?').bind(goalieId).all();
+  for(const row of current.results||[]){if(!incoming.has(row.benchmark_match_id))await env.DB.batch([env.DB.prepare('DELETE FROM benchmark_shots WHERE goalkeeper_id=? AND benchmark_match_id=?').bind(goalieId,row.benchmark_match_id),env.DB.prepare('DELETE FROM benchmark_matches WHERE goalkeeper_id=? AND benchmark_match_id=?').bind(goalieId,row.benchmark_match_id)])}
+  let shotCount=0;
+  for(const match of body.matches){
+    const matchId=match.benchmarkMatchId,statements=[env.DB.prepare(`INSERT INTO benchmark_matches(goalkeeper_id,benchmark_match_id,season,goalkeeper_age_group,goalkeeper_gender,goalkeeper_team_level,goalkeeper_team_tier,opponent_age_group,opponent_team_level,opponent_team_tier,match_type,participation,minutes_played,periods,save_rate,defence_rate,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(goalkeeper_id,benchmark_match_id) DO UPDATE SET season=excluded.season,goalkeeper_age_group=excluded.goalkeeper_age_group,goalkeeper_gender=excluded.goalkeeper_gender,goalkeeper_team_level=excluded.goalkeeper_team_level,goalkeeper_team_tier=excluded.goalkeeper_team_tier,opponent_age_group=excluded.opponent_age_group,opponent_team_level=excluded.opponent_team_level,opponent_team_tier=excluded.opponent_team_tier,match_type=excluded.match_type,participation=excluded.participation,minutes_played=excluded.minutes_played,periods=excluded.periods,save_rate=excluded.save_rate,defence_rate=excluded.defence_rate,updated_at=excluded.updated_at`).bind(goalieId,matchId,clean(match.season,8),clean(match.goalkeeperAgeGroup,30),clean(match.goalkeeperGender,40),clean(match.goalkeeperTeamLevel,40),clean(match.goalkeeperTeamTier,40),clean(match.opponentAgeGroup,30),clean(match.opponentTeamLevel,40),clean(match.opponentTeamTier,40),clean(match.matchType,40),clean(match.participation,40),numberOrNull(match.minutesPlayed),Math.max(1,Number(match.periods)||1),numberOrNull(match.saveRate),numberOrNull(match.defenceRate),now),env.DB.prepare('DELETE FROM benchmark_shots WHERE goalkeeper_id=? AND benchmark_match_id=?').bind(goalieId,matchId)];
+    (match.shots||[]).forEach((shot,index)=>{shotCount++;statements.push(env.DB.prepare('INSERT INTO benchmark_shots(goalkeeper_id,benchmark_match_id,shot_index,outcome,shot_type,situation,outnumbered,rebound,d_x,d_y,goal_x,goal_y) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)').bind(goalieId,matchId,index,outcome(shot.outcome),clean(shot.shotType,50),clean(shot.situation,50),clean(shot.outnumbered,50),clean(shot.rebound,50),numberOrNull(shot.dPoint?.x),numberOrNull(shot.dPoint?.y),numberOrNull(shot.goalPoint?.x),numberOrNull(shot.goalPoint?.y)))});
+    await env.DB.batch(statements);
+  }
+  return json({ok:true,matchesUpserted:body.matches.length,shotsReplaced:shotCount,uploadedAt:now});
+}
+
+function average(values){const valid=values.filter(Number.isFinite);return valid.length?valid.reduce((sum,value)=>sum+value,0)/valid.length:null}
+function shotName(shot,key){if(key==='shotSituation')return shot.situation||'Normal Game Play';if(key==='shotType')return shot.shot_type||'1st Shot';if(key==='outnumbered')return shot.outnumbered||'Not Out Numbered';return shot.rebound||'No rebound'}
+function breakdown(shots,key){const names=[...new Set(shots.map(shot=>shotName(shot,key)))],result={};for(const name of names){const byGoalie={};shots.filter(shot=>shotName(shot,key)===name).forEach(shot=>{const row=byGoalie[shot.goalkeeper_id]||(byGoalie[shot.goalkeeper_id]={records:0,saves:0,goals:0,angles:0});row.records++;if(shot.outcome==='Goal')row.goals++;else if(shot.outcome==='Angle Closed Off')row.angles++;else row.saves++});const rows=Object.values(byGoalie);result[name]={records:rows.reduce((sum,row)=>sum+row.records,0),saveRate:average(rows.map(row=>row.saves+row.goals?row.saves/(row.saves+row.goals):null)),defenceRate:average(rows.map(row=>row.records?(row.saves+row.angles)/row.records:null))}}return result}
+function buildCohort(matches,shots,gender,ageGroup,teamLevel,teamTier){
+  const ids=new Set(matches.map(match=>match.goalkeeper_id+'|'+match.benchmark_match_id)),selectedShots=shots.filter(shot=>ids.has(shot.goalkeeper_id+'|'+shot.benchmark_match_id)),goalieIds=[...new Set(matches.map(match=>match.goalkeeper_id))],perGoalie=goalieIds.map(id=>{const gm=matches.filter(match=>match.goalkeeper_id===id),gs=selectedShots.filter(shot=>shot.goalkeeper_id===id),saves=gs.filter(shot=>shot.outcome==='Save').length,goals=gs.filter(shot=>shot.outcome==='Goal').length,angles=gs.filter(shot=>shot.outcome==='Angle Closed Off').length,danger=gs.filter(shot=>/^dangerous/i.test(shot.rebound||'')).length,safe=gs.filter(shot=>/^safe/i.test(shot.rebound||'')).length,outnumbered=gs.filter(shot=>['2 vs 1','3 vs 1','4+ vs 1'].includes(shot.outnumbered)).length;return {saveRate:average(gm.map(match=>numberOrNull(match.save_rate))),defenceRate:average(gm.map(match=>numberOrNull(match.defence_rate))),records:gs.length,saves,goals,angles,dangerousReboundRate:saves?danger/saves:null,safeReboundRate:saves?safe/saves:null,outnumberedAttemptRate:gs.length?outnumbered/gs.length:null,outnumberedAttempts:outnumbered,penaltyCorners:gs.filter(shot=>shot.situation==='Penalty Corner').length,penaltyStrokes:gs.filter(shot=>shot.situation==='Penalty Stroke').length}});
+  const metrics={saveRate:average(perGoalie.map(row=>row.saveRate)),defenceRate:average(perGoalie.map(row=>row.defenceRate)),recordsPerGoalkeeper:average(perGoalie.map(row=>row.records)),savesPerGoalkeeper:average(perGoalie.map(row=>row.saves)),goalsPerGoalkeeper:average(perGoalie.map(row=>row.goals)),anglesPerGoalkeeper:average(perGoalie.map(row=>row.angles)),dangerousReboundRate:average(perGoalie.map(row=>row.dangerousReboundRate)),safeReboundRate:average(perGoalie.map(row=>row.safeReboundRate)),outnumberedAttemptRate:average(perGoalie.map(row=>row.outnumberedAttemptRate)),outnumberedAttemptsPerGoalkeeper:average(perGoalie.map(row=>row.outnumberedAttempts)),penaltyCornersPerGoalkeeper:average(perGoalie.map(row=>row.penaltyCorners)),penaltyStrokesPerGoalkeeper:average(perGoalie.map(row=>row.penaltyStrokes))};
+  return {gender,ageGroup,teamLevel,teamTier,goalkeepers:goalieIds.length,matches:matches.length,shots:selectedShots.length,limitedData:goalieIds.length<5||matches.length<15||selectedShots.length<100,metrics,breakdowns:{shotSituation:breakdown(selectedShots,'shotSituation'),shotType:breakdown(selectedShots,'shotType'),outnumbered:breakdown(selectedShots,'outnumbered'),rebound:breakdown(selectedShots,'rebound')},heatMaps:{d:selectedShots.filter(shot=>Number.isFinite(shot.d_x)&&Number.isFinite(shot.d_y)).map(shot=>({x:shot.d_x,y:shot.d_y})),goal:selectedShots.filter(shot=>Number.isFinite(shot.goal_x)&&Number.isFinite(shot.goal_y)).map(shot=>({x:shot.goal_x,y:shot.goal_y}))}};
+}
+async function benchmarks(request,env){
+  const url=new URL(request.url),gender=clean(url.searchParams.get('gender')||'Not specified',40),exclude=clean(url.searchParams.get('excludeGoalkeeperId')||'',100);
+  const matches=(await env.DB.prepare('SELECT * FROM benchmark_matches WHERE goalkeeper_gender=? AND goalkeeper_id<>?').bind(gender,exclude).all()).results||[];
+  const shots=(await env.DB.prepare(`SELECT s.* FROM benchmark_shots s JOIN benchmark_matches m ON m.goalkeeper_id=s.goalkeeper_id AND m.benchmark_match_id=s.benchmark_match_id WHERE m.goalkeeper_gender=? AND m.goalkeeper_id<>?`).bind(gender,exclude).all()).results||[];
+  const groups=new Map();for(const match of matches){for(const level of ['all',match.goalkeeper_team_level])for(const tier of ['all',match.goalkeeper_team_tier]){const key=[match.goalkeeper_age_group,level,tier].join('|');if(!groups.has(key))groups.set(key,[]);groups.get(key).push(match)}}
+  const cohorts=[...groups.entries()].map(([key,rows])=>{const [ageGroup,teamLevel,teamTier]=key.split('|');return buildCohort(rows,shots,gender,ageGroup,teamLevel,teamTier)}).sort((a,b)=>a.ageGroup.localeCompare(b.ageGroup)||(a.teamLevel==='all'?-1:b.teamLevel==='all'?1:a.teamLevel.localeCompare(b.teamLevel))||(a.teamTier==='all'?-1:b.teamTier==='all'?1:a.teamTier.localeCompare(b.teamTier)));
+  return json({ok:true,schemaVersion:'1.0',generatedAt:new Date().toISOString(),cohorts});
+}
+async function removeGoalkeeper(id,env){if(!validId(id,'goalie_'))return json({ok:false,error:'Invalid anonymous goalkeeper identifier.'},400);await env.DB.batch([env.DB.prepare('DELETE FROM benchmark_shots WHERE goalkeeper_id=?').bind(id),env.DB.prepare('DELETE FROM benchmark_matches WHERE goalkeeper_id=?').bind(id),env.DB.prepare('DELETE FROM benchmark_goalkeepers WHERE goalkeeper_id=?').bind(id)]);return json({ok:true,removed:true})}
+
+export default {async fetch(request,env){
+  if(request.method==='OPTIONS')return new Response(null,{status:204,headers:CORS});if(!env.DB)return json({ok:false,error:'D1 binding DB is missing.'},500);
+  const url=new URL(request.url),path=url.pathname.replace(/\/+$/,'')||'/';
+  try{if(request.method==='GET'&&path==='/')return json({ok:true,service:'Hockey Goalie Stats Benchmark API',version:'1.0'});if(request.method==='GET'&&path==='/api/v1/health')return json({ok:true,database:'connected'});if(request.method==='POST'&&path==='/api/v1/upload')return upload(request,env);if(request.method==='GET'&&path==='/api/v1/benchmarks')return benchmarks(request,env);if(request.method==='DELETE'&&path.startsWith('/api/v1/goalkeepers/'))return removeGoalkeeper(decodeURIComponent(path.slice('/api/v1/goalkeepers/'.length)),env);return json({ok:false,error:'Not found.'},404)}catch(error){return json({ok:false,error:error.message||'Unexpected benchmark service error.'},500)}
+}};
