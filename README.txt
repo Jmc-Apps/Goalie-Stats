@@ -1,5 +1,30 @@
 Hockey Goalie Stats - Main App Package
 
+Version 5.80 launches the bundled Recorder App directly instead of opening its folder listing.
+
+Version 5.80 changes:
+
+- The Recorder App sidebar link now targets <code>./recorder/index.html</code> explicitly, which works from a local package folder and when hosted.
+- Resource cards now use equal-height vertical layouts.
+- Every Open and Download button row is anchored to the bottom of its card for a uniform appearance.
+- Replaced the short Main App and Recorder manuals with comprehensive tab-by-tab guides.
+- Added three end-to-end recording workflows: direct Match-tab capture, Recorder-app capture and filmed Video Stats Review capture.
+- Added detailed benchmarking, report, backup, external-video-library and troubleshooting guidance.
+- Bundled the Recorder App v1.29 under <code>./recorder/</code>; its manifest and service worker remain independent so it can also be installed as a separate PWA.
+
+Version 5.77 adds safe single-goalie backup and cross-coach merge.
+
+Version 5.77 changes:
+
+- Added a Single Goalie Transfer card to Backup.
+- A goalie transfer includes that goalie, team profiles, matches, shots, timelines and saved Video Review metadata.
+- Imports merge by stable IDs instead of replacing the whole database.
+- Newer team and match records overwrite older copies; older imports cannot overwrite newer work.
+- Deletions are transferred as explicit records and must be approved during import before any team or match is removed.
+- Declining deletion approval still allows other non-destructive additions and updates to merge.
+- Locally connected video files are retained when an incoming match update is merged; video files themselves remain on their external drive and may need reconnection on another device.
+- Benchmark consent and downloaded benchmark caches remain device-local.
+
 Version 5.76 restores independent scrolling throughout Video Stats Review.
 
 Version 5.76 changes:

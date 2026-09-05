@@ -1,0 +1,30 @@
+{
+  "name": "Goalie Stats Recorder",
+  "short_name": "Goalie Recorder",
+  "start_url": "./index.html?v=1.29",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#071014",
+  "theme_color": "#071014",
+  "description": "Goalie Stats Recorder v1.29",
+  "icons": [
+    {
+      "src": "apple-touch-icon-v1-29.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-192-v1-29.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512-v1-29.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

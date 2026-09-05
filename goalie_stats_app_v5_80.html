@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Hockey Goalie Stats: Data Driven Development v5.76</title>
+<title>Hockey Goalie Stats: Data Driven Development v5.80</title>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#1f1f1f">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -57,7 +57,7 @@ table{width:100%;border-collapse:collapse;font-size:13px} th,td{border-bottom:1p
 
 
 /* v5.23 Resources screen */
-.footer .resourcesLink{display:inline-block;background:transparent;border:0;color:var(--accent);font:inherit;font-weight:900;text-decoration:underline;cursor:pointer;padding:0;margin:0 0 0 2px;width:auto}.resourceGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px}.resourceCard{background:#121212;border:1px solid var(--line);border-radius:16px;padding:13px;box-shadow:0 8px 22px #0005}.resourceCard h3{margin:0 0 8px;color:var(--accent);font-size:16px}.resourceCard p{color:var(--muted);font-size:13px;line-height:1.4}.resourceActions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.resourceActions a.btn{display:block;text-align:center;text-decoration:none;margin-top:8px}.resourcesBanner{max-width:520px;width:100%;display:block;margin:4px auto 14px}.resourceNote{font-size:12px;color:var(--muted);line-height:1.4;margin-top:8px}
+.footer .resourcesLink{display:inline-block;background:transparent;border:0;color:var(--accent);font:inherit;font-weight:900;text-decoration:underline;cursor:pointer;padding:0;margin:0 0 0 2px;width:auto}.resourceGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px}.resourceCard{background:#121212;border:1px solid var(--line);border-radius:16px;padding:13px;box-shadow:0 8px 22px #0005;display:flex;flex-direction:column}.resourceCard h3{margin:0 0 8px;color:var(--accent);font-size:16px}.resourceCard p{color:var(--muted);font-size:13px;line-height:1.4}.resourceActions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:auto}.resourceActions a.btn{display:block;text-align:center;text-decoration:none;margin-top:8px}.resourcesBanner{max-width:520px;width:100%;display:block;margin:4px auto 14px}.resourceNote{font-size:12px;color:var(--muted);line-height:1.4;margin-top:8px}
 
 </style>
 
@@ -1763,7 +1763,7 @@ body.videoReviewMode .v521VRStage{height:min(68vh,760px);min-height:420px}
 body>header{display:flex;align-items:center;gap:12px}.v570MobileMenu{display:none;border:1px solid #596b75;border-radius:999px;background:#2f3539;color:#fff;padding:10px 16px;font-weight:900;font-size:15px}
 main{width:100%;max-width:1600px;display:grid;grid-template-columns:230px minmax(0,1fr);gap:18px;align-items:start}
 main>.tabs{grid-column:1;display:flex;flex-direction:column;gap:7px;position:sticky;top:calc(var(--v570-header-height,120px) + 10px);margin:10px 0;padding:10px;border:1px solid var(--line);border-radius:18px;background:#1e2427;max-height:calc(100vh - var(--v570-header-height,120px) - 24px);overflow-y:auto}
-main>.tabs .tab{width:100%;min-height:46px;padding:11px 13px;text-align:left;font-size:15px;border:1px solid transparent;border-radius:12px}
+main>.tabs .tab{width:100%;min-height:46px;padding:11px 13px;text-align:left;font-size:15px;border:1px solid transparent;border-radius:12px;text-decoration:none;display:block;box-sizing:border-box}
 main>.tabs .tab.active{border-color:#b4c5ce;box-shadow:inset 4px 0 0 #45d8ee}
 main>.panel{grid-column:2;min-width:0;margin-top:0}
 .v570SidebarToggle{min-height:38px;border:1px solid #52616a;border-radius:11px;background:#101719;color:#dbe5e9;font-weight:850}.v570Narrow{display:none;font-size:24px;line-height:1}
@@ -1778,7 +1778,7 @@ body.v570SidebarCollapsed .v570Wide{display:none}body.v570SidebarCollapsed .v570
 @media print{main{display:block!important;max-width:none!important}main>.panel{width:100%!important}.v570MobileMenu{display:none!important}}
 body.videoReviewMode main{display:block!important;max-width:none!important}
 .v573SidebarMeta{margin-top:auto;padding:13px 8px 4px;border-top:1px solid #3c474c;color:#b7c2c7;font-size:12px;line-height:1.4;text-align:center}.v573SidebarMeta .v573Compact{display:none;font-weight:900;color:#dbe5e9}body.v570SidebarCollapsed .v573SidebarMeta{padding:10px 2px 3px}body.v570SidebarCollapsed .v573SidebarMeta .v573Full{display:none}body.v570SidebarCollapsed .v573SidebarMeta .v573Compact{display:block}.v573BenchmarkActions{display:grid;grid-template-columns:minmax(220px,1fr);gap:8px;margin-top:12px}.v573NetworkStatus{min-height:22px;color:var(--muted);font-size:13px}.v573NetworkStatus.good{color:#72e6a0}.v573NetworkStatus.bad{color:#ff9292}
-/* v5.76 fixed desktop workspace: banner, navigation and page scroll independently. */
+/* v5.80 fixed desktop workspace: banner, navigation and page scroll independently. */
 .titleLogoWrap{justify-content:flex-start}
 @media(min-width:801px){
 html,body{height:100%;overflow:hidden}
@@ -1804,8 +1804,8 @@ body.videoReviewMode main>.panel{height:auto;min-height:100%;overflow:visible}
 <main>
 <nav id="v570Sidebar" class="tabs noPrint" aria-label="Main navigation">
 <button type="button" id="v570SidebarToggle" class="v570SidebarToggle" aria-expanded="true"><span class="v570Wide">Collapse Menu</span><span class="v570Narrow" aria-hidden="true">›</span></button>
-<button class="tab active" data-tab="home" data-short="H"><span>Home</span></button><button class="tab" data-tab="goalies" data-short="G"><span>Goalies</span></button><button class="tab" data-tab="match" data-short="M"><span>Match</span></button><button class="tab" data-tab="matchEditor" data-short="ME"><span>Match Editor</span></button><button class="tab" data-tab="stats" data-short="S"><span>Stats</span></button><button class="tab" data-tab="heat" data-short="HM"><span>Heat Maps</span></button><button class="tab" data-tab="reports" data-short="R"><span>Reports</span></button><button class="tab" data-tab="benchmarking" data-short="BM"><span>Benchmarking</span></button><button class="tab" data-tab="backup" data-short="BK"><span>Backup</span></button><button class="tab" data-tab="resources" data-short="?"><span>Resources</span></button>
-<div class="v573SidebarMeta"><span class="v573Full">Hockey Goalie Stats: Data Driven Development<br>Version 5.76</span><span class="v573Compact">v5.76</span></div>
+<button class="tab active" data-tab="home" data-short="H"><span>Home</span></button><button class="tab" data-tab="goalies" data-short="G"><span>Goalies</span></button><button class="tab" data-tab="match" data-short="M"><span>Match</span></button><button class="tab" data-tab="matchEditor" data-short="ME"><span>Match Editor</span></button><button class="tab" data-tab="stats" data-short="S"><span>Stats</span></button><button class="tab" data-tab="heat" data-short="HM"><span>Heat Maps</span></button><button class="tab" data-tab="reports" data-short="R"><span>Reports</span></button><button class="tab" data-tab="benchmarking" data-short="BM"><span>Benchmarking</span></button><button class="tab" data-tab="backup" data-short="BK"><span>Backup</span></button><button class="tab" data-tab="resources" data-short="?"><span>Resources</span></button><a class="tab v570ExternalTab" href="./recorder/index.html" target="_blank" rel="noopener" data-short="RA"><span>Recorder App</span></a>
+<div class="v573SidebarMeta"><span class="v573Full">Hockey Goalie Stats: Data Driven Development<br>Version 5.80</span><span class="v573Compact">v5.80</span></div>
 </nav>
 
 <section id="home" class="panel active">
@@ -1814,7 +1814,7 @@ body.videoReviewMode main>.panel{height:auto;min-height:100%;overflow:visible}
       <img src="assets/home-logo.png" alt="Hockey Goalie Stats Data Driven Development" class="homeLogo">
     </div>
     <div class="versionBox">
-      <b>Version 5.76</b>
+      <b>Version 5.80</b>
       <div class="small">Build Date: 2026-09-05</div>
     </div>
     <div id="homeSummary" class="hiddenHomeSummary"></div>
@@ -1912,6 +1912,16 @@ body.videoReviewMode main>.panel{height:auto;min-height:100%;overflow:visible}
 
 <section id="backup" class="panel"><div class="card"><h2>Backup & Restore</h2><button class="btn good" onclick="downloadBackup()">Download JSON Backup</button><label>Restore from JSON Backup</label><input type="file" id="restoreFile" accept="application/json,.json"><button class="btn secondary" onclick="restoreBackup()">Restore Backup</button><button class="btn danger" onclick="clearAllData()">Clear All Local Data</button><div id="backupStatus" class="small"></div></div>
 <div class="card">
+  <h2>Single Goalie Transfer</h2>
+  <label>Goalie to Back Up</label>
+  <select id="singleGoalieBackupSelect"></select>
+  <button class="btn good" type="button" onclick="exportSingleGoalie577()">Export Selected Goalie</button>
+  <label>Import a Single Goalie Backup</label>
+  <input type="file" id="singleGoalieImportFile" accept="application/json,.json">
+  <button class="btn secondary" type="button" onclick="importSingleGoalie577()">Import &amp; Merge Goalie</button>
+  <div id="singleGoalieTransferStatus" class="small"></div>
+</div>
+<div class="card">
   <h2>Import Match From Goalie Stats Recorder</h2>
   <label>Recorder Match File</label>
   <input type="file" id="matchImportFile" accept="application/json,.json">
@@ -1954,7 +1964,7 @@ body.videoReviewMode main>.panel{height:auto;min-height:100%;overflow:visible}
 </main>
 
 <script>
-const APP_VERSION_566='5.76';
+const APP_VERSION_566='5.80';
 window.APP_VERSION=APP_VERSION_566;
 const STORAGE_KEY='hockeyGoalieStatsV3';
 const ratings=['Positioning','Communication','Rebound Control','Decision Making'];
@@ -6805,7 +6815,7 @@ window.v571VideoReviewNavigation={target,label,returnToOrigin:window.v571ReturnF
 })();
 </script>
 <script>
-/* v5.76 Cloudflare benchmark upload and cohort download connection. */
+/* v5.80 Cloudflare benchmark upload and cohort download connection. */
 (function(){
 const API='https://hgs-benchmark-api.datadrivendevelopmenthgs.workers.dev';
 let busy=false,networkMessage='',networkKind='';
@@ -6836,5 +6846,6 @@ window.addEventListener('online',()=>{decorateBenchmark573();const g=goalie();if
 setTimeout(()=>{decorateBenchmark573();const g=goalie();if(g?.benchmarkConsent==='opted_in')uploadBenchmarkData573({silent:true})},1200);
 })();
 </script>
+<script src="single-goalie-transfer.js"></script>
 </body>
 </html>

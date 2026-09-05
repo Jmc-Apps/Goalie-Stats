@@ -1,0 +1,1226 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Goalie Stats Recorder v1.29</title>
+<link rel="manifest" href="manifest.webmanifest?v=1.29">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-v1-29.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32-v1-29.png">
+<meta name="theme-color" content="#071014">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Goalie Recorder">
+<style>
+:root{--bg:#071014;--panel:#101820;--line:#2d3a43;--text:#f5f7fa;--muted:#a9b3bd;--green:#61d12f;--red:#e23b30;--gold:#e4b51b;--blue:#2275d7;--orange:#ff8200}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#071014;color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;overflow:hidden}
+.app{max-width:520px;margin:auto;height:100dvh;display:flex;flex-direction:column;background:radial-gradient(circle at top,#13202a 0,#071014 48%,#05090c 100%)}
+header{height:48px;flex:0 0 48px;padding:8px 12px;border-bottom:1px solid var(--line)}
+.topbar{display:flex;align-items:center;justify-content:space-between;height:100%}
+h1{font-size:17px;margin:0;font-weight:900}.ver{font-size:11px;color:var(--green);font-weight:900;background:#1d3518;border-radius:999px;padding:3px 9px}
+main{flex:1;min-height:0;padding:8px 10px 58px;overflow:hidden}
+.screen{display:none;height:100%;min-height:0;overflow:hidden}.screen.active{display:flex;flex-direction:column;gap:7px}
+.card{background:linear-gradient(180deg,var(--panel),#0c1319);border:1px solid var(--line);border-radius:14px;padding:9px;box-shadow:0 8px 20px rgba(0,0,0,.22)}
+label{display:block;color:var(--muted);font-size:11px;font-weight:800;margin:6px 0 4px;text-transform:uppercase}
+input,select{width:100%;background:#0a1015;color:var(--text);border:1px solid #40505c;border-radius:10px;padding:10px;font-size:15px}
+button{font:inherit}.btn{width:100%;border:0;border-radius:11px;padding:11px 12px;font-weight:900;color:white;background:#29343d;margin:3px 0}.btn.green{background:linear-gradient(180deg,#58c52c,#2f8d18)}.btn.red{background:linear-gradient(180deg,#e84c3f,#a71f18)}.btn.gold{background:linear-gradient(180deg,#e5bd27,#9c7808);color:#141000}.btn.blue{background:linear-gradient(180deg,#2d87ee,#1857a6)}.btn.orange{background:linear-gradient(180deg,#ff9b19,#e56700)}.btn.ghost{background:#121a21;border:1px solid #35434f}
+.match-head{text-align:center;line-height:1.23}.goaliename{font-size:16px;font-weight:900}.team{color:var(--green);font-weight:900;font-size:14px}.opp{color:#ff4f43;font-weight:900;font-size:14px}.vs{font-size:12px;font-weight:800;margin:1px 0}.small{font-size:11px;color:var(--muted)}
+.counter-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.counter{border-radius:12px;padding:8px;text-align:center;border:1px solid var(--line)}.counter.save{background:linear-gradient(180deg,#2f841e,#1b5613)}.counter.goal{background:linear-gradient(180deg,#b02a22,#7c1612)}.counter.angle{background:linear-gradient(180deg,#9b7b09,#705705)}.counter .label{font-size:10px;font-weight:900}.counter .num{font-size:28px;font-weight:1000;line-height:1}
+.defence{text-align:center;border:1px solid var(--line);border-radius:12px;padding:7px;background:#0c1318}.defence span{font-size:11px;font-weight:800}.defence b{display:block;color:var(--green);font-size:27px;line-height:1.05}
+.big-actions{display:grid;grid-template-columns:1fr;gap:6px}.big-actions .btn{font-size:18px;padding:13px;margin:0}
+.home-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}.home-actions .btn{font-size:13px;padding:9px 8px}
+.timeline{display:flex;gap:6px;overflow:hidden;padding:4px 0}.pill{min-width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:1000;font-size:13px}.pill.S{background:#54b52b}.pill.G{background:#c83028}.pill.A{background:#d9ad16;color:#171100}.pill.P{background:#2275d7;color:#fff;clip-path:polygon(50% 4%,95% 94%,5% 94%);border-radius:0;font-size:11px}
+nav{position:fixed;left:0;right:0;bottom:0;height:54px;background:rgba(6,12,16,.97);border-top:1px solid var(--line);display:flex;justify-content:center;z-index:10}.nav-inner{max-width:520px;display:grid;grid-template-columns:repeat(5,1fr);width:100%}.navbtn{background:transparent;border:0;color:#b9c3ca;padding:5px 4px;font-size:10px;font-weight:800}.navbtn.on{color:var(--green)}.navbtn span{display:block;font-size:19px}
+.scroll{overflow:auto;min-height:0;padding-bottom:4px}.wizard-head{display:flex;align-items:center;gap:8px}.back{width:38px;height:38px;border-radius:50%;background:#152029;border:1px solid var(--line);color:white;font-size:22px}
+.progress{height:6px;background:#25313a;border-radius:999px;overflow:hidden;margin:4px 0 6px}.progress div{height:100%;background:var(--green);width:20%}
+.choice{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:12px;padding:12px;margin:6px 0;background:#0d151b;font-weight:900}.choice.selected{border-color:var(--green);box-shadow:0 0 0 1px var(--green) inset}.icon{font-size:25px;width:34px;text-align:center}
+.bottom-save{margin-top:auto;flex:0 0 auto}
+.mapbox{position:relative;border:2px solid #50616d;border-radius:14px;background:#f2f2f2;height:40dvh;min-height:230px;overflow:hidden;touch-action:none;box-shadow:inset 0 0 20px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center}
+.mapbox.goal{height:32dvh;min-height:190px}
+.mapbox img{width:100%;height:100%;object-fit:contain;display:block;pointer-events:none;user-select:none}
+.marker{position:absolute;width:30px;height:30px;border-radius:50%;transform:translate(-50%,-50%);border:4px solid #fff;box-shadow:0 0 0 7px rgba(34,117,215,.42),0 0 20px rgba(0,0,0,.6);z-index:50;pointer-events:none}
+.marker.save{background:#61d12f}.marker.goal{background:#e23b30}.marker.angle{background:#e4b51b}
+.map-note{text-align:center;color:#a9b3bd;font-size:12px;margin:2px 0 6px}.map-note b{color:var(--green)}
+.summary-check{font-size:62px;text-align:center;color:var(--green);line-height:1}.rating-row{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #26323b;padding:9px 0}.stars button{background:transparent;border:0;color:#42515c;font-size:23px;padding:0 1px}.stars button.on{color:var(--green)}
+@media (max-height:720px){.big-actions .btn{font-size:16px;padding:11px}.counter .num{font-size:24px}.defence b{font-size:24px}.card{padding:8px}.mapbox{height:36dvh;min-height:200px}.mapbox.goal{height:28dvh;min-height:170px}}
+</style>
+
+<style>
+/* v1.29 live save/defence rates on home screen */
+.live-rate-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+}
+.live-rate-card{
+  text-align:center;
+  border:1px solid var(--line,#2d3a43);
+  border-radius:12px;
+  padding:8px;
+  background:#0c1318;
+}
+.live-rate-card span{
+  display:block;
+  font-size:10px;
+  font-weight:900;
+  color:var(--muted,#a9b3bd);
+  text-transform:uppercase;
+}
+.live-rate-card b{
+  display:block;
+  font-size:25px;
+  line-height:1.05;
+  color:var(--green,#61d12f);
+}
+.live-rate-card.save-rate b{color:#61d12f;}
+.live-rate-card.def-rate b{color:#61d12f;}
+@media(max-height:720px){
+  .live-rate-card{padding:7px;}
+  .live-rate-card b{font-size:22px;}
+}
+</style>
+
+
+<style>
+/* v1.29 live home rates and prominent final confirm */
+.live-rate-grid{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:7px!important;
+  margin:0!important;
+}
+.live-rate-card{
+  text-align:center!important;
+  border:1px solid var(--line,#2d3a43)!important;
+  border-radius:12px!important;
+  padding:8px!important;
+  background:#0c1318!important;
+}
+.live-rate-card span{
+  display:block!important;
+  font-size:10px!important;
+  font-weight:900!important;
+  color:var(--muted,#a9b3bd)!important;
+  text-transform:uppercase!important;
+}
+.live-rate-card b{
+  display:block!important;
+  font-size:25px!important;
+  line-height:1.05!important;
+  color:var(--green,#61d12f)!important;
+}
+#quickSaveBtn.final-confirm{
+  font-size:18px!important;
+  padding:16px 12px!important;
+  border-radius:16px!important;
+  background:linear-gradient(180deg,#67d936,#2f8d18)!important;
+  box-shadow:0 0 0 3px rgba(97,209,47,.22),0 8px 22px rgba(0,0,0,.35)!important;
+  text-transform:uppercase!important;
+  letter-spacing:.3px!important;
+}
+.final-save-hint{
+  text-align:center;
+  color:#61d12f;
+  font-size:12px;
+  font-weight:900;
+  margin-bottom:4px;
+}
+</style>
+
+
+<style>
+/* v1.29 restored Home layout */
+#home .counter-grid{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:7px!important;
+  width:100%!important;
+}
+#home .counter-grid .counter{
+  width:auto!important;
+  min-width:0!important;
+}
+#home .live-rate-grid{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:7px!important;
+  width:100%!important;
+  margin:0!important;
+}
+#home .live-rate-card{
+  text-align:center!important;
+  border:1px solid var(--line,#2d3a43)!important;
+  border-radius:12px!important;
+  padding:8px!important;
+  background:#0c1318!important;
+  min-width:0!important;
+}
+#home .live-rate-card span{
+  display:block!important;
+  font-size:10px!important;
+  font-weight:900!important;
+  color:var(--muted,#a9b3bd)!important;
+  text-transform:uppercase!important;
+}
+#home .live-rate-card b{
+  display:block!important;
+  font-size:25px!important;
+  line-height:1.05!important;
+  color:var(--green,#61d12f)!important;
+}
+#home .defence.v126-hidden-old-defence{
+  display:none!important;
+}
+@media(max-height:720px){
+  #home .live-rate-card{padding:7px!important;}
+  #home .live-rate-card b{font-size:22px!important;}
+}
+</style>
+
+<style>
+
+/* v1.29 matching Hockey Goalie Stats branding */
+header{height:62px!important;flex:0 0 62px!important;padding:6px 10px!important;}
+.topbar{justify-content:center!important;position:relative;}
+.recorderHeaderLogo{display:block;max-width:94%;max-height:50px;height:auto;width:auto;object-fit:contain;margin:auto;}
+.ver{position:absolute;right:2px;top:50%;transform:translateY(-50%);}
+.recorderHomeLogo{display:flex;justify-content:center;align-items:center;padding:4px 0 6px;}
+.recorderHomeLogo img{display:block;width:min(245px,66vw);max-height:118px;object-fit:contain;filter:drop-shadow(0 8px 16px rgba(0,0,0,.35));}
+.period-help{display:block;color:var(--muted);font-size:11px;margin:3px 0 8px;line-height:1.25;}
+#periodBtn:disabled{opacity:.55;filter:grayscale(.3);}
+@media(max-height:720px){
+  header{height:54px!important;flex-basis:54px!important;}
+  .recorderHeaderLogo{max-height:42px;}
+  .recorderHomeLogo img{width:min(195px,58vw);max-height:88px;}
+  .recorderHomeLogo{padding:0 0 3px;}
+}
+
+</style>
+<style>
+
+/* v1.29 Recorder: remove Home tab square logo only */
+.homeLogoWrap,.homeLogo,.homeEmblemWrap,.homeEmblem,.home-logo-wrap,.home-logo,.home-emblem-wrap,.home-emblem{display:none!important}
+.versionTapRefresh{cursor:pointer;user-select:none}
+
+</style>
+<style>
+
+/* v1.29 v5.14 compatibility, shootout, and PWA icon cache updates */
+.v129ShootoutBox{border:1px solid var(--line,#2d3a43);border-radius:14px;padding:10px;margin:10px 0;background:#0b141b}
+.v129ShootoutBox h3{margin:0 0 8px;font-size:16px}
+.v129ShootoutActions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:8px 0}
+.v129ShootoutRound{border:1px solid #2d3a43;border-radius:12px;padding:9px;margin:8px 0;background:#0a1015}
+.v129ShootoutRound h4{margin:0 0 8px;color:var(--green,#61d12f)}
+.v129ShootoutGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.v129ShootoutGrid label{margin-top:4px}
+.v129Mini{font-size:11px;color:var(--muted,#a9b3bd);line-height:1.35}
+.v129Danger{background:#7d1d1d!important}
+.v129PSpot{border:1px solid #34506b;border-radius:12px;padding:11px;background:#09131c;margin:8px 0;text-align:center}
+textarea#shotNote{width:100%;min-height:74px;background:#0a1015;color:var(--text);border:1px solid #40505c;border-radius:10px;padding:10px;font-size:15px}
+
+</style>
+</head>
+<body>
+<div class="app">
+<header><div class="topbar"><img class="recorderHeaderLogo" src="assets/title-logo.png" alt="Goalie Stats Recorder"><div class="ver">v1.29</div></div></header>
+<main>
+<section id="home" class="screen active">
+  <div class="recorderHomeLogo"></div>
+  <div class="card match-head"><div class="goaliename" id="dashGoalie">No goalie selected</div><div class="team" id="dashTeam">Import/select goalie & team</div><div class="vs">VS</div><div class="opp" id="dashOpp">Opponent</div><div class="small" id="dashDate"></div></div>
+  <div class="counter-grid"><div class="counter save"><div class="label">SAVES</div><div class="num" id="saveCount">0</div></div><div class="counter goal"><div class="label">GOALS</div><div class="num" id="goalCount">0</div></div></div>
+  <div class="live-rate-grid"><div class="live-rate-card save-rate"><span>Save Rate</span><b id="saveRateLive">N/C</b></div><div class="live-rate-card def-rate"><span>Defence Rate</span><b id="defRate">N/C</b></div></div>
+  <div class="card"><b>MATCH TIMELINE</b><div class="timeline" id="timelinePills"></div><div class="home-actions"><button class="btn ghost" id="viewTimelineBtn">VIEW</button><button class="btn orange" id="undoBtn">UNDO</button></div><button class="btn blue" id="periodBtn">END OF PERIOD</button></div>
+  <div class="big-actions"><button class="btn green" id="saveBtn">SAVE</button><button class="btn red" id="goalBtn">GOAL</button><button class="btn gold" id="angleBtn">ANGLE CLOSED OFF</button></div>
+  <button class="btn blue" id="finishBtn">FINISH MATCH</button>
+</section>
+<section id="setup" class="screen"><div class="scroll"><div class="card"><h2>Match Setup</h2><label>Goalie</label><select id="goalieSelect"></select><label>Team</label><select id="teamSelect"></select><label>Date</label><input id="matchDate" type="date"><label>Opponent</label><input id="opponentTeam" placeholder="Opponent team"><label>Number of Periods</label><input id="periodCount" type="number" min="1" max="12" step="1" value="4"><span class="period-help">Default is 4 for field hockey quarters.</span><button class="btn green" id="saveSetupBtn">SAVE SETUP</button></div></div></section>
+<section id="import" class="screen"><div class="scroll"><div class="card" style="text-align:center"><div style="font-size:56px">☁️</div><h2>Import Goalies & Teams</h2><p class="small">Import master data exported from Hockey Goalie Stats.</p><input id="masterFile" type="file" accept=".json,application/json"><button class="btn green" id="importBtn">IMPORT</button><p id="importStatus" class="small"></p></div></div></section>
+<section id="timeline" class="screen"><div class="scroll"><div class="card"><h2>Match Timeline</h2><div id="timelineList"></div><button class="btn ghost" id="closeTimelineBtn">CLOSE</button></div></div></section>
+<section id="wizard" class="screen"><div class="wizard-head"><button class="back" id="backWizardBtn">‹</button><h2 id="wizardTitle">Record Shot</h2></div><div class="progress"><div id="progressBar"></div></div><div id="wizardBody" class="scroll"></div><div class="bottom-save"><button class="btn green" id="quickSaveBtn">CONFIRM & SAVE NOW</button></div></section>
+<section id="finish" class="screen"><div class="scroll"><div class="card"><h2>Finish Match</h2><label>Home Team Goals</label><input id="finishHomeGoals" type="number" min="0" value="0"><p class="small">Tap stars to score coaching ratings.</p><div id="ratings"></div><div id="shootoutPanel" class="v129ShootoutBox"></div><button class="btn green" id="finishSaveBtn">SAVE RATINGS & FINISH</button><button class="btn ghost" id="finishBackBtn">BACK</button></div></div></section>
+<section id="summary" class="screen"><div class="scroll"><div class="card" style="text-align:center"><div class="summary-check">✓</div><h2 style="color:var(--green)">MATCH SAVED!</h2><div id="summaryText"></div><div class="counter-grid" style="margin-top:10px"><div class="counter save"><div class="label">SAVES</div><div class="num" id="sumSaves">0</div></div><div class="counter goal"><div class="label">GOALS</div><div class="num" id="sumGoals">0</div></div></div><div class="counter angle" style="margin-top:8px"><div class="label">ANGLES</div><div class="num" id="sumAngles">0</div></div><div class="defence" style="margin-top:8px"><span>DEFENCE RATE</span><b id="sumDef">N/C</b></div><button class="btn blue" id="exportBtn">EXPORT MATCH</button><button class="btn ghost" id="summaryHomeBtn">BACK TO HOME</button></div></div></section>
+</main>
+<nav><div class="nav-inner"><button class="navbtn on" data-go="home" data-screen="home"><span>🏠</span>Home</button><button class="navbtn" data-go="setup" data-screen="setup"><span>🥅</span>Setup</button><button class="navbtn" data-go="timeline" data-screen="timeline"><span>📋</span>Timeline</button><button class="navbtn" data-go="import" data-screen="import"><span>☁️</span>Import</button><button class="navbtn" data-go="finish" data-screen="finish"><span>✅</span>Finish</button></div></nav>
+</div>
+<script>
+const RECORDER_VERSION="1.29", HOCKEY_STATS_VERSION="5.14", LS_STATE="gsr_v129_state", LS_MASTER="goalieStatsRecorderMasterData";
+let state=JSON.parse(localStorage.getItem(LS_STATE)||localStorage.getItem("gsr_v128_state")||localStorage.getItem("gsr_v127_state")||localStorage.getItem("gsr_v126_state")||"null")||{goalieName:"",homeTeam:"",opponentTeam:"",date:new Date().toISOString().slice(0,10),homeGoals:0,periodCount:4,shots:[],timeline:[],ratings:{"Positioning":4,"Communication":4,"Rebound Control":4,"Decision Making":4}};
+if(!state.periodCount)state.periodCount=4;
+let pending=null;
+function $(id){return document.getElementById(id)}
+function save(){localStorage.setItem(LS_STATE,JSON.stringify(state))}
+function pct(a,b){return b>0?Math.round(a/b*100)+"%":"N/C"}
+function shotOnly(){return state.shots.filter(s=>!s.eventType)}
+function saves(){return shotOnly().filter(s=>s.outcome==="Save")} 
+function goals(){return shotOnly().filter(s=>s.outcome==="Goal")} 
+function angles(){return shotOnly().filter(s=>s.outcome==="Angle Closed Off")}
+function defenceRate(){let sv=saves().length,gl=goals().length,an=angles().length;return pct(sv+an,sv+gl+an)}
+function newid(){return "id_"+Math.random().toString(36).slice(2)+Date.now().toString(36)}
+function fmtTime(t){return new Date(t).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})}
+function letter(s){if(s.eventType==="periodMarker")return "P"; return s.outcome==="Save"?"S":s.outcome==="Goal"?"G":"A"}
+
+function maxPeriods(){let n=Number(state.periodCount||4);if(!Number.isFinite(n)||n<1)n=4;n=Math.round(n);if(n<1)n=1;if(n>12)n=12;return n}
+function periodMarkers(){return (state.timeline||[]).filter(s=>s&&s.eventType==="periodMarker")}
+function nextPeriodNumber(){return periodMarkers().length+1}
+function setPeriodCountFromForm(){let el=$("periodCount");if(el){let n=Number(el.value||4);if(!Number.isFinite(n)||n<1)n=4;if(n>12)n=12;state.periodCount=Math.round(n);el.value=state.periodCount}else if(!state.periodCount){state.periodCount=4}}
+function showScreen(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));$(id).classList.add("active");document.querySelectorAll(".navbtn").forEach(b=>b.classList.toggle("on",b.dataset.screen===id));if(id==="timeline")renderTimelineList();if(id==="finish")renderRatings();render()}
+function render(){
+ setPeriodCountFromForm();
+ $("dashGoalie").textContent=state.goalieName||"No goalie selected";$("dashTeam").textContent=state.homeTeam||"No team selected";$("dashOpp").textContent=state.opponentTeam||"Opponent";$("dashDate").textContent=(state.date||"")+" • Home Goals: "+(state.homeGoals||0)+" • Periods: "+maxPeriods();
+ $("saveCount").textContent=saves().length;$("goalCount").textContent=goals().length;$("defRate").textContent=defenceRate();
+ $("timelinePills").innerHTML=(state.timeline||[]).map(s=>s.eventType==="periodMarker"?'<div class="pill P">▲</div>':'<div class="pill '+letter(s)+'">'+letter(s)+'</div>').join("")||'<span class="small">No shots yet</span>';
+ let pb=$("periodBtn");if(pb){let next=nextPeriodNumber(),max=maxPeriods();pb.textContent=next<=max?"END OF PERIOD "+next+" / "+max:"ALL PERIODS ENDED";pb.disabled=next>max;}
+ $("sumSaves").textContent=saves().length;$("sumGoals").textContent=goals().length;$("sumAngles").textContent=angles().length;$("sumDef").textContent=defenceRate();
+ $("summaryText").innerHTML='<b>'+(state.goalieName||"")+'</b><br>'+(state.homeTeam||"")+" vs "+(state.opponentTeam||"")+"<br>"+(state.date||"")+"<br>Periods: "+maxPeriods();
+}
+function loadMaster(){let data=null;try{data=JSON.parse(localStorage.getItem(LS_MASTER)||"null")}catch(e){};let gs=$("goalieSelect");gs.innerHTML="";if(data&&Array.isArray(data.goalies)&&data.goalies.length){data.goalies.forEach((g,i)=>gs.innerHTML+='<option value="'+i+'">'+(g.name||"Goalie "+(i+1))+'</option>')}else{gs.innerHTML='<option value="">No imported goalies</option>'}$("matchDate").value=state.date;$("opponentTeam").value=state.opponentTeam||"";let pc=$("periodCount");if(pc)pc.value=maxPeriods();let fhg=$("finishHomeGoals");if(fhg)fhg.value=state.homeGoals||0;goalieChanged(false)}
+function goalieChanged(update=true){let data=null;try{data=JSON.parse(localStorage.getItem(LS_MASTER)||"null")}catch(e){};let gs=data&&data.goalies?data.goalies:[];let g=gs[Number($("goalieSelect").value)]||null;$("teamSelect").innerHTML="";if(g){if(update)state.goalieName=g.name||"";(g.teams||[]).forEach(t=>$("teamSelect").innerHTML+='<option value="'+t+'">'+t+'</option>')}if(!$("teamSelect").innerHTML)$("teamSelect").innerHTML='<option value="">No teams listed</option>';if(update){state.homeTeam=$("teamSelect").value;save();render()}}
+function syncStateFromForm(){state.homeTeam=$("teamSelect").value||state.homeTeam||"";state.date=$("matchDate").value||state.date;state.opponentTeam=$("opponentTeam").value||"";setPeriodCountFromForm();let hg=$("finishHomeGoals");if(hg)state.homeGoals=Number(hg.value||0);save();render()}
+function importMaster(){let f=$("masterFile").files[0];if(!f){alert("Choose a master data file first.");return}let r=new FileReader();r.onload=()=>{try{let data=JSON.parse(r.result);if(!Array.isArray(data.goalies))throw new Error("No goalies array found.");data.importedAt=new Date().toISOString();localStorage.setItem(LS_MASTER,JSON.stringify(data));$("importStatus").textContent="Imported "+data.goalies.length+" goalies.";loadMaster();alert("Goalies & teams imported.")}catch(e){alert("Import failed: "+e.message)}};r.readAsText(f)}
+function addPeriodMarker(){setPeriodCountFromForm();let next=nextPeriodNumber(),max=maxPeriods();if(next>max){alert("All "+max+" period markers have already been recorded for this match.");render();return}let m={id:"period_"+Date.now(),eventType:"periodMarker",label:"End of Period",type:"End of Period",period:next,note:"End of Period "+next,time:new Date().toISOString(),orderAfterShotIndex:shotOnly().length};state.timeline.push(m);save();render()}
+function startShot(outcome){pending={outcome:outcome,type:"1st Shot",shotCategory:"1st Shot",shotSituation:"Open Play",outnumbered:"Not Out Numbered",rebound:"",dX:null,dY:null,gX:null,gY:null};if(outcome==="Angle Closed Off")showWizard(3);else showWizard(1)}
+function showWizard(step){showScreen("wizard");$("wizardTitle").textContent="Record "+pending.outcome;$("progressBar").style.width=(step*20)+"%";
+ if(step===1)$("wizardBody").innerHTML='<h3>1. Shot Type</h3>'+choice("🎯","1st Shot","type","1st Shot",2)+choice("🔄","Rebound","type","Rebound",2)+'<button class="btn ghost" data-action="cancel">CANCEL</button>';
+ else if(step===2)$("wizardBody").innerHTML='<h3>2. Situation</h3>'+["Open Play","Penalty Corner","Penalty Stroke","In Game 1v1","8 Second 1v1"].map((x,i)=>choice(["🏃","🚩","🥅","👤","8️⃣"][i],x,"shotSituation",x,3)).join("")+'<button class="btn ghost" data-action="cancel">CANCEL</button>';
+ else if(step===3)$("wizardBody").innerHTML='<h3>3. Out Numbered?</h3>'+choice("👥","Yes","outnumbered","Out Numbered",4)+choice("🧍","No","outnumbered","Not Out Numbered",4)+'<button class="btn ghost" data-action="cancel">CANCEL</button>';
+ else if(step===4)$("wizardBody").innerHTML='<h3>4. Tap D Heat Map</h3><div class="map-note">'+(pending.dX!=null?'<b>Placement selected.</b> Tap again to move it.':'Tap to place. Tap again to move before saving.')+'</div>'+dMapHtml()+'<button class="btn ghost" data-next="'+(pending.outcome==="Angle Closed Off"?6:5)+'">NEXT</button>';
+ else if(step===5 && pending.outcome!=="Angle Closed Off")$("wizardBody").innerHTML='<h3>5. Tap Goal Box</h3><div class="map-note">'+(pending.gX!=null?'<b>Placement selected.</b> Tap again to move it.':'Tap to place. Tap again to move before saving.')+'</div>'+goalMapHtml()+'<button class="btn ghost" data-next="6">NEXT</button>';
+ else $("wizardBody").innerHTML=confirmHtml()
+}
+function choice(icon,label,key,val,next){let on=pending[key]===val||(key==="outnumbered"&&((val==="Out Numbered"&&pending[key]!=="Not Out Numbered")||(val==="Not Out Numbered"&&pending[key]==="Not Out Numbered")));return '<div class="choice '+(on?'selected':'')+'" data-choice-key="'+key+'" data-choice-val="'+val+'" data-choice-next="'+next+'"><div class="icon">'+icon+'</div><div>'+label+'</div></div>'}
+function markerClass(){return pending.outcome==="Goal"?"goal":pending.outcome==="Angle Closed Off"?"angle":"save"}
+function markerHtml(x,y){return x!=null&&y!=null?'<div class="marker '+markerClass()+'" style="left:'+x+'%;top:'+y+'%"></div>':''}
+function dMapHtml(){return '<div class="mapbox" data-map="d"><img src="assets/d_heat_map.png" alt="D Heat Map">'+markerHtml(pending.dX,pending.dY)+'</div>'}
+function goalMapHtml(){return '<div class="mapbox goal" data-map="g"><img src="assets/goal_box_heat_map.png" alt="Goal Box Heat Map">'+markerHtml(pending.gX,pending.gY)+'</div>'}
+function mapTap(e,kind){let r=e.currentTarget.getBoundingClientRect();let x=Math.max(0,Math.min(100,((e.clientX-r.left)/r.width)*100));let y=Math.max(0,Math.min(100,((e.clientY-r.top)/r.height)*100));if(kind==="d"){pending.dX=Math.round(x*10)/10;pending.dY=Math.round(y*10)/10;showWizard(4)}else{pending.gX=Math.round(x*10)/10;pending.gY=Math.round(y*10)/10;showWizard(5)}}
+function confirmHtml(){let posD=pending.dX!=null?'D: '+pending.dX+'%, '+pending.dY+'%':'D: not captured';let posG=pending.gX!=null?'Goal: '+pending.gX+'%, '+pending.gY+'%':'Goal: not captured';return '<div style="text-align:center"><div class="summary-check">✓</div><h2>'+pending.outcome+'</h2></div><p>Shot Type: <b>'+pending.type+'</b></p><p>Situation: <b>'+pending.shotSituation+'</b></p><p>Out Numbered: <b>'+pending.outnumbered+'</b></p><p class="small">'+posD+'<br>'+posG+'</p><button class="btn ghost" data-action="cancel">CANCEL</button>'}
+function saveShot(){if(!pending)return;let s={id:newid(),time:new Date().toISOString(),outcome:pending.outcome,type:pending.type,shotCategory:pending.type,shotSituation:pending.shotSituation,outnumbered:pending.outnumbered,rebound:pending.type==="Rebound"?"Safe":"",note:""};if(pending.dX!=null){s.dX=pending.dX;s.dY=pending.dY}if(pending.outcome!=="Angle Closed Off"&&pending.gX!=null){s.gX=pending.gX;s.gY=pending.gY}state.shots.push(s);state.timeline.push({eventType:"shot",shotId:s.id,label:letter(s),outcome:s.outcome,time:s.time,type:s.type,shotSituation:s.shotSituation,outnumbered:s.outnumbered});pending=null;save();showScreen("home");render()}
+function cancelShot(){pending=null;showScreen("home")}
+function renderTimelineList(){let items=(state.timeline&&state.timeline.length?state.timeline:state.shots).slice().reverse();$("timelineList").innerHTML=items.map(s=>{if(s.eventType==="periodMarker")return '<div class="choice"><div class="pill P">▲</div><div><b>End of Period '+(s.period||'')+'</b><br><span class="small">'+fmtTime(s.time)+'</span></div></div>';return '<div class="choice"><div class="pill '+letter(s)+'">'+letter(s)+'</div><div><b>'+(s.outcome||"Shot")+'</b><br><span class="small">'+fmtTime(s.time)+' • '+(s.type||'')+' • '+(s.shotSituation||'')+' • '+(s.outnumbered||'')+'</span></div></div>'}).join("")||"<p class='small'>No timeline events yet.</p>"}
+function undoPrompt(){let last=(state.timeline||[]).pop();if(!last){alert("No timeline events to undo.");return}if(!confirm("Undo last event?")){state.timeline.push(last);return}if(last.eventType==="shot"&&last.shotId)state.shots=state.shots.filter(s=>s.id!==last.shotId);save();render()}
+function renderRatings(){let labels=["Positioning","Communication","Rebound Control","Decision Making"];$("ratings").innerHTML=labels.map(l=>'<div class="rating-row"><b>'+l.toUpperCase()+'</b><div class="stars">'+[1,2,3,4,5].map(n=>'<button class="'+((state.ratings[l]||0)>=n?'on':'')+'" data-rating-label="'+l+'" data-rating-val="'+n+'">★</button>').join("")+'</div></div>').join("")}
+function finishMatch(){save();showScreen("summary")}
+function safeFilePart(s){return String(s||"").trim().replace(/[\\/:*?"<>|]+/g,"-").replace(/\s+/g," ").replace(/\.+$/g,"")||"Unknown"}
+function exportMatch(){syncStateFromForm();let payload={sourceApp:"Goalie Stats Recorder",sourceVersion:RECORDER_VERSION,targetApp:"Hockey Goalie Stats",targetMajorVersion:"4",compatibleWith:"Hockey Goalie Stats v"+HOCKEY_STATS_VERSION,exportedAt:new Date().toISOString(),match:{goalieName:state.goalieName,date:state.date,homeTeam:state.homeTeam,opponentTeam:state.opponentTeam,homeGoals:state.homeGoals,periodCount:maxPeriods(),periods:maxPeriods(),shots:shotOnly(),timeline:state.timeline||[],ratings:state.ratings}};let blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});let a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=safeFilePart(state.date)+" - "+safeFilePart(state.homeTeam||"Home Team")+" VS "+safeFilePart(state.opponentTeam||"Opponent")+".json";a.click();URL.revokeObjectURL(a.href)}
+document.addEventListener("click",function(e){
+ let t=e.target.closest("button,.choice,.mapbox"); if(!t)return;
+ if(t.dataset.go){showScreen(t.dataset.go);return}
+ if(t.id==="viewTimelineBtn"){showScreen("timeline");return}
+ if(t.id==="undoBtn"){undoPrompt();return}
+ if(t.id==="periodBtn"){addPeriodMarker();return}
+ if(t.id==="saveBtn"){startShot("Save");return}
+ if(t.id==="goalBtn"){startShot("Goal");return}
+ if(t.id==="angleBtn"){startShot("Angle Closed Off");return}
+ if(t.id==="finishBtn"){showScreen("finish");return}
+ if(t.id==="saveSetupBtn"){syncStateFromForm();showScreen("home");return}
+ if(t.id==="importBtn"){importMaster();return}
+ if(t.id==="closeTimelineBtn"||t.id==="finishBackBtn"||t.id==="summaryHomeBtn"){showScreen("home");return}
+ if(t.id==="backWizardBtn"||t.dataset.action==="cancel"){cancelShot();return}
+ if(t.id==="quickSaveBtn"){saveShot();return}
+ if(t.id==="finishSaveBtn"){finishMatch();return}
+ if(t.id==="exportBtn"){exportMatch();return}
+ if(t.dataset.choiceKey){pending[t.dataset.choiceKey]=t.dataset.choiceVal;if(t.dataset.choiceKey==="type"){pending.shotCategory=t.dataset.choiceVal;pending.type=t.dataset.choiceVal}showWizard(Number(t.dataset.choiceNext));return}
+ if(t.dataset.next){showWizard(Number(t.dataset.next));return}
+ if(t.dataset.map){mapTap(e,t.dataset.map);return}
+ if(t.dataset.ratingLabel){state.ratings[t.dataset.ratingLabel]=Number(t.dataset.ratingVal);save();renderRatings();return}
+});
+document.addEventListener("touchstart",function(e){let m=e.target.closest&&e.target.closest(".mapbox[data-map]");if(m){e.preventDefault();mapTap({currentTarget:m,clientX:e.touches[0].clientX,clientY:e.touches[0].clientY},m.dataset.map)}},{passive:false});
+function bindIf(id,ev,fn){let el=$(id);if(el)el.addEventListener(ev,fn)}bindIf("goalieSelect","change",()=>goalieChanged(true));bindIf("teamSelect","change",syncStateFromForm);bindIf("matchDate","change",syncStateFromForm);bindIf("opponentTeam","input",syncStateFromForm);bindIf("finishHomeGoals","input",syncStateFromForm);bindIf("periodCount","input",syncStateFromForm);
+window.addEventListener("load",()=>{if(!state.timeline)state.timeline=[];loadMaster();render();if("serviceWorker" in navigator)navigator.serviceWorker.register("service-worker.js")});
+</script>
+
+<script>
+(function(){
+  window.RECORDER_VERSION="1.29";
+
+  function n(v){ var x=Number(v||0); return Number.isFinite(x)?x:0; }
+
+  function syncFinishHomeGoals(){
+    var el=document.getElementById("finishHomeGoals");
+    if(el && typeof state !== "undefined"){
+      state.homeGoals=n(el.value);
+      try{ save(); }catch(e){}
+      try{ render(); }catch(e){}
+    }
+  }
+
+  function updateFinishHomeGoals(){
+    var el=document.getElementById("finishHomeGoals");
+    if(el && typeof state !== "undefined") el.value=state.homeGoals||0;
+  }
+
+  function hideOldHomeGoals(){
+    var old=document.getElementById("homeGoals");
+    if(old){
+      var label=old.previousElementSibling;
+      if(label && /home goals/i.test(label.textContent||"")) label.style.display="none";
+      old.style.display="none";
+    }
+  }
+
+  var oldShow=window.showScreen;
+  if(typeof oldShow==="function" && !window.__v120ShowWrapped){
+    window.showScreen=function(id){
+      oldShow.apply(this, arguments);
+      if(id==="finish") updateFinishHomeGoals();
+      hideOldHomeGoals();
+    };
+    window.__v120ShowWrapped=true;
+  }
+
+  var oldFinish=window.finishMatch;
+  if(typeof oldFinish==="function" && !window.__v120FinishWrapped){
+    window.finishMatch=function(){
+      syncFinishHomeGoals();
+      return oldFinish.apply(this, arguments);
+    };
+    window.__v120FinishWrapped=true;
+  }
+
+  var oldExport=window.exportMatch;
+  if(typeof oldExport==="function" && !window.__v120ExportWrapped){
+    window.exportMatch=function(){
+      syncFinishHomeGoals();
+      return oldExport.apply(this, arguments);
+    };
+    window.__v120ExportWrapped=true;
+  }
+
+  document.addEventListener("input", function(e){
+    if(e.target && e.target.id==="finishHomeGoals") syncFinishHomeGoals();
+  });
+
+  setTimeout(function(){
+    hideOldHomeGoals();
+    updateFinishHomeGoals();
+  },0);
+})();
+</script>
+
+
+<script>
+/* v1.29: live Save Rate and Defence Rate on Home screen */
+(function(){
+  window.RECORDER_VERSION="1.29";
+
+  function pct(a,b){
+    return b > 0 ? Math.round((a / b) * 100) + "%" : "N/C";
+  }
+
+  function shotList(){
+    try{
+      if(typeof shotOnly === "function") return shotOnly();
+    }catch(e){}
+    try{
+      if(typeof state !== "undefined" && Array.isArray(state.shots)){
+        return state.shots.filter(function(s){ return !s.eventType; });
+      }
+    }catch(e){}
+    return [];
+  }
+
+  function calcLiveSaveRate(){
+    var shots = shotList();
+    var saves = shots.filter(function(s){ return s.outcome === "Save"; }).length;
+    var goals = shots.filter(function(s){ return s.outcome === "Goal"; }).length;
+    return pct(saves, saves + goals);
+  }
+
+  function calcLiveDefenceRate(){
+    var shots = shotList();
+    var saves = shots.filter(function(s){ return s.outcome === "Save"; }).length;
+    var goals = shots.filter(function(s){ return s.outcome === "Goal"; }).length;
+    var angles = shots.filter(function(s){ return s.outcome === "Angle Closed Off"; }).length;
+    return pct(saves + angles, saves + goals + angles);
+  }
+
+  function ensureLiveRatePanel(){
+    var saveEl = document.getElementById("saveRateLive");
+    var defEl = document.getElementById("defRate");
+
+    if(saveEl && defEl) return;
+
+    var oldDef = document.getElementById("defRate");
+    if(oldDef){
+      var oldCard = oldDef.closest(".defence,.card,div");
+      if(oldCard && !document.getElementById("saveRateLive")){
+        var grid = document.createElement("div");
+        grid.className = "live-rate-grid";
+        grid.innerHTML =
+          '<div class="live-rate-card save-rate"><span>Save Rate</span><b id="saveRateLive">N/C</b></div>' +
+          '<div class="live-rate-card def-rate"><span>Defence Rate</span><b id="defRate">N/C</b></div>';
+        oldCard.replaceWith(grid);
+      }
+      return;
+    }
+
+    var counterGrid = document.querySelector(".counter-grid");
+    if(counterGrid && !document.getElementById("saveRateLive")){
+      var panel = document.createElement("div");
+      panel.className = "live-rate-grid";
+      panel.innerHTML =
+        '<div class="live-rate-card save-rate"><span>Save Rate</span><b id="saveRateLive">N/C</b></div>' +
+        '<div class="live-rate-card def-rate"><span>Defence Rate</span><b id="defRate">N/C</b></div>';
+      counterGrid.insertAdjacentElement("afterend", panel);
+    }
+  }
+
+  function renderLiveRates(){
+    ensureLiveRatePanel();
+
+    var saveEl = document.getElementById("saveRateLive");
+    var defEl = document.getElementById("defRate");
+
+    if(saveEl) saveEl.textContent = calcLiveSaveRate();
+    if(defEl) defEl.textContent = calcLiveDefenceRate();
+  }
+
+  var oldRender = window.render;
+  if(typeof oldRender === "function" && !window.__v122RenderWrapped){
+    window.render = function(){
+      var result = oldRender.apply(this, arguments);
+      renderLiveRates();
+      return result;
+    };
+    window.__v122RenderWrapped = true;
+  }
+
+  var oldShowScreen = window.showScreen;
+  if(typeof oldShowScreen === "function" && !window.__v122ShowWrapped){
+    window.showScreen = function(){
+      var result = oldShowScreen.apply(this, arguments);
+      renderLiveRates();
+      return result;
+    };
+    window.__v122ShowWrapped = true;
+  }
+
+  ["saveShot","undoPrompt","addPeriodMarker"].forEach(function(fnName){
+    var oldFn = window[fnName];
+    if(typeof oldFn === "function" && !oldFn.__v122RatesWrapped){
+      window[fnName] = function(){
+        var result = oldFn.apply(this, arguments);
+        setTimeout(renderLiveRates, 0);
+        return result;
+      };
+      window[fnName].__v122RatesWrapped = true;
+    }
+  });
+
+  document.addEventListener("click", function(){
+    setTimeout(renderLiveRates, 0);
+  });
+  document.addEventListener("change", function(){
+    setTimeout(renderLiveRates, 0);
+  });
+
+  setTimeout(function(){
+    renderLiveRates();
+    document.querySelectorAll("*").forEach(function(el){
+      if(el.children.length === 0 && /v1\.\d+/.test(el.textContent || "")){
+        el.textContent = el.textContent.replace(/v1\.\d+/g, "v1.29");
+      }
+    });
+  }, 0);
+})();
+</script>
+
+
+<script>
+/* v1.29: restore live Save Rate, prominent final save, confirm before cancel */
+(function(){
+  window.RECORDER_VERSION="1.29";
+
+  function pct(a,b){
+    return b > 0 ? Math.round((a / b) * 100) + "%" : "N/C";
+  }
+
+  function shots(){
+    try{
+      if(typeof shotOnly === "function") return shotOnly();
+    }catch(e){}
+    try{
+      if(typeof state !== "undefined" && Array.isArray(state.shots)){
+        return state.shots.filter(function(s){ return !s.eventType; });
+      }
+    }catch(e){}
+    return [];
+  }
+
+  function liveSaveRate(){
+    var list = shots();
+    var saves = list.filter(function(s){ return s.outcome === "Save"; }).length;
+    var goals = list.filter(function(s){ return s.outcome === "Goal"; }).length;
+    return pct(saves, saves + goals);
+  }
+
+  function liveDefenceRate(){
+    var list = shots();
+    var saves = list.filter(function(s){ return s.outcome === "Save"; }).length;
+    var goals = list.filter(function(s){ return s.outcome === "Goal"; }).length;
+    var angles = list.filter(function(s){ return s.outcome === "Angle Closed Off"; }).length;
+    return pct(saves + angles, saves + goals + angles);
+  }
+
+  function ensureRateGrid(){
+    var saveEl = document.getElementById("saveRateLive");
+    var defEl = document.getElementById("defRate");
+
+    if(saveEl && defEl) return;
+
+    var existingDef = document.getElementById("defRate");
+    if(existingDef){
+      var box = existingDef.closest(".defence,.live-rate-grid,.card,div");
+      if(box && !document.getElementById("saveRateLive")){
+        var grid = document.createElement("div");
+        grid.className = "live-rate-grid";
+        grid.innerHTML =
+          '<div class="live-rate-card save-rate"><span>Save Rate</span><b id="saveRateLive">N/C</b></div>' +
+          '<div class="live-rate-card def-rate"><span>Defence Rate</span><b id="defRate">N/C</b></div>';
+        box.replaceWith(grid);
+        return;
+      }
+    }
+
+    var counterGrid = document.querySelector("#home .counter-grid") || document.querySelector(".counter-grid");
+    if(counterGrid && !document.getElementById("saveRateLive")){
+      var panel = document.createElement("div");
+      panel.className = "live-rate-grid";
+      panel.innerHTML =
+        '<div class="live-rate-card save-rate"><span>Save Rate</span><b id="saveRateLive">N/C</b></div>' +
+        '<div class="live-rate-card def-rate"><span>Defence Rate</span><b id="defRate">N/C</b></div>';
+      counterGrid.insertAdjacentElement("afterend", panel);
+    }
+  }
+
+  function renderLiveRates(){
+    ensureRateGrid();
+    var saveEl = document.getElementById("saveRateLive");
+    var defEl = document.getElementById("defRate");
+    if(saveEl) saveEl.textContent = liveSaveRate();
+    if(defEl) defEl.textContent = liveDefenceRate();
+  }
+
+  function isFinalShotSummary(){
+    var body = document.getElementById("wizardBody");
+    if(!body) return false;
+    var text = (body.textContent || "").toLowerCase();
+    return text.includes("shot type:") && text.includes("situation:") && text.includes("out numbered:");
+  }
+
+  function styleFinalConfirm(){
+    var btn = document.getElementById("quickSaveBtn");
+    if(!btn) return;
+
+    if(isFinalShotSummary()){
+      btn.classList.add("final-confirm");
+      btn.textContent = "CONFIRM & SAVE SHOT";
+      if(!document.querySelector(".final-save-hint")){
+        var hint = document.createElement("div");
+        hint.className = "final-save-hint";
+        hint.textContent = "Review the details, then save the shot.";
+        btn.parentElement.insertBefore(hint, btn);
+      }
+    }else{
+      btn.classList.remove("final-confirm");
+      if(btn.textContent.trim().toUpperCase() === "CONFIRM & SAVE SHOT"){
+        btn.textContent = "CONFIRM & SAVE NOW";
+      }
+      var hint = document.querySelector(".final-save-hint");
+      if(hint) hint.remove();
+    }
+  }
+
+  function refreshUi(){
+    renderLiveRates();
+    styleFinalConfirm();
+  }
+
+  // Wrap render/show/wizard functions.
+  var oldRender = window.render;
+  if(typeof oldRender === "function" && !window.__v124RenderWrapped){
+    window.render = function(){
+      var result = oldRender.apply(this, arguments);
+      refreshUi();
+      return result;
+    };
+    window.__v124RenderWrapped = true;
+  }
+
+  var oldShowScreen = window.showScreen;
+  if(typeof oldShowScreen === "function" && !window.__v124ShowWrapped){
+    window.showScreen = function(){
+      var result = oldShowScreen.apply(this, arguments);
+      refreshUi();
+      return result;
+    };
+    window.__v124ShowWrapped = true;
+  }
+
+  var oldShowWizard = window.showWizard;
+  if(typeof oldShowWizard === "function" && !window.__v124WizardWrapped){
+    window.showWizard = function(){
+      var result = oldShowWizard.apply(this, arguments);
+      setTimeout(refreshUi, 0);
+      return result;
+    };
+    window.__v124WizardWrapped = true;
+  }
+
+  ["saveShot","undoPrompt","addPeriodMarker"].forEach(function(fnName){
+    var oldFn = window[fnName];
+    if(typeof oldFn === "function" && !oldFn.__v124Wrapped){
+      window[fnName] = function(){
+        var result = oldFn.apply(this, arguments);
+        setTimeout(refreshUi, 0);
+        return result;
+      };
+      window[fnName].__v124Wrapped = true;
+    }
+  });
+
+  // Confirm before cancelling a shot in progress.
+  document.addEventListener("click", function(e){
+    var cancelTarget = e.target && e.target.closest && e.target.closest('#backWizardBtn,[data-action="cancel"]');
+    if(!cancelTarget) return;
+
+    try{
+      if(typeof pending !== "undefined" && pending){
+        var ok = confirm("Cancel this shot? The shot details you have entered will be lost.");
+        if(!ok){
+          e.preventDefault();
+          e.stopPropagation();
+          if(e.stopImmediatePropagation) e.stopImmediatePropagation();
+          return false;
+        }
+      }
+    }catch(err){}
+  }, true);
+
+  // If cancelShot is called elsewhere, protect it too.
+  var oldCancelShot = window.cancelShot;
+  if(typeof oldCancelShot === "function" && !window.__v124CancelWrapped){
+    window.cancelShot = function(){
+      try{
+        if(typeof pending !== "undefined" && pending){
+          if(!confirm("Cancel this shot? The shot details you have entered will be lost.")){
+            return;
+          }
+        }
+      }catch(e){}
+      return oldCancelShot.apply(this, arguments);
+    };
+    window.__v124CancelWrapped = true;
+  }
+
+  document.addEventListener("click", function(){ setTimeout(refreshUi, 0); });
+  document.addEventListener("change", function(){ setTimeout(refreshUi, 0); });
+
+  setTimeout(function(){
+    refreshUi();
+    document.querySelectorAll("*").forEach(function(el){
+      if(el.children.length === 0 && /v1\.\d+/.test(el.textContent || "")){
+        el.textContent = el.textContent.replace(/v1\.\d+/g, "v1.29");
+      }
+    });
+  }, 0);
+})();
+</script>
+
+
+<script>
+/* v1.29: restore Home layout and remove duplicate old defence card */
+(function(){
+  window.RECORDER_VERSION="1.29";
+
+  function pct(a,b){
+    return b > 0 ? Math.round((a / b) * 100) + "%" : "N/C";
+  }
+
+  function shots(){
+    try{
+      if(typeof shotOnly === "function") return shotOnly();
+    }catch(e){}
+    try{
+      if(typeof state !== "undefined" && Array.isArray(state.shots)){
+        return state.shots.filter(function(s){ return !s.eventType; });
+      }
+    }catch(e){}
+    return [];
+  }
+
+  function calcSaveRate(){
+    var list = shots();
+    var saves = list.filter(function(s){ return s.outcome === "Save"; }).length;
+    var goals = list.filter(function(s){ return s.outcome === "Goal"; }).length;
+    return pct(saves, saves + goals);
+  }
+
+  function calcDefenceRate(){
+    var list = shots();
+    var saves = list.filter(function(s){ return s.outcome === "Save"; }).length;
+    var goals = list.filter(function(s){ return s.outcome === "Goal"; }).length;
+    var angles = list.filter(function(s){ return s.outcome === "Angle Closed Off"; }).length;
+    return pct(saves + angles, saves + goals + angles);
+  }
+
+  function ensureHomeLayout(){
+    var home = document.getElementById("home");
+    if(!home) return;
+
+    // Force Saves and Goals counters back into a 2-column block.
+    var saveCounter = document.getElementById("saveCount");
+    var goalCounter = document.getElementById("goalCount");
+    var saveCard = saveCounter ? saveCounter.closest(".counter") : null;
+    var goalCard = goalCounter ? goalCounter.closest(".counter") : null;
+
+    var grid = home.querySelector(".counter-grid");
+    if(!grid && saveCard && goalCard){
+      grid = document.createElement("div");
+      grid.className = "counter-grid";
+      saveCard.parentNode.insertBefore(grid, saveCard);
+      grid.appendChild(saveCard);
+      grid.appendChild(goalCard);
+    }else if(grid && saveCard && goalCard){
+      if(saveCard.parentNode !== grid) grid.appendChild(saveCard);
+      if(goalCard.parentNode !== grid) grid.appendChild(goalCard);
+    }
+
+    // Remove duplicated/old one-line rate text if previous patches inserted it badly.
+    Array.from(home.childNodes).forEach(function(node){
+      if(node.nodeType === 3 && /Save Rate|Defence Rate/.test(node.textContent || "")){
+        node.textContent = "";
+      }
+    });
+    Array.from(home.querySelectorAll("div,span,p")).forEach(function(el){
+      if(el.id === "saveRateLive" || el.id === "defRate" || el.closest(".live-rate-grid")) return;
+      var txt = (el.textContent || "").replace(/\s+/g," ").trim();
+      if(/^Save Rate\s*N\/C\s*Defence Rate\s*N\/C$/.test(txt) || /^Save Rate/.test(txt) && txt.includes("Defence Rate") && el.children.length < 2){
+        el.remove();
+      }
+    });
+
+    // Hide old single defence card outside the new grid.
+    Array.from(home.querySelectorAll(".defence")).forEach(function(el){
+      if(!el.closest(".live-rate-grid")){
+        el.classList.add("v126-hidden-old-defence");
+      }
+    });
+
+    // Ensure the rates are a clean 2-column block directly under saves/goals.
+    var rateGrid = home.querySelector(".live-rate-grid");
+    if(!rateGrid){
+      rateGrid = document.createElement("div");
+      rateGrid.className = "live-rate-grid";
+      rateGrid.innerHTML =
+        '<div class="live-rate-card save-rate"><span>Save Rate</span><b id="saveRateLive">N/C</b></div>' +
+        '<div class="live-rate-card def-rate"><span>Defence Rate</span><b id="defRate">N/C</b></div>';
+    }else{
+      rateGrid.className = "live-rate-grid";
+      rateGrid.innerHTML =
+        '<div class="live-rate-card save-rate"><span>Save Rate</span><b id="saveRateLive">N/C</b></div>' +
+        '<div class="live-rate-card def-rate"><span>Defence Rate</span><b id="defRate">N/C</b></div>';
+    }
+
+    if(grid && grid.nextElementSibling !== rateGrid){
+      grid.insertAdjacentElement("afterend", rateGrid);
+    }
+  }
+
+  function renderRates(){
+    ensureHomeLayout();
+    var saveEl = document.getElementById("saveRateLive");
+    var defEl = document.getElementById("defRate");
+    if(saveEl) saveEl.textContent = calcSaveRate();
+    if(defEl) defEl.textContent = calcDefenceRate();
+  }
+
+  var oldRender = window.render;
+  if(typeof oldRender === "function" && !window.__v126RenderWrapped){
+    window.render = function(){
+      var result = oldRender.apply(this, arguments);
+      renderRates();
+      return result;
+    };
+    window.__v126RenderWrapped = true;
+  }
+
+  var oldShowScreen = window.showScreen;
+  if(typeof oldShowScreen === "function" && !window.__v126ShowWrapped){
+    window.showScreen = function(){
+      var result = oldShowScreen.apply(this, arguments);
+      renderRates();
+      return result;
+    };
+    window.__v126ShowWrapped = true;
+  }
+
+  ["saveShot","undoPrompt","addPeriodMarker"].forEach(function(fnName){
+    var oldFn = window[fnName];
+    if(typeof oldFn === "function" && !oldFn.__v126Wrapped){
+      window[fnName] = function(){
+        var result = oldFn.apply(this, arguments);
+        setTimeout(renderRates, 0);
+        return result;
+      };
+      window[fnName].__v126Wrapped = true;
+    }
+  });
+
+  document.addEventListener("click", function(){ setTimeout(renderRates, 0); });
+  document.addEventListener("change", function(){ setTimeout(renderRates, 0); });
+
+  setTimeout(function(){
+    renderRates();
+    document.querySelectorAll("*").forEach(function(el){
+      if(el.children.length === 0 && /v1\.\d+/.test(el.textContent || "")){
+        el.textContent = el.textContent.replace(/v1\.\d+/g, "v1.29");
+      }
+    });
+  }, 0);
+})();
+</script>
+
+
+<script>
+/* v1.29: branding + period count safety sync */
+(function(){
+  window.RECORDER_VERSION="1.29";
+  function byId(id){return document.getElementById(id)}
+  function n(v){var x=Number(v||4);if(!Number.isFinite(x)||x<1)x=4;if(x>12)x=12;return Math.round(x)}
+  function ensurePeriodField(){
+    var pc=byId("periodCount");
+    if(!pc){
+      var opp=byId("opponentTeam");
+      if(opp){
+        var label=document.createElement("label");label.textContent="Number of Periods";
+        pc=document.createElement("input");pc.id="periodCount";pc.type="number";pc.min="1";pc.max="12";pc.step="1";pc.value="4";
+        var help=document.createElement("span");help.className="period-help";help.textContent="Default is 4 for field hockey quarters.";
+        opp.insertAdjacentElement("afterend", help);opp.insertAdjacentElement("afterend", pc);opp.insertAdjacentElement("afterend", label);
+      }
+    }
+    try{if(typeof state!=="undefined"){if(!state.periodCount)state.periodCount=4;if(pc)pc.value=n(state.periodCount)}}catch(e){}
+  }
+  document.addEventListener("input",function(e){if(e.target&&e.target.id==="periodCount"){try{state.periodCount=n(e.target.value);save();render();}catch(err){}}});
+  document.addEventListener("change",function(e){if(e.target&&e.target.id==="periodCount"){try{state.periodCount=n(e.target.value);save();render();}catch(err){}}});
+  setTimeout(function(){ensurePeriodField();try{render();}catch(e){}},0);
+})();
+</script>
+
+
+<script>
+/* Goalie Stats Recorder v1.29: hidden confirmed force refresh on version triple-tap */
+(function(){
+  function findVersionElement(){
+    return document.getElementById('versionTapRefresh')
+      || document.querySelector('.versionTapRefresh')
+      || Array.from(document.querySelectorAll('small,.version,.appVersion,.buildVersion,footer,header,body *'))
+        .find(function(el){
+          return el && el.children.length < 4 && /v1\.28|Version 1\.28/i.test((el.textContent || '').trim());
+        });
+  }
+  async function forceRefreshRecorder(){
+    try{
+      if('serviceWorker' in navigator){
+        const regs = await navigator.serviceWorker.getRegistrations();
+        await Promise.all(regs.map(function(reg){ return reg.unregister(); }));
+      }
+      if('caches' in window){
+        const names = await caches.keys();
+        await Promise.all(names.map(function(name){ return caches.delete(name); }));
+      }
+      try{ localStorage.setItem('gsr_last_forced_refresh', new Date().toISOString()); }catch(e){}
+      window.location.reload();
+    }catch(err){
+      alert('Refresh failed: ' + (err && err.message ? err.message : err));
+    }
+  }
+  function armVersionRefresh(){
+    const el = findVersionElement();
+    if(!el || el.dataset.refreshArmed === '1') return;
+    el.dataset.refreshArmed = '1';
+    el.classList.add('versionTapRefresh');
+    el.setAttribute('title','Tap 3 times to force refresh');
+    let taps = 0;
+    let timer = null;
+    el.addEventListener('click', function(){
+      taps += 1;
+      clearTimeout(timer);
+      timer = setTimeout(function(){ taps = 0; }, 1400);
+      if(taps >= 3){
+        taps = 0;
+        clearTimeout(timer);
+        const ok = confirm('Force refresh the Recorder app and reload the latest version? This clears the app cache but should not erase saved match data.');
+        if(ok) forceRefreshRecorder();
+      }
+    });
+  }
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', armVersionRefresh);
+  }else{
+    armVersionRefresh();
+  }
+  setTimeout(armVersionRefresh, 800);
+})();
+</script>
+
+
+<script>
+/* v1.29: Hockey Goalie Stats v5.14 compatible fields, shootout export, and iPhone icon cache support */
+(function(){
+  window.RECORDER_VERSION="1.29";
+  const SIT129=["Normal Game Play","Penalty Corner","Penalty Stroke","8 Second 1v1"];
+  const TYPE129=["1st Shot","Rebound","In Game 1v1","Own Goal","Other"];
+  const OUT129=["Not Out Numbered","2 vs 1","3 vs 1","4+ vs 1"];
+  const REB129=["No rebound","Safe","Dangerous"];
+  const PS129={x:50,y:36.7};
+
+  function by129(id){return document.getElementById(id)}
+  function esc129(v){return String(v??"").replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]})}
+  function safeFile129(s){return String(s||"").trim().replace(/[\\/:*?"<>|]+/g,"-").replace(/\s+/g," ").replace(/\.+$/g,"")||"Unknown"}
+  function normSit129(v){v=String(v||"").trim();if(!v||/^open play$/i.test(v)||/^normal gameplay$/i.test(v)||/^normal game play$/i.test(v))return "Normal Game Play";if(/^penalty corner$/i.test(v))return "Penalty Corner";if(/^penalty stroke$/i.test(v))return "Penalty Stroke";if(/^8 second 1v1$/i.test(v))return "8 Second 1v1";return "Normal Game Play"}
+  function normType129(v){v=String(v||"").trim();if(/^rebound$/i.test(v))return "Rebound";if(/^in game 1v1$/i.test(v))return "In Game 1v1";if(/^own goal$/i.test(v))return "Own Goal";if(/^other$/i.test(v))return "Other";return "1st Shot"}
+  function normOut129(v){v=String(v||"").trim();if(/^2 vs 1$/i.test(v))return "2 vs 1";if(/^3 vs 1$/i.test(v))return "3 vs 1";if(/^4\+ vs 1$/i.test(v)||/^4.*vs.*1$/i.test(v))return "4+ vs 1";if(/^out numbered$/i.test(v))return "2 vs 1";return "Not Out Numbered"}
+  function normReb129(v){v=String(v||"").trim();if(/^safe$/i.test(v))return "Safe";if(/^dangerous$/i.test(v))return "Dangerous";return "No rebound"}
+  function save129(){try{save()}catch(e){try{localStorage.setItem("gsr_v129_state",JSON.stringify(state))}catch(f){}}}
+
+  function migrate129(){
+    if(typeof state==="undefined")return;
+    state.shots=(state.shots||[]).map(function(s){
+      if(s&&s.eventType)return s;
+      s.shotSituation=normSit129(s.shotSituation||s.situation);
+      s.situation=s.shotSituation;
+      s.type=normType129(s.type||s.shotType||s.shotCategory);
+      s.shotType=s.type;
+      s.shotCategory=s.type;
+      s.outnumbered=normOut129(s.outnumbered);
+      s.rebound=normReb129(s.rebound);
+      if(s.shotSituation==="Penalty Stroke"){s.dX=PS129.x;s.dY=PS129.y}
+      if(s.outcome==="Angle Closed Off"){delete s.gX;delete s.gY}
+      return s;
+    });
+    (state.timeline||[]).forEach(function(t){
+      if(t&&t.eventType==="shot"){
+        var s=(state.shots||[]).find(function(x){return x.id===t.shotId});
+        t.shotSituation=normSit129(t.shotSituation||(s&&s.shotSituation));
+        t.type=normType129(t.type||(s&&s.type));
+        t.outnumbered=normOut129(t.outnumbered||(s&&s.outnumbered));
+      }
+    });
+    sanitizeShootout129();
+    save129();
+  }
+
+  function blankSide129(side){return side==="home"?{result:"Not Taken"}:{result:"Not Taken",saveMethod:"",note:""}}
+  function ensureShootout129(){
+    if(!state.shootout)state.shootout={enabled:false,rounds:[]};
+    if(!Array.isArray(state.shootout.rounds))state.shootout.rounds=[];
+    while(state.shootout.rounds.length<5)state.shootout.rounds.push({home:blankSide129("home"),opponent:blankSide129("opponent")});
+    state.shootout.rounds.forEach(function(r){
+      if(!r.home)r.home=blankSide129("home");
+      if(!r.opponent)r.opponent=blankSide129("opponent");
+      r.home.result=["Goal","Save"].includes(r.home.result)?r.home.result:"Not Taken";
+      delete r.home.saveMethod;delete r.home.note;delete r.home.shooter;
+      r.opponent.result=r.opponent.result||"Not Taken";
+      delete r.opponent.shooter;
+      r.opponent.saveMethod=r.opponent.saveMethod||"";
+      r.opponent.note=r.opponent.note||"";
+    });
+    return state.shootout;
+  }
+  function sanitizeShootout129(){if(!state.shootout)return;ensureShootout129();}
+
+  function resultOptions129(v,home){
+    const opts=home?["Not Taken","Goal","Save"]:["Not Taken","Goal","Save","Miss / Wide / Out","Time Expired","Forced Wide","Retake","Penalty Stroke Awarded","Penalty Stroke Scored","Penalty Stroke Saved / Missed"];
+    return opts.map(function(o){return '<option '+(o===v?'selected':'')+'>'+esc129(o)+'</option>'}).join("");
+  }
+  function methodOptions129(v){
+    return ["","Block","Stick save","Foot save","Smother","Forced wide","Stayed up / delayed"].map(function(o){return '<option '+(o===v?'selected':'')+'>'+esc129(o)+'</option>'}).join("");
+  }
+  function renderShootoutPanel129(){
+    const panel=by129("shootoutPanel");
+    if(!panel||typeof state==="undefined")return;
+    const so=ensureShootout129();
+    if(!so.enabled){
+      panel.innerHTML='<h3>Shootout</h3><p class="v129Mini">Optional. Use this only if the match ended in a draw and went to shootout.</p><button class="btn blue" id="v129EnableShootout" type="button">ADD SHOOTOUT</button>';
+      return;
+    }
+    panel.innerHTML='<h3>Shootout</h3><p class="v129Mini">Home-team attempts only record Goal/Save. Opponent attempts at your goalie record result, save method and note. Shooter names are not recorded.</p>'+
+      '<div class="v129ShootoutActions"><button class="btn blue" id="v129AddSD" type="button">ADD SUDDEN DEATH ROUND</button><button class="btn v129Danger" id="v129DeleteShootout" type="button">DELETE SHOOTOUT</button></div>'+
+      so.rounds.map(function(r,i){
+        return '<div class="v129ShootoutRound"><h4>Round '+(i+1)+(i>=5?' · Sudden Death':'')+'</h4><div class="v129ShootoutGrid">'+
+          '<div><label>Home attempt at opposition goalie</label><select data-v129-so-row="'+i+'" data-v129-so-side="home" data-v129-so-field="result">'+resultOptions129(r.home.result,true)+'</select></div>'+
+          '<div><label>Opponent attempt at our goalie</label><select data-v129-so-row="'+i+'" data-v129-so-side="opponent" data-v129-so-field="result">'+resultOptions129(r.opponent.result,false)+'</select><label>Save Method</label><select data-v129-so-row="'+i+'" data-v129-so-side="opponent" data-v129-so-field="saveMethod">'+methodOptions129(r.opponent.saveMethod||"")+'</select><label>Note</label><input data-v129-so-row="'+i+'" data-v129-so-side="opponent" data-v129-so-field="note" value="'+esc129(r.opponent.note||"")+'" placeholder="optional"></div>'+
+          '</div></div>';
+      }).join("");
+  }
+  function readShootoutControls129(){
+    if(!state.shootout||!state.shootout.enabled)return;
+    ensureShootout129();
+    document.querySelectorAll("[data-v129-so-row]").forEach(function(el){
+      var i=Number(el.dataset.v129SoRow), side=el.dataset.v129SoSide, field=el.dataset.v129SoField;
+      if(!state.shootout.rounds[i])return;
+      state.shootout.rounds[i][side][field]=el.value;
+    });
+    sanitizeShootout129();
+    save129();
+  }
+
+  function startShot129(outcome){
+    pending={outcome:outcome,type:"1st Shot",shotType:"1st Shot",shotCategory:"1st Shot",shotSituation:"Normal Game Play",situation:"Normal Game Play",outnumbered:"Not Out Numbered",rebound:"No rebound",note:"",dX:null,dY:null,gX:null,gY:null};
+    showWizard129(1);
+  }
+  function choice129(icon,label,key,val,next){
+    var on=pending&&pending[key]===val;
+    return '<div class="choice '+(on?'selected':'')+'" data-choice-key="'+key+'" data-choice-val="'+esc129(val)+'" data-choice-next="'+next+'"><div class="icon">'+icon+'</div><div>'+esc129(label)+'</div></div>';
+  }
+  function showWizard129(step){
+    showScreen("wizard");
+    by129("wizardTitle").textContent="Record "+pending.outcome;
+    by129("progressBar").style.width=(Math.min(step,7)/7*100)+"%";
+    var body=by129("wizardBody");
+    if(step===1){
+      body.innerHTML='<h3>1. Shot Situation</h3>'+SIT129.map(function(x,i){return choice129(["🏃","🚩","🥅","8️⃣"][i],x,"shotSituation",x,2)}).join("")+'<button class="btn ghost" data-action="cancel">CANCEL</button>';
+    }else if(step===2){
+      pending.shotSituation=normSit129(pending.shotSituation); pending.situation=pending.shotSituation;
+      if(pending.shotSituation==="Penalty Stroke"){pending.dX=PS129.x;pending.dY=PS129.y}
+      body.innerHTML='<h3>2. Shot Type</h3>'+TYPE129.map(function(x,i){return choice129(["🎯","🔄","👤","🥅","•"][i],x,"type",x,3)}).join("")+'<button class="btn ghost" data-action="cancel">CANCEL</button>';
+    }else if(step===3){
+      body.innerHTML='<h3>3. Out Numbered</h3>'+OUT129.map(function(x,i){return choice129(["🧍","2️⃣","3️⃣","4️⃣"][i],x,"outnumbered",x,4)}).join("")+'<button class="btn ghost" data-action="cancel">CANCEL</button>';
+    }else if(step===4){
+      body.innerHTML='<h3>4. Rebound Result</h3>'+REB129.map(function(x,i){return choice129(["—","✅","⚠️"][i],x,"rebound",x,5)}).join("")+'<button class="btn ghost" data-action="cancel">CANCEL</button>';
+    }else if(step===5){
+      if(pending.shotSituation==="Penalty Stroke"){
+        pending.dX=PS129.x; pending.dY=PS129.y;
+        body.innerHTML='<h3>5. D Heat Map</h3><div class="v129PSpot"><b>Penalty Stroke</b><br>D placement fixed to the P spot.</div><button class="btn ghost" data-next="'+(pending.outcome==="Angle Closed Off"?7:6)+'">NEXT</button><button class="btn ghost" data-action="cancel">CANCEL</button>';
+      }else{
+        body.innerHTML='<h3>5. Tap D Heat Map</h3><div class="map-note">'+(pending.dX!=null?'<b>Placement selected.</b> Tap again to move it.':'Tap to place. Tap again to move before saving.')+'</div>'+dMapHtml()+'<button class="btn ghost" data-next="'+(pending.outcome==="Angle Closed Off"?7:6)+'">NEXT</button><button class="btn ghost" data-action="cancel">CANCEL</button>';
+      }
+    }else if(step===6 && pending.outcome!=="Angle Closed Off"){
+      body.innerHTML='<h3>6. Tap Goal Box</h3><div class="map-note">'+(pending.gX!=null?'<b>Placement selected.</b> Tap again to move it.':'Tap to place. Tap again to move before saving.')+'</div>'+goalMapHtml()+'<button class="btn ghost" data-next="7">NEXT</button><button class="btn ghost" data-action="cancel">CANCEL</button>';
+    }else{
+      body.innerHTML=confirmHtml129();
+    }
+  }
+  function confirmHtml129(){
+    let posD=pending.dX!=null?'D: '+pending.dX+'%, '+pending.dY+'%':'D: not captured';
+    let posG=pending.outcome!=="Angle Closed Off"?(pending.gX!=null?'Goal: '+pending.gX+'%, '+pending.gY+'%':'Goal: not captured'):'Goal box not required for Angle Closed Off';
+    return '<div style="text-align:center"><div class="summary-check">✓</div><h2>'+esc129(pending.outcome)+'</h2></div>'+
+      '<p>Shot Situation: <b>'+esc129(normSit129(pending.shotSituation))+'</b></p>'+
+      '<p>Shot Type: <b>'+esc129(normType129(pending.type))+'</b></p>'+
+      '<p>Out Numbered: <b>'+esc129(normOut129(pending.outnumbered))+'</b></p>'+
+      '<p>Rebound Result: <b>'+esc129(normReb129(pending.rebound))+'</b></p>'+
+      '<label>Notes</label><textarea id="shotNote" placeholder="Optional note">'+esc129(pending.note||"")+'</textarea>'+
+      '<p class="small">'+posD+'<br>'+posG+'</p><button class="btn ghost" data-action="cancel">CANCEL</button>';
+  }
+  function saveShot129(){
+    if(!pending)return;
+    var noteEl=by129("shotNote");
+    var sit=normSit129(pending.shotSituation);
+    var typ=normType129(pending.type);
+    var reb=normReb129(pending.rebound);
+    if(sit==="Penalty Stroke"){pending.dX=PS129.x;pending.dY=PS129.y}
+    let s={id:newid(),time:new Date().toISOString(),outcome:pending.outcome,shotSituation:sit,situation:sit,type:typ,shotType:typ,shotCategory:typ,outnumbered:normOut129(pending.outnumbered),rebound:reb,note:(noteEl?noteEl.value:(pending.note||""))};
+    if(pending.dX!=null){s.dX=pending.dX;s.dY=pending.dY}
+    if(pending.outcome!=="Angle Closed Off"&&pending.gX!=null){s.gX=pending.gX;s.gY=pending.gY}
+    state.shots.push(s);
+    state.timeline.push({eventType:"shot",shotId:s.id,label:letter(s),outcome:s.outcome,time:s.time,type:s.type,shotSituation:s.shotSituation,outnumbered:s.outnumbered,rebound:s.rebound});
+    pending=null;save129();showScreen("home");render();
+  }
+  function mapTap129(e,kind){
+    let r=e.currentTarget.getBoundingClientRect();
+    let x=Math.max(0,Math.min(100,((e.clientX-r.left)/r.width)*100));
+    let y=Math.max(0,Math.min(100,((e.clientY-r.top)/r.height)*100));
+    if(kind==="d"){pending.dX=Math.round(x*10)/10;pending.dY=Math.round(y*10)/10;showWizard129(5)}
+    else{pending.gX=Math.round(x*10)/10;pending.gY=Math.round(y*10)/10;showWizard129(6)}
+  }
+
+  function isGoalSO129(c){return ["Goal","Penalty Stroke Scored"].includes(String(c&&c.result||""))}
+  function takenSO129(c){return !!(c&&c.result&&c.result!=="Not Taken")}
+  function shootoutPayload129(){
+    if(!state.shootout||!state.shootout.enabled)return null;
+    readShootoutControls129();
+    const rounds=state.shootout.rounds.map(function(r){
+      return {
+        home:{result:["Goal","Save"].includes(r.home.result)?r.home.result:"Not Taken"},
+        opponent:{result:r.opponent.result||"Not Taken",saveMethod:r.opponent.saveMethod||"",note:r.opponent.note||""}
+      };
+    });
+    let h=0,o=0,attempts=[];
+    rounds.forEach(function(r,i){
+      if(takenSO129(r.home)){if(isGoalSO129(r.home))h++;attempts.push({id:"so_"+i+"_home",round:i+1,attemptNumber:i+1,team:"Home",result:r.home.result})}
+      if(takenSO129(r.opponent)){if(isGoalSO129(r.opponent))o++;attempts.push({id:"so_"+i+"_opponent",round:i+1,attemptNumber:i+1,team:"Opponent",result:r.opponent.result,saveMethod:r.opponent.saveMethod||"",note:r.opponent.note||""})}
+    });
+    return {enabled:true,format:"Best of 5",rounds:rounds,attempts:attempts,ourScore:h,opponentScore:o,result:h>o?"Won":(o>h?"Lost":"Drawn")};
+  }
+  function exportMatch129(){
+    syncStateFromForm();
+    migrate129();
+    readShootoutControls129();
+    let match={goalieName:state.goalieName,date:state.date,homeTeam:state.homeTeam,opponentTeam:state.opponentTeam,homeGoals:state.homeGoals,periodCount:maxPeriods(),periods:maxPeriods(),shots:shotOnly(),timeline:state.timeline||[],ratings:state.ratings};
+    let so=shootoutPayload129();
+    if(so)match.shootout=so;
+    let payload={sourceApp:"Goalie Stats Recorder",sourceVersion:"1.29",targetApp:"Hockey Goalie Stats",targetMajorVersion:"5",compatibleWith:"Hockey Goalie Stats v5.14",exportedAt:new Date().toISOString(),match:match};
+    let blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
+    let a=document.createElement("a");
+    a.href=URL.createObjectURL(blob);
+    a.download=safeFile129(state.date)+" - "+safeFile129(state.homeTeam||"Home Team")+" VS "+safeFile129(state.opponentTeam||"Opponent")+".json";
+    a.click();URL.revokeObjectURL(a.href);
+  }
+
+  function showScreen129(id){
+    if(typeof window.__v129OldShow==="function") window.__v129OldShow(id);
+    if(id==="finish"){setTimeout(renderShootoutPanel129,50);setTimeout(renderShootoutPanel129,250)}
+  }
+
+  window.__v129OldShow=window.__v129OldShow||showScreen;
+  try{startShot=startShot129}catch(e){} window.startShot=startShot129;
+  try{showWizard=showWizard129}catch(e){} window.showWizard=showWizard129;
+  try{saveShot=saveShot129}catch(e){} window.saveShot=saveShot129;
+  try{mapTap=mapTap129}catch(e){} window.mapTap=mapTap129;
+  try{exportMatch=exportMatch129}catch(e){} window.exportMatch=exportMatch129;
+  try{showScreen=showScreen129}catch(e){} window.showScreen=showScreen129;
+
+  document.addEventListener("click",function(e){
+    const t=e.target.closest&&e.target.closest("button");
+    if(!t)return;
+    if(t.id==="v129EnableShootout"){ensureShootout129().enabled=true;save129();renderShootoutPanel129();return}
+    if(t.id==="v129AddSD"){let so=ensureShootout129();so.enabled=true;so.rounds.push({home:blankSide129("home"),opponent:blankSide129("opponent")});save129();renderShootoutPanel129();return}
+    if(t.id==="v129DeleteShootout"){if(confirm("Delete shootout data from this recorded match?")){delete state.shootout;save129();renderShootoutPanel129()}return}
+  },true);
+  document.addEventListener("change",function(e){
+    if(e.target&&e.target.dataset&&e.target.dataset.v129SoRow!==undefined){readShootoutControls129();renderShootoutPanel129();}
+  },true);
+  document.addEventListener("input",function(e){
+    if(e.target&&e.target.dataset&&e.target.dataset.v129SoRow!==undefined){readShootoutControls129();}
+  },true);
+
+  let taps129=0, lastTap129=0;
+  document.addEventListener("click",function(e){
+    let v=e.target.closest&&e.target.closest(".ver");
+    if(!v)return;
+    let now=Date.now();
+    taps129=(now-lastTap129<1500)?taps129+1:1;
+    lastTap129=now;
+    if(taps129>=5){
+      taps129=0;
+      if(confirm("Force refresh the Recorder app cache and reload icons? This should not erase saved match data.")){
+        Promise.resolve()
+          .then(()=>navigator.serviceWorker?navigator.serviceWorker.getRegistrations():[])
+          .then(regs=>Promise.all((regs||[]).map(r=>r.unregister())))
+          .then(()=>caches?caches.keys():[])
+          .then(keys=>Promise.all((keys||[]).map(k=>caches.delete(k))))
+          .then(()=>{localStorage.setItem("gsr_last_forced_refresh","v1.29 "+new Date().toISOString());location.reload(true)})
+          .catch(()=>location.reload(true));
+      }
+    }
+  },true);
+
+  setTimeout(function(){migrate129();renderShootoutPanel129();try{render()}catch(e){}},0);
+  setTimeout(function(){renderShootoutPanel129();},800);
+  window.v129RecorderMigration=migrate129;
+  window.v129ShootoutPayload=shootoutPayload129;
+})();
+</script>
+
+</body></html>
