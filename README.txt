@@ -1,5 +1,13 @@
 Hockey Goalie Stats - Main App Package
 
+Version 5.76 restores independent scrolling throughout Video Stats Review.
+
+Version 5.76 changes:
+
+- Video Stats Review now uses its main workspace as a dedicated vertical scroll container on desktop.
+- The review can scroll from the playback controls through heat maps, timeline and export controls.
+- Entering and leaving Video Stats Review now applies and removes the root scrolling mode consistently.
+
 Version 5.75 clarifies the successful benchmark-upload message when no comparison cohort is available yet.
 
 Version 5.75 changes:
