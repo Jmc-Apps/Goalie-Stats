@@ -1,5 +1,15 @@
 Hockey Goalie Stats - Main App Package
 
+Version 5.74 separates desktop navigation and content scrolling and left-aligns the banner logo.
+
+Version 5.74 changes:
+
+- The desktop sidebar remains fixed beneath the banner while the active page scrolls independently.
+- The sidebar receives its own scrollbar only when its navigation content exceeds the available height.
+- Sidebar version information remains at the bottom of the navigation panel.
+- The banner logo is now left-aligned.
+- Mobile slide-out navigation retains its existing behaviour.
+
 Version 5.73 connects anonymous benchmarking to the prepared Cloudflare Worker API and moves version information into the sidebar.
 
 Version 5.73 additions:
