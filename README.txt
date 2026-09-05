@@ -1,5 +1,17 @@
 Hockey Goalie Stats - Main App Package
 
+Version 5.65 adds controlled period selection and preserves historical teams in reporting.
+
+Version 5.65 additions:
+
+- Number of Periods is now selected from 1, 2, 4 or Custom in Match setup.
+- Match Editor uses the same 1, 2, 4 or Custom period selector.
+- Custom period totals are recalculated from the match's End Period markers.
+- Adding, deleting or reordering period markers keeps Custom matches current.
+- Team reports list both the goalie's current profile teams and every home team retained in saved matches.
+- Removing a team from the goalie profile no longer removes that team's historical reporting option.
+- Duplicate and blank team names are removed from the report selector.
+
 Version 5.64 applies safe interface, cache and maintainability cleanup without changing match data or video calculations.
 
 Version 5.64 additions:
@@ -140,7 +152,7 @@ Playback and match updates:
 
 Included:
 - index.html
-- goalie_stats_app_v5_64.html
+- goalie_stats_app_v5_65.html
 - app icons and PWA manifest
 - service worker
 - app assets
