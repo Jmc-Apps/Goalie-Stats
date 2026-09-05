@@ -1,5 +1,13 @@
 Hockey Goalie Stats - Main App Package
 
+Version 5.75 clarifies the successful benchmark-upload message when no comparison cohort is available yet.
+
+Version 5.75 changes:
+
+- A successful upload with no matching comparison data now clearly confirms that the upload succeeded.
+- Stats and Benchmark Reports explain that comparison data from other matching goalies is not available yet.
+- The app no longer tells the user to repeat an upload that already succeeded.
+
 Version 5.74 separates desktop navigation and content scrolling and left-aligns the banner logo.
 
 Version 5.74 changes:

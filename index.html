@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Hockey Goalie Stats: Data Driven Development v5.74</title>
+<title>Hockey Goalie Stats: Data Driven Development v5.75</title>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#1f1f1f">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1778,7 +1778,7 @@ body.v570SidebarCollapsed .v570Wide{display:none}body.v570SidebarCollapsed .v570
 @media print{main{display:block!important;max-width:none!important}main>.panel{width:100%!important}.v570MobileMenu{display:none!important}}
 body.videoReviewMode main{display:block!important;max-width:none!important}
 .v573SidebarMeta{margin-top:auto;padding:13px 8px 4px;border-top:1px solid #3c474c;color:#b7c2c7;font-size:12px;line-height:1.4;text-align:center}.v573SidebarMeta .v573Compact{display:none;font-weight:900;color:#dbe5e9}body.v570SidebarCollapsed .v573SidebarMeta{padding:10px 2px 3px}body.v570SidebarCollapsed .v573SidebarMeta .v573Full{display:none}body.v570SidebarCollapsed .v573SidebarMeta .v573Compact{display:block}.v573BenchmarkActions{display:grid;grid-template-columns:minmax(220px,1fr);gap:8px;margin-top:12px}.v573NetworkStatus{min-height:22px;color:var(--muted);font-size:13px}.v573NetworkStatus.good{color:#72e6a0}.v573NetworkStatus.bad{color:#ff9292}
-/* v5.74 fixed desktop workspace: banner, navigation and page scroll independently. */
+/* v5.75 fixed desktop workspace: banner, navigation and page scroll independently. */
 .titleLogoWrap{justify-content:flex-start}
 @media(min-width:801px){
 html,body{height:100%;overflow:hidden}
@@ -1804,7 +1804,7 @@ body.videoReviewMode main>.panel{height:auto;overflow:visible}
 <nav id="v570Sidebar" class="tabs noPrint" aria-label="Main navigation">
 <button type="button" id="v570SidebarToggle" class="v570SidebarToggle" aria-expanded="true"><span class="v570Wide">Collapse Menu</span><span class="v570Narrow" aria-hidden="true">›</span></button>
 <button class="tab active" data-tab="home" data-short="H"><span>Home</span></button><button class="tab" data-tab="goalies" data-short="G"><span>Goalies</span></button><button class="tab" data-tab="match" data-short="M"><span>Match</span></button><button class="tab" data-tab="matchEditor" data-short="ME"><span>Match Editor</span></button><button class="tab" data-tab="stats" data-short="S"><span>Stats</span></button><button class="tab" data-tab="heat" data-short="HM"><span>Heat Maps</span></button><button class="tab" data-tab="reports" data-short="R"><span>Reports</span></button><button class="tab" data-tab="benchmarking" data-short="BM"><span>Benchmarking</span></button><button class="tab" data-tab="backup" data-short="BK"><span>Backup</span></button><button class="tab" data-tab="resources" data-short="?"><span>Resources</span></button>
-<div class="v573SidebarMeta"><span class="v573Full">Hockey Goalie Stats: Data Driven Development<br>Version 5.74</span><span class="v573Compact">v5.74</span></div>
+<div class="v573SidebarMeta"><span class="v573Full">Hockey Goalie Stats: Data Driven Development<br>Version 5.75</span><span class="v573Compact">v5.75</span></div>
 </nav>
 
 <section id="home" class="panel active">
@@ -1813,7 +1813,7 @@ body.videoReviewMode main>.panel{height:auto;overflow:visible}
       <img src="assets/home-logo.png" alt="Hockey Goalie Stats Data Driven Development" class="homeLogo">
     </div>
     <div class="versionBox">
-      <b>Version 5.74</b>
+      <b>Version 5.75</b>
       <div class="small">Build Date: 2026-09-05</div>
     </div>
     <div id="homeSummary" class="hiddenHomeSummary"></div>
@@ -1953,7 +1953,7 @@ body.videoReviewMode main>.panel{height:auto;overflow:visible}
 </main>
 
 <script>
-const APP_VERSION_566='5.74';
+const APP_VERSION_566='5.75';
 window.APP_VERSION=APP_VERSION_566;
 const STORAGE_KEY='hockeyGoalieStatsV3';
 const ratings=['Positioning','Communication','Rebound Control','Decision Making'];
@@ -6705,7 +6705,7 @@ function heatMaps(data){let h=data?.heatMaps||data?.heatmaps;if(!h)return '';let
 function generate(){
   const g=selectedGoalie();if(!activated(g)){alert(status(g).text);return}
   const ms=selectedMatches(g);if(!ms.length){alert('No finalised matches match the selected report period, level and tier.');return}
-  const data=resolveBenchmark(g,ms);if(!data){alert('Benchmark access is active, but no matching benchmark cohort has been downloaded yet. Open Benchmarking and select Upload Data & Refresh Benchmarks.');return}
+  const data=resolveBenchmark(g,ms);if(!data){alert('Your data uploaded successfully. No comparison data from other matching goalies is available yet.');return}
   const own=ownMetrics(ms),bm=benchmarkMetrics(data),ages=matchAgeGroups(ms,g),range=$('v569BenchmarkRange')?.value==='last5'?'Last 5 Matches':'Full Year '+($('v569BenchmarkYear')?.value||''),level=$('v569BenchmarkLevel')?.value||'all',selectedTier=$('v569BenchmarkTier')?.value||'all',goalkeepers=Number(data.goalkeepers??data.sample?.goalkeepers??0),matches=Number(data.matches??data.sample?.matches??0),records=Number(data.shots??data.sample?.shots??0),limited=data.limitedData===true||goalkeepers<5||matches<15||records<100;
   const cohort='<h2>Report Selection</h2><div class="v471ProfileGrid"><div><b>Goalkeeper Matches</b><br>'+e(range)+'</div><div><b>Age Group</b><br>'+e(ages.join(' / ')||'Not specified')+'</div><div><b>Gender</b><br>'+e(g.gender||'Not specified')+'</div><div><b>Team Level</b><br>'+e(level==='all'?'All Team Levels':level)+'</div><div><b>Team Tier</b><br>'+e(selectedTier==='all'?'All Team Tiers':selectedTier)+'</div><div><b>Benchmark Sample</b><br>'+goalkeepers+' goalkeepers · '+matches+' matches · '+records+' shots</div></div>'+(limited?'<p><span class="v569Limited">Limited Data</span> Interpret this benchmark carefully because the comparison sample is small.</p>':'');
   const body=cohort+comparisonTable(own,bm)+breakdownTable(ms,data,'shotSituation','Shot Situation Comparison')+breakdownTable(ms,data,'shotType','Shot Type Comparison')+breakdownTable(ms,data,'outnumbered','Outnumbered Comparison')+breakdownTable(ms,data,'rebound','Rebound Comparison')+heatMaps(data)+trainingFocus(ms,data,own,bm);
@@ -6775,12 +6775,12 @@ function mapping(data){const bm=data?.metrics||data?.summary||data||{},breakdown
 function updateStatsButton(g){const button=$('v570IncludeBenchmarks');if(!button)return;const active=statsActive(g);button.disabled=!active;button.textContent=!active?'Benchmarks Locked':g.statsIncludeBenchmarks?'Hide Benchmarks':'Include Benchmarks';button.setAttribute('aria-pressed',String(active&&!!g.statsIncludeBenchmarks));button.title=!active?'Activate benchmarking and complete a successful eligible upload to unlock this option.':''}
 function decorateStats(g,ms){
   if(!g?.statsIncludeBenchmarks||!statsActive(g))return;const output=$('statsOutput'),data=statsBenchmark(g,ms);if(!output)return;
-  if(!data){output.insertAdjacentHTML('afterbegin','<div class="v570BenchmarkSummary">No matching downloaded benchmark cohort is stored on this device.</div>');return}
+  if(!data){output.insertAdjacentHTML('afterbegin','<div class="v570BenchmarkSummary">Your data uploaded successfully. No comparison data from other matching goalies is available yet.</div>');return}
   const goalkeepers=Number(data.goalkeepers??data.sample?.goalkeepers??0),matches=Number(data.matches??data.sample?.matches??0),shotCount=Number(data.shots??data.sample?.shots??0),limited=data.limitedData===true||goalkeepers<5||matches<15||shotCount<100,values=mapping(data);let shown=0;
   output.querySelectorAll('.stat').forEach(card=>{const label=card.querySelector('span')?.textContent?.trim(),benchmark=values[label];if(benchmark===null||benchmark===undefined)return;const own=percent(card.querySelector('b')?.textContent),difference=own===null?null:own-benchmark,cls=difference===null?'':difference>=0?'above':'below';card.insertAdjacentHTML('beforeend','<div class="v570BenchmarkValue">Benchmark '+benchmark.toFixed(1)+'%<small class="'+cls+'">'+(difference===null?'Difference N/C':(difference>=0?'+':'')+difference.toFixed(1)+' percentage points')+'</small></div>');shown++});
   output.insertAdjacentHTML('afterbegin','<div class="v570BenchmarkSummary '+(limited?'limited':'')+'">'+(limited?'<b>Limited Data</b> · ':'')+'Same age group and gender · '+goalkeepers+' goalkeepers · '+matches+' matches · '+shotCount+' shots'+(shown?'':' · No applicable rate comparisons in this view')+'</div>')
 }
-window.toggleStatsBenchmarks570=function(){const g=goalie();if(!statsActive(g)){alert('Benchmarking must be activated by a successful eligible upload before benchmark figures are available.');return}if(!store(g)){alert('No downloaded benchmark dataset is stored on this device yet. Open Benchmarking and select Upload Data & Refresh Benchmarks.');return}g.statsIncludeBenchmarks=!g.statsIncludeBenchmarks;saveDB();renderStats()};
+window.toggleStatsBenchmarks570=function(){const g=goalie();if(!statsActive(g)){alert('Benchmarking must be activated by a successful eligible upload before benchmark figures are available.');return}if(!store(g)){alert('Your data uploaded successfully. No comparison data from other matching goalies is available yet.');return}g.statsIncludeBenchmarks=!g.statsIncludeBenchmarks;saveDB();renderStats()};
 try{const oldRenderStats=renderStats;renderStats=function(){const result=oldRenderStats.apply(this,arguments),g=goalie();updateStatsButton(g);if(g)decorateStats(g,statsMatches(g));return result};window.renderStats=renderStats}catch(x){}
 try{updateStatsButton(goalie());if($('stats')?.classList.contains('active'))renderStats()}catch(x){}
 window.v570StatsBenchmarks={active:statsActive,resolve:statsBenchmark,mapping};
@@ -6804,7 +6804,7 @@ window.v571VideoReviewNavigation={target,label,returnToOrigin:window.v571ReturnF
 })();
 </script>
 <script>
-/* v5.74 Cloudflare benchmark upload and cohort download connection. */
+/* v5.75 Cloudflare benchmark upload and cohort download connection. */
 (function(){
 const API='https://hgs-benchmark-api.datadrivendevelopmenthgs.workers.dev';
 let busy=false,networkMessage='',networkKind='';
@@ -6824,7 +6824,7 @@ async function downloadBenchmarks573(g){const query=new URLSearchParams({gender:
 async function uploadBenchmarkData573(options={}){
   const g=goalie();if(!g)return;if(g.benchmarkConsent!=='opted_in'){setNetwork('Opt in before uploading benchmark data.','bad');return}const payload=benchmarkPayload566(g);if(!payload.matches.length){setNetwork('No eligible finalised matches are ready to upload.','bad');return}
   if(busy)return;busy=true;setNetwork('Preparing anonymous benchmark upload…');
-  try{const hash=await payloadHash(payload),changed=options.force||hash!==g.benchmarkLastPayloadHash;if(changed){setNetwork('Uploading '+payload.matches.length+' eligible match'+(payload.matches.length===1?'':'es')+'…');const result=await jsonRequest(API+'/api/v1/upload',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(payload)});g.benchmarkLastPayloadHash=hash;g.benchmarkLastUploadCount=Number(result.matchesUpserted??payload.matches.length);g.benchmarkLastSuccessfulUpload=new Date().toISOString();g.benchmarkAccess=true;saveDB()}setNetwork('Refreshing benchmark figures…');await downloadBenchmarks573(g);saveDB();setNetwork((changed?'Upload complete. ':'No data changes to upload. ')+(g.benchmarkReportCache.cohorts.length||0)+' benchmark cohort'+(g.benchmarkReportCache.cohorts.length===1?'':'s')+' downloaded.','good');renderAll()}catch(error){setNetwork(error.message||'Benchmark connection failed.','bad');if(!options.silent)alert(error.message||'Benchmark connection failed.')}finally{busy=false;decorateBenchmark573()}
+  try{const hash=await payloadHash(payload),changed=options.force||hash!==g.benchmarkLastPayloadHash;if(changed){setNetwork('Uploading '+payload.matches.length+' eligible match'+(payload.matches.length===1?'':'es')+'…');const result=await jsonRequest(API+'/api/v1/upload',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(payload)});g.benchmarkLastPayloadHash=hash;g.benchmarkLastUploadCount=Number(result.matchesUpserted??payload.matches.length);g.benchmarkLastSuccessfulUpload=new Date().toISOString();g.benchmarkAccess=true;saveDB()}setNetwork('Refreshing benchmark figures…');await downloadBenchmarks573(g);saveDB();const cohortCount=g.benchmarkReportCache.cohorts.length||0;setNetwork(cohortCount?((changed?'Upload complete. ':'No data changes to upload. ')+cohortCount+' benchmark cohort'+(cohortCount===1?'':'s')+' downloaded.'):'Your data uploaded successfully. No comparison data from other matching goalies is available yet.','good');renderAll()}catch(error){setNetwork(error.message||'Benchmark connection failed.','bad');if(!options.silent)alert(error.message||'Benchmark connection failed.')}finally{busy=false;decorateBenchmark573()}
 }
 async function removeBenchmarkData573(g){if(!g?.benchmarkGoalieId)return;busy=true;setNetwork('Removing anonymous benchmark data…');try{await jsonRequest(API+'/api/v1/goalkeepers/'+encodeURIComponent(g.benchmarkGoalieId),{method:'DELETE',headers:{Accept:'application/json'}});delete g.benchmarkLastSuccessfulUpload;delete g.benchmarkLastPayloadHash;delete g.benchmarkReportCache;delete g.benchmarkLastDownload;g.benchmarkAccess=false;saveDB();setNetwork('Anonymous benchmark data removed.','good');renderAll()}catch(error){setNetwork('Opted out locally. Central deletion could not be confirmed: '+(error.message||'connection failed')+'.','bad')}finally{busy=false;decorateBenchmark573()}}
 const renderBefore573=renderBenchmarking566;renderBenchmarking566=function(){const result=renderBefore573.apply(this,arguments);decorateBenchmark573();return result};window.renderBenchmarking566=renderBenchmarking566;
