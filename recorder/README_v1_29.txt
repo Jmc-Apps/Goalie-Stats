@@ -1,5 +1,7 @@
 Goalie Stats Recorder v1.29
 
+Navigation order: Setup, Match, Timeline, Finish, Import. Match uses the hockey stick-and-ball icon.
+
 Updated for Hockey Goalie Stats v5.14 compatibility:
 - Adds separate Shot Situation and Shot Type fields.
 - Shot Situation values: Normal Game Play, Penalty Corner, Penalty Stroke, 8 Second 1v1.

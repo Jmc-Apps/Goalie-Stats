@@ -1,4 +1,4 @@
-/* Hockey Goalie Stats v5.80 - single-goalie backup, merge and deletion approval. */
+/* Hockey Goalie Stats v5.82 - single-goalie backup, merge and deletion approval. */
 (function(){
 'use strict';
 
@@ -205,7 +205,7 @@ function exportSingleGoalie577(){
   const id=document.getElementById('singleGoalieBackupSelect')?.value||currentGoalieId,g=(db.goalies||[]).find(item=>item.id===id);
   if(!g){alert('Choose a goalie to back up.');return}
   trackedSaveDB();
-  const payload={sourceApp:'Hockey Goalie Stats',sourceVersion:typeof APP_VERSION_566==='string'?APP_VERSION_566:'5.80',exportType:TRANSFER_TYPE,schemaVersion:SCHEMA_VERSION,exportedAt:isoNow(),goalie:prepareTransferGoalie(g)};
+  const payload={sourceApp:'Hockey Goalie Stats',sourceVersion:typeof APP_VERSION_566==='string'?APP_VERSION_566:'5.82',exportType:TRANSFER_TYPE,schemaVersion:SCHEMA_VERSION,exportedAt:isoNow(),goalie:prepareTransferGoalie(g)};
   const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='hgs_goalie_'+safeFileName(g.name)+'_'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(a.href);
   setStatus('Single-goalie backup exported. Video files remain in their existing folders and can be reconnected on the other device.');
 }

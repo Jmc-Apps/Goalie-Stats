@@ -1,6 +1,6 @@
 Hockey Goalie Stats Benchmark Worker v1.0
 
-The live Worker must contain the supplied benchmark API before app v5.80 can upload benchmark data.
+The live Worker must contain the supplied benchmark API before app v5.82 can upload benchmark data.
 
 Cloudflare dashboard deployment:
 
@@ -10,7 +10,7 @@ Cloudflare dashboard deployment:
 4. In the Worker's Settings, confirm the D1 binding variable is DB and points to hgs-benchmarks-prod.
 5. Open https://hgs-benchmark-api.datadrivendevelopmenthgs.workers.dev/api/v1/health
 6. Confirm the response says {"ok":true,"database":"connected"}.
-7. Open app v5.80, opt in and select Upload Data & Refresh Benchmarks.
+7. Open app v5.82, opt in and select Upload Data & Refresh Benchmarks.
 
 Duplicate protection:
 

@@ -1,4 +1,4 @@
-const CACHE_NAME='goalie-stats-recorder-v1-29';
+const CACHE_NAME='goalie-stats-recorder-v1-29-reset3';
 const FILES=[
  './',
  './index.html',
