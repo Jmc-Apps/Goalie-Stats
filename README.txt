@@ -1,24 +1,36 @@
 Hockey Goalie Stats - Main App Package
 
-Version 5.82 adds a protected Recorder reset control.
+Version 5.83 adds two-goalie match recording.
 
-Version 5.82 changes:
+Version 5.83 changes:
+
+- Match Setup can mark a match as using two goalies.
+- The user chooses full alternate-goalie recording or a goals-conceded-only total.
+- Full recording supports another saved goalie or a named guest goalie.
+- Match and Video Stats Review shot recording can switch between the primary and alternate goalie.
+- Each goalie keeps separate shots, heat maps and calculated rates while sharing the match score.
+- Existing alternate goalies receive a linked match appearance in their own history and reports.
+- Guest appearances remain stored inside the shared match and are excluded from benchmarking.
+
+Version 5.83 adds a protected Recorder reset control.
+
+Version 5.83 changes:
 
 - Recorder Setup includes Reset Recorded Data.
 - Reset requires a generated six-digit confirmation code.
 - Reset clears the current match recording while preserving imported goalie and team master data.
 
-Version 5.82 updates the Recorder App navigation order and labels.
+Version 5.83 updates the Recorder App navigation order and labels.
 
-Version 5.82 changes:
+Version 5.83 changes:
 
 - Recorder navigation now runs left to right as Setup, Match, Timeline, Finish and Import.
 - The Recorder home screen is labelled Match and uses a hockey stick-and-ball icon.
 - Recorder service-worker cache version is refreshed so the navigation update is picked up by installed copies.
 
-Version 5.82 launches the bundled Recorder App directly instead of opening its folder listing.
+Version 5.83 launches the bundled Recorder App directly instead of opening its folder listing.
 
-Version 5.82 changes:
+Version 5.83 changes:
 
 - The Recorder App sidebar link now targets <code>./recorder/index.html</code> explicitly, which works from a local package folder and when hosted.
 - Resource cards now use equal-height vertical layouts.
