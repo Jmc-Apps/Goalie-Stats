@@ -1,8 +1,8 @@
-/* Hockey Goalie Stats v5.83 - two-goalie match support. */
+/* Hockey Goalie Stats v5.84 - two-goalie match support. */
 (function(){
 'use strict';
 
-const VERSION='5.83';
+const VERSION='5.84';
 const clone=value=>JSON.parse(JSON.stringify(value));
 const byId=id=>document.getElementById(id);
 const goalCount=shots=>(shots||[]).filter(s=>String(s?.outcome||'').toLowerCase()==='goal').length;
@@ -30,8 +30,8 @@ function installMatchControls(){
   if(!action)return;
   const box=document.createElement('div');
   box.id='v583MultiGoalieBox';
-  box.className='v583Box';
-  box.innerHTML='<h3>Goalkeepers Playing</h3><label class="v583InlineCheck"><input id="v583MultipleGoalies" type="checkbox"> Two goalies will play in this match</label><div id="v583AlternatePanel" class="v583Hidden"><label>Record the alternate goalie’s full statistics?</label><select id="v583RecordAlternate"><option value="">Choose an option</option><option value="yes">Yes — record shots and statistics</option><option value="no">No — record goals conceded only</option></select><div id="v583DetailedAlternate" class="v583Hidden"><div class="grid2"><div><label>Alternate goalie</label><select id="v583AlternateType"><option value="existing">Existing goalie</option><option value="guest">Guest goalie</option></select></div><div id="v583ExistingWrap"><label>Existing goalie</label><select id="v583AlternateGoalie"></select></div></div><div id="v583GuestWrap" class="v583Hidden"><label>Guest goalie name</label><input id="v583GuestName" placeholder="Enter guest goalie name"></div><label>Alternate goalie minutes played</label><input id="v583AlternateMinutes" type="number" min="0" step="1" placeholder="Optional"></div><div id="v583GoalsOnly" class="v583Hidden"><label>Goals conceded by alternate goalie</label><input id="v583AlternateGoals" type="number" min="0" step="1" value="0"></div></div>';
+  box.className='v583Box v583Hidden';
+  box.innerHTML='<h3>Alternate Goalie</h3><div id="v583AlternatePanel"><label>Record the alternate goalie’s full statistics?</label><select id="v583RecordAlternate"><option value="">Choose an option</option><option value="yes">Yes — record shots and statistics</option><option value="no">No — record goals conceded only</option></select><div id="v583DetailedAlternate" class="v583Hidden"><div class="grid2"><div><label>Alternate goalie</label><select id="v583AlternateType"><option value="existing">Existing goalie</option><option value="guest">Guest goalie</option></select></div><div id="v583ExistingWrap"><label>Existing goalie</label><select id="v583AlternateGoalie"></select></div></div><div id="v583GuestWrap" class="v583Hidden"><label>Guest goalie name</label><input id="v583GuestName" placeholder="Enter guest goalie name"></div><label>Alternate goalie minutes played</label><input id="v583AlternateMinutes" type="number" min="0" step="1" placeholder="Optional"></div><div id="v583GoalsOnly" class="v583Hidden"><label>Goals conceded by alternate goalie</label><input id="v583AlternateGoals" type="number" min="0" step="1" value="0"></div></div>';
   details.insertBefore(box,action);
 
   const recordCard=Array.from(document.querySelectorAll('#match .card')).find(card=>/^\s*Record Shot/i.test(card.textContent||''));
@@ -51,7 +51,7 @@ function installMatchControls(){
     outcomes.insertBefore(summary,outcomes.querySelector('h3'));
   }
 
-  ['v583MultipleGoalies','v583RecordAlternate','v583AlternateType','v583AlternateGoalie','v583GuestName','v583AlternateMinutes','v583AlternateGoals','v583RecordingGoalie'].forEach(id=>byId(id)?.addEventListener('change',()=>{
+  ['matchParticipation','v583RecordAlternate','v583AlternateType','v583AlternateGoalie','v583GuestName','v583AlternateMinutes','v583AlternateGoals','v583RecordingGoalie'].forEach(id=>byId(id)?.addEventListener('change',()=>{
     const match=currentMatch();
     if(match&&id==='v583RecordingGoalie'){match.recordingGoalieTarget=selectedRecordingTarget();saveDB()}
     refreshControls();
@@ -68,8 +68,7 @@ function populateExistingGoalies(selected){
 }
 
 function loadMatchConfig(match){
-  if(!byId('v583MultipleGoalies'))return;
-  byId('v583MultipleGoalies').checked=!!match?.multipleGoalies;
+  if(!byId('v583RecordAlternate'))return;
   byId('v583RecordAlternate').value=!match?.multipleGoalies?'':(match.alternateRecordingMode==='goals_only'?'no':'yes');
   byId('v583AlternateType').value=match?.alternateRecordingMode==='guest'?'guest':'existing';
   populateExistingGoalies(match?.alternateGoalieId||'');
@@ -82,8 +81,8 @@ function refreshControls(){
   installStyles();installMatchControls();
   const match=currentMatch(),token=match?.id||'';
   if(token!==loadedMatchToken){loadedMatchToken=token;loadMatchConfig(match)}
-  const multiple=!!byId('v583MultipleGoalies')?.checked,answer=byId('v583RecordAlternate')?.value||'',type=byId('v583AlternateType')?.value||'existing';
-  byId('v583AlternatePanel')?.classList.toggle('v583Hidden',!multiple);
+  const multiple=byId('matchParticipation')?.value==='Partial match',answer=byId('v583RecordAlternate')?.value||'',type=byId('v583AlternateType')?.value||'existing';
+  byId('v583MultiGoalieBox')?.classList.toggle('v583Hidden',!multiple);
   byId('v583DetailedAlternate')?.classList.toggle('v583Hidden',!multiple||answer!=='yes');
   byId('v583GoalsOnly')?.classList.toggle('v583Hidden',!multiple||answer!=='no');
   byId('v583ExistingWrap')?.classList.toggle('v583Hidden',type!=='existing');
@@ -102,7 +101,7 @@ function refreshControls(){
 }
 
 function validateConfig(){
-  if(!byId('v583MultipleGoalies')?.checked)return {multipleGoalies:false};
+  if(byId('matchParticipation')?.value!=='Partial match')return {multipleGoalies:false};
   const answer=byId('v583RecordAlternate')?.value;
   if(!answer){alert('Choose whether to record the alternate goalie’s full statistics.');return null}
   if(answer==='no')return {multipleGoalies:true,alternateRecordingMode:'goals_only',alternateGoalsConceded:Math.max(0,Number(byId('v583AlternateGoals')?.value||0))};
