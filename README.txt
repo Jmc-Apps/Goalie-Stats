@@ -1,5 +1,16 @@
 Hockey Goalie Stats - Main App Package
 
+Version 5.85 protects live match progress and repairs legacy heat-map rendering.
+
+Version 5.85 changes:
+
+- Video Stats Review and Match Editor selections no longer replace the active live-match pointer.
+- Opening a completed historical match in Video Stats Review cannot repopulate the Match tab as an active match.
+- On startup and save, a stale pointer to a finalised or missing match is detached without deleting or changing the match.
+- Genuine draft matches remain resumable as active match progress.
+- Heat maps ignore missing or non-numeric coordinates while continuing to display every valid recorded point.
+- Added the current mobile-web-app-capable metadata while retaining Apple installed-PWA compatibility.
+
 Version 5.84 removes the duplicate multiple-goalie control.
 
 Version 5.84 changes:

@@ -1,8 +1,8 @@
-/* Hockey Goalie Stats v5.84 - two-goalie match support. */
+/* Hockey Goalie Stats v5.85 - two-goalie match support. */
 (function(){
 'use strict';
 
-const VERSION='5.84';
+const VERSION='5.85';
 const clone=value=>JSON.parse(JSON.stringify(value));
 const byId=id=>document.getElementById(id);
 const goalCount=shots=>(shots||[]).filter(s=>String(s?.outcome||'').toLowerCase()==='goal').length;
@@ -10,7 +10,7 @@ const safeName=value=>String(value||'').trim();
 let loadedMatchToken=null;
 
 function primaryGoalie(){try{return goalie()}catch(error){return null}}
-function currentMatch(){try{return activeMatch()}catch(error){return null}}
+function currentMatch(){try{if(document.body.classList.contains('videoReviewMode')&&typeof window.v585CurrentVideoReviewMatch==='function')return window.v585CurrentVideoReviewMatch();return activeMatch()}catch(error){return null}}
 function detailedAlternate(match){return !!(match?.multipleGoalies&&['existing','guest'].includes(match.alternateRecordingMode))}
 function alternateShots(match){match.alternateAppearance=match.alternateAppearance||{shots:[],ratings:{}};match.alternateAppearance.shots=match.alternateAppearance.shots||[];return match.alternateAppearance.shots}
 function selectedRecordingTarget(){const inVideo=document.body.classList.contains('videoReviewMode'),select=inVideo?byId('v583VideoRecordingGoalie'):byId('v583RecordingGoalie');return select?.value==='alternate'?'alternate':'primary'}
