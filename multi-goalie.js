@@ -1,8 +1,8 @@
-/* Hockey Goalie Stats v5.88 - two-goalie match support. */
+/* Hockey Goalie Stats v5.90 - two-goalie match support. */
 (function(){
 'use strict';
 
-const VERSION='5.88';
+const VERSION='5.90';
 const clone=value=>JSON.parse(JSON.stringify(value));
 const byId=id=>document.getElementById(id);
 const goalCount=shots=>(shots||[]).filter(s=>String(s?.outcome||'').toLowerCase()==='goal').length;
@@ -186,6 +186,25 @@ function teamProfileFor(g,name){
   return profiles.find(profile=>String(profile?.name||'')===String(name||''))||null;
 }
 
+function alternateMirrorOrder(match){
+  const altIds=new Set((match?.alternateAppearance?.shots||[]).map(shot=>String(shot.id)));
+  const shared=Array.isArray(match?.orderItems)?match.orderItems:[];
+  const order=shared.filter(item=>item?.kind==='period'||(item?.kind==='shot'&&altIds.has(String(item.id)))).map(clone);
+  const seenShots=new Set(order.filter(item=>item.kind==='shot').map(item=>String(item.id)));
+  (match?.alternateAppearance?.shots||[]).forEach(shot=>{if(!seenShots.has(String(shot.id)))order.push({kind:'shot',id:shot.id,period:Number(shot.period||1)||1})});
+  const required=(match?.periodMarkers||[]).length,have=order.filter(item=>item.kind==='period').length;
+  for(let period=have+1;period<=required;period++){
+    const at=order.findIndex(item=>item.kind==='shot'&&Number(item.period||1)>period);
+    order.splice(at<0?order.length:at,0,{kind:'period',period});
+  }
+  return order;
+}
+
+function alternateMirrorTimeline(match){
+  const shots=match?.alternateAppearance?.shots||[],byId=new Map(shots.map(shot=>[String(shot.id),shot]));
+  return alternateMirrorOrder(match).map(item=>item.kind==='period'?{eventType:'periodMarker',type:'End of Period',period:item.period}:{eventType:'shot',shotId:item.id,outcome:byId.get(String(item.id))?.outcome,period:item.period});
+}
+
 function materializeExistingAlternate(primary,match){
   if(match?.alternateRecordingMode!=='existing'||!match.alternateGoalieId)return;
   const alt=(db.goalies||[]).find(g=>g.id===match.alternateGoalieId);if(!alt)return;
@@ -197,7 +216,7 @@ function materializeExistingAlternate(primary,match){
     date:match.date,homeTeam:match.homeTeam,opponentTeam:match.opponentTeam,opponent:match.opponentTeam,name:match.name,
     shots:clone(match.alternateAppearance?.shots||[]),ratings:clone(match.alternateAppearance?.ratings||{}),homeGoals:match.homeGoals,
     oppGoals:match.oppGoals,opponentGoals:match.oppGoals,result:match.result,periods:match.periods,periodChoice:match.periodChoice,
-    periodMarkers:clone(match.periodMarkers||[]),orderItems:clone(match.alternateAppearance?.orderItems||[]),timeline:clone(match.alternateAppearance?.timeline||[]),
+    periodMarkers:clone(match.periodMarkers||[]),orderItems:alternateMirrorOrder(match),timeline:alternateMirrorTimeline(match),
     matchType:match.matchType,goalkeeperParticipation:'Partial match',minutesPlayed:match.alternateAppearance?.minutesPlayed??'',
     goalieAgeGroupAtMatch:benchmarkAgeAtMatch566(alt,match),goalieTeamLevel:profile?.level||match.goalieTeamLevel,
     goalieTeamTier:profile?.tier||match.goalieTeamTier,opponentAgeGroup:match.opponentAgeGroup,opponentTeamLevel:match.opponentTeamLevel,

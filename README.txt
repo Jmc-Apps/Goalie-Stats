@@ -1,5 +1,32 @@
 Hockey Goalie Stats - Main App Package
 
+Version 5.90 adds complete shootout performance details to every report type.
+
+Version 5.90 changes:
+
+- Every report now includes a Shootout Performance section.
+- Reports with no relevant shootout records clearly state that no shootout data is recorded.
+- Shootout summaries show shootouts played, wins, losses, attempts faced, saves, goals conceded, save rate, defence rate and the most common save method.
+- Reports containing multiple matches include a match-by-match shootout breakdown.
+- Individual Match Reports include the selected goalie's round-by-round opponent attempts, results, save methods and notes.
+- Replaced the older Data Driven Development-only shootout summary to prevent missing or duplicated figures.
+- Shootout performance is calculated only from the matches included in the selected report.
+- Refreshed the PWA cache so installed copies receive the complete shootout reporting update.
+
+Version 5.89 improves multiple-goalie reports and the draw-to-shootout prompt.
+
+Version 5.89 changes:
+
+- Replaced the browser draw confirmation with an in-app question using explicit Yes and No buttons.
+- Reports clearly identify matches in which multiple goalies played.
+- The goalie selected for a report is always labelled Primary Goalie; the other goalie is labelled Alternate Goalie.
+- Reports show only the Alternate Goalie's save rate and defence rate alongside the primary report statistics.
+- Alternate Goalie shots appear in their correct chronological place in report timelines as grey text without shot icons.
+- Alternate Goalie timeline entries do not consume Primary Goalie shot numbers and are excluded from Primary Goalie heat maps.
+- Alternate-goalie reports now include the shared End of Period markers, including for older saved matches where the alternate mirror omitted them.
+- Future alternate-goalie mirror records retain the shared period sequence and filtered chronological shot order.
+- Refreshed the PWA cache so installed copies receive the updated report behaviour.
+
 Version 5.88 corrects Match Timeline numbering and combines two-goalie match events.
 
 Version 5.88 changes:
