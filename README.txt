@@ -1,5 +1,15 @@
 Hockey Goalie Stats - Main App Package
 
+Version 5.86 corrects report timeline outcome icons.
+
+Version 5.86 changes:
+
+- Report timeline icons now use the outcome stored on each shot instead of relying on displayed punctuation.
+- Goals consistently display as red G icons, saves as green S icons and angles closed off as yellow A icons.
+- The correction applies to individual, multi-match, development and Data Driven Development report timelines, including printed reports.
+- Added safe compatibility fallbacks for older generated timeline markup.
+- Refreshed the PWA cache so installed copies receive the corrected report renderer.
+
 Version 5.85 protects live match progress and repairs legacy heat-map rendering.
 
 Version 5.85 changes:
