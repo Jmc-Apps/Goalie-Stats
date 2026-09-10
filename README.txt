@@ -1,5 +1,17 @@
 Hockey Goalie Stats - Main App Package
 
+Version 5.92 standardises timeline rendering across every report type.
+
+Version 5.92 changes:
+
+- Individual Match Reports now use the same coloured S/G/A indicator dots as Data Driven Development Reports.
+- Single-match reports no longer bypass the canonical report timeline renderer.
+- Data Driven Development Reports now contain exactly one timeline addendum even when background report refreshes run repeatedly.
+- Timeline replacement is confined to the styled report content so indicator dots cannot inherit full-page SVG dimensions.
+- Added a defensive 34-pixel size constraint to every canonical report timeline indicator and SVG.
+- Preserved multiple-goalie chronology, grey Alternate Goalie entries, period markers and selected-goalie-only heat maps.
+- Refreshed the PWA cache so installed copies receive the standardised report timelines.
+
 Version 5.91 fixes complete report printing and multiple-goalie report timelines.
 
 Version 5.91 changes:

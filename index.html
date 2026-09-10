@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Hockey Goalie Stats: Data Driven Development v5.91</title>
+<title>Hockey Goalie Stats: Data Driven Development v5.92</title>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#1f1f1f">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1794,6 +1794,18 @@ body.videoReviewMode main{flex:1 1 auto;height:auto;min-height:0;overflow-y:auto
 body.videoReviewMode main>.panel{height:auto;min-height:100%;overflow:visible}
 }
 
+/* v5.92: every report uses the same fixed-size timeline indicators. */
+.v517TimelineBlock .v520TimelineIcon{
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  width:34px!important;min-width:34px!important;max-width:34px!important;
+  height:34px!important;min-height:34px!important;max-height:34px!important;flex:0 0 34px!important;
+  padding:0!important;background:transparent!important;border:0!important;overflow:visible!important
+}
+.v517TimelineBlock .v520TimelineSvg{
+  display:block!important;width:34px!important;min-width:34px!important;max-width:34px!important;
+  height:34px!important;min-height:34px!important;max-height:34px!important;overflow:visible!important
+}
+
 /* v5.91: allow complete multi-page report printing while keeping report blocks tidy. */
 @media print{
   @page{margin:12mm 10mm}
@@ -1837,7 +1849,7 @@ body.videoReviewMode main>.panel{height:auto;min-height:100%;overflow:visible}
 <nav id="v570Sidebar" class="tabs noPrint" aria-label="Main navigation">
 <button type="button" id="v570SidebarToggle" class="v570SidebarToggle" aria-expanded="true"><span class="v570Wide">Collapse Menu</span><span class="v570Narrow" aria-hidden="true">›</span></button>
 <button class="tab active" data-tab="home" data-short="H"><span>Home</span></button><button class="tab" data-tab="goalies" data-short="G"><span>Goalies</span></button><button class="tab" data-tab="match" data-short="M"><span>Match</span></button><button class="tab" data-tab="matchEditor" data-short="ME"><span>Match Editor</span></button><button class="tab" data-tab="stats" data-short="S"><span>Stats</span></button><button class="tab" data-tab="heat" data-short="HM"><span>Heat Maps</span></button><button class="tab" data-tab="reports" data-short="R"><span>Reports</span></button><button class="tab" data-tab="benchmarking" data-short="BM"><span>Benchmarking</span></button><button class="tab" data-tab="backup" data-short="BK"><span>Backup</span></button><button class="tab" data-tab="resources" data-short="?"><span>Resources</span></button><a class="tab v570ExternalTab" href="./recorder/index.html" target="_blank" rel="noopener" data-short="RA"><span>Recorder App</span></a>
-<div class="v573SidebarMeta"><span class="v573Full">Hockey Goalie Stats: Data Driven Development<br>Version 5.91</span><span class="v573Compact">v5.91</span></div>
+<div class="v573SidebarMeta"><span class="v573Full">Hockey Goalie Stats: Data Driven Development<br>Version 5.92</span><span class="v573Compact">v5.92</span></div>
 </nav>
 
 <section id="home" class="panel active">
@@ -1846,7 +1858,7 @@ body.videoReviewMode main>.panel{height:auto;min-height:100%;overflow:visible}
       <img src="assets/home-logo.png" alt="Hockey Goalie Stats Data Driven Development" class="homeLogo">
     </div>
     <div class="versionBox">
-      <b>Version 5.91</b>
+      <b>Version 5.92</b>
       <div class="small">Build Date: 2026-09-09</div>
     </div>
     <div id="homeSummary" class="hiddenHomeSummary"></div>
@@ -1996,7 +2008,7 @@ body.videoReviewMode main>.panel{height:auto;min-height:100%;overflow:visible}
 </main>
 
 <script>
-const APP_VERSION_566='5.91';
+const APP_VERSION_566='5.92';
 window.APP_VERSION=APP_VERSION_566;
 const STORAGE_KEY='hockeyGoalieStatsV3';
 const ratings=['Positioning','Communication','Rebound Control','Decision Making'];
@@ -5773,7 +5785,25 @@ function addSvgText517(svg,shots,goal){if(!svg)return;svg.querySelectorAll('.v48
 function fixHeatMapNumbers517(){const root=by517('reportOutput');if(!root||!root.innerHTML)return;const ms=selectedMatches517();if(!ms.length)return;const shots=numberedShots517(ms);const d=shots.filter(s=>hasCoord517(s.dX)&&hasCoord517(s.dY));const g=shots.filter(s=>normOutcome517(s.outcome)!=='Angle Closed Off'&&hasCoord517(s.gX)&&hasCoord517(s.gY));root.querySelectorAll('.reportHeatMapPage').forEach(page=>{const svgs=page.querySelectorAll('svg');if(svgs[0])addSvgText517(svgs[0],d,false);if(svgs[1])addSvgText517(svgs[1],g,true);});}
 function halfLabel517(m,p){try{return halfLabel506(m,p)}catch(e){}let pc=Number(m&&((m.periods||m.periodCount)||2));if(pc===4)return p<=2?'First Half':'Second Half';return p<=1?'First Half':'Second Half'}
 function timelineHtml517(ms,heading,muted){let report=0,multi=(ms||[]).length>1;return '<div class="v517TimelineBlock reportPageBreakBefore"><h2>'+esc517(heading||'Match Timelines')+'</h2><p class="muted">'+esc517(muted||'In multi-match reports, the first number is the shot number in the full report and the number in brackets is the shot number inside that match.')+'</p>'+(ms||[]).map((m,mi)=>{let shotN=0,ctx=twoGoalieContext517(m);let legend=ctx.isMulti?'<div class="v589GoalieLegend"><span><b>Primary Goalie:</b> '+esc517(ctx.selectedName)+'</span><span class="v589AlternateLegend"><b>Alternate Goalie:</b> '+esc517(ctx.otherName)+' — grey timeline entries</span></div>':'';return '<div class="v517TimelineMatch reportTimelineMatch"><h3>'+esc517(matchName517(m)||('Match '+(mi+1)))+(ctx.isMulti?' <span class="v589MultiBadge">Multiple goalies</span>':'')+'</h3>'+legend+'<div class="v517TimelineList">'+timelineItems517(m).map(ev=>{if(ev.kind==='period')return '<div class="v517TimelineRow"><span class="v517TimelineBadge v517TimelinePeriod">▲</span><div class="v517TimelineDetail"><b>End of Period '+esc517(ev.period)+'</b></div></div>';let s=ev.shot;if(ev.owner==='other')return '<div class="v517TimelineRow v589OtherGoalieRow"><span class="v589TimelineSpacer" aria-hidden="true"></span><div class="v517TimelineDetail"><b>Alternate Goalie — '+esc517(normOutcome517(s.outcome))+'</b><span class="v517TimelineMuted">'+esc517(halfLabel517(ctx.source||m,ev.period))+' • '+esc517(detail517(s))+'</span></div></div>';shotN++;report++;let display=multi?(report+' ('+shotN+')'):String(shotN);return '<div class="v517TimelineRow" data-outcome="'+esc517(normOutcome517(s.outcome))+'" data-situation="'+esc517(s.shotSituation||s.situation||'Normal Game Play')+'"><span class="v520TimelineIcon" data-v520-timeline-icon="1">'+timelineSvg519(s).replace('v519TimelineSvg','v519TimelineSvg v520TimelineSvg')+'</span><div class="v517TimelineDetail"><b>Shot '+esc517(display)+' - '+esc517(normOutcome517(s.outcome))+'</b><span class="v517TimelineMuted">'+esc517(halfLabel517(ctx.source||m,ev.period))+' • '+esc517(detail517(s))+'</span></div></div>';}).join('')+'</div></div>';}).join('')+'</div>';}
-function replaceGenericTimelines517(root,ms){root.querySelectorAll('.v517TimelineBlock').forEach(b=>b.remove());let replaced=false;Array.from(root.querySelectorAll('h1,h2')).forEach(h=>{if(!/^(?:Full Match Timeline|Match Timeline|Match Timelines|Included Match Timelines)$/i.test((h.textContent||'').trim()))return;const wrapper=h.closest('.reportPageBreakBefore');if(wrapper&&wrapper!==root&&!wrapper.classList.contains('reportHeatMapPage')){wrapper.outerHTML=timelineHtml517(ms,'Match Timelines');replaced=true;return}let n=h.nextElementSibling;while(n&&n.classList&&(/TimelineMatch/.test(n.className||''))){let next=n.nextElementSibling;n.remove();n=next}h.insertAdjacentHTML('afterend',timelineHtml517(ms,'Match Timelines').replace(/^<div[^>]*><h2>Match Timelines<\/h2>/,'<div class="v517TimelineBlock">'));h.remove();replaced=true});if(!replaced&&!root.querySelector('.v517TimelineBlock')&&!/Data Driven Development Report/i.test(root.textContent||'')){const heat=root.querySelector('.reportHeatMapPage');if(heat)heat.insertAdjacentHTML('afterend',timelineHtml517(ms,'Match Timelines'));}}
+function replaceGenericTimelines517(root,ms){
+  const content=root.querySelector('.reportMainContent')||root;
+  const heading=(ms||[]).length===1?'Full Match Timeline':'Match Timelines';
+  const html=timelineHtml517(ms,heading);
+  root.querySelectorAll('.v517TimelineBlock').forEach(block=>block.remove());
+  let replaced=false;
+  Array.from(content.querySelectorAll('h1,h2')).forEach(h=>{
+    if(replaced||!/^(?:Full Match Timeline|Match Timeline|Match Timelines|Included Match Timelines)$/i.test((h.textContent||'').trim()))return;
+    const wrapper=h.closest('.reportPageBreakBefore');
+    if(wrapper&&wrapper!==content&&!wrapper.classList.contains('reportHeatMapPage')){wrapper.outerHTML=html;replaced=true;return}
+    let n=h.nextElementSibling;
+    while(n&&n.classList&&(/TimelineMatch/.test(n.className||''))){const next=n.nextElementSibling;n.remove();n=next}
+    h.insertAdjacentHTML('beforebegin',html);h.remove();replaced=true;
+  });
+  if(!replaced){
+    const heat=content.querySelector('.reportHeatMapPage');
+    if(heat)heat.insertAdjacentHTML('afterend',html);else content.insertAdjacentHTML('beforeend',html);
+  }
+}
 function percent517(n,d){return d?Math.round(n/d*100)+'%':'N/C'}
 function alternateRates517(ctx){const shots=ctx.otherShots||[],goals=shots.filter(s=>normOutcome517(s.outcome)==='Goal').length,saves=shots.filter(s=>normOutcome517(s.outcome)==='Save').length,angles=shots.filter(s=>normOutcome517(s.outcome)==='Angle Closed Off').length;return {save:percent517(saves,saves+goals),defence:percent517(saves+angles,shots.length)}}
 function decorateTwoGoalieReports517(){const root=by517('reportOutput');if(!root||!root.innerHTML)return;root.querySelectorAll('.v589TwoGoalieSummary').forEach(el=>el.remove());const rows=selectedMatches517().map(m=>({m:m,ctx:twoGoalieContext517(m)})).filter(x=>x.ctx.isMulti);if(!rows.length)return;const section='<section class="v589TwoGoalieSummary reportPageBreakAvoid"><h2>Multiple-Goalie Matches</h2><p class="muted">The selected goalie is shown as the Primary Goalie. Only the Alternate Goalie’s save rate and defence rate are included.</p><div class="tableWrap"><table><thead><tr><th>Match</th><th>Primary Goalie</th><th>Alternate Goalie</th><th>Alternate Save Rate</th><th>Alternate Defence Rate</th></tr></thead><tbody>'+rows.map(x=>{const r=alternateRates517(x.ctx);return '<tr><td>'+esc517(matchName517(x.m))+'</td><td>'+esc517(x.ctx.selectedName)+'</td><td>'+esc517(x.ctx.otherName)+'</td><td>'+r.save+'</td><td>'+r.defence+'</td></tr>'}).join('')+'</tbody></table></div></section>';const content=root.querySelector('.reportMainContent')||root;const firstTimeline=content.querySelector('.v517TimelineBlock,.reportHeatMapPage');if(firstTimeline)firstTimeline.insertAdjacentHTML('beforebegin',section);else content.insertAdjacentHTML('beforeend',section)}
@@ -5812,7 +5842,16 @@ function decorateShootoutReports590(){
   }
   const anchor=content.querySelector('.v589TwoGoalieSummary,.v517TimelineBlock,.reportHeatMapPage,.v506Training');if(anchor)anchor.insertAdjacentHTML('beforebegin',body);else content.insertAdjacentHTML('beforeend',body);
 }
-function fixTimelines517(){const root=by517('reportOutput');if(!root||!root.innerHTML)return;const ms=selectedMatches517();if(!ms.length)return;if(ms.length<2&&!ms.some(m=>twoGoalieContext517(m).isMulti))return;if(/Data Driven Development Report/i.test(root.textContent||'')){const old=root.querySelector('.v472Addendum');const html=timelineHtml517(ms,'Addendum: Match Timelines','Full timelines for every match included in this Data Driven Development Report. In multi-match reports, the first number is the shot number in the full report and the number in brackets is the shot number inside that match.');if(old)old.outerHTML=html;else root.insertAdjacentHTML('beforeend',html);}else{replaceGenericTimelines517(root,ms);}}
+function fixTimelines517(){
+  const root=by517('reportOutput');if(!root||!root.innerHTML)return;
+  const ms=selectedMatches517();if(!ms.length)return;
+  if(!/Data Driven Development Report/i.test(root.textContent||'')){replaceGenericTimelines517(root,ms);return}
+  const content=root.querySelector('.reportMainContent')||root;
+  const html=timelineHtml517(ms,'Addendum: Match Timelines','Full timelines for every match included in this Data Driven Development Report. In multi-match reports, the first number is the shot number in the full report and the number in brackets is the shot number inside that match.');
+  const old=content.querySelector('.v472Addendum');
+  root.querySelectorAll('.v517TimelineBlock').forEach(block=>block.remove());
+  if(old)old.outerHTML=html;else content.insertAdjacentHTML('beforeend',html);
+}
 function installReportStyles589(){if(by517('v589ReportStyles'))return;const style=document.createElement('style');style.id='v589ReportStyles';style.textContent='.v589GoalieLegend{display:flex;flex-wrap:wrap;gap:8px 22px;margin:8px 0 12px;padding:10px 12px;border:1px solid #d5d9dc;border-radius:9px}.v589AlternateLegend,.v589OtherGoalieRow,.v589OtherGoalieRow .v517TimelineDetail,.v589OtherGoalieRow .v517TimelineDetail b,.v589OtherGoalieRow .v517TimelineMuted{color:#848b91!important}.v589TimelineSpacer{display:inline-block;width:34px;min-width:34px;height:34px}.v589MultiBadge{display:inline-block;margin-left:8px;padding:3px 8px;border-radius:999px;background:#dceff3;color:#174b57;font-size:.68em;vertical-align:middle}.v589TwoGoalieSummary{margin:22px 0}.v589TwoGoalieSummary table{width:100%;border-collapse:collapse}.v589TwoGoalieSummary th,.v589TwoGoalieSummary td{padding:9px;border:1px solid #cfd4d7;text-align:left}.v590ShootoutPerformance{margin:22px 0}.v590ShootoutGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0 20px}.v590ShootoutCard{padding:14px;border:1px solid #cfd4d7;border-radius:10px;background:#f7f9fa}.v590ShootoutCard b,.v590ShootoutCard span{display:block}.v590ShootoutCard b{font-size:1.35rem;color:#17212b}.v590ShootoutCard span{margin-top:4px;color:#5d6872}.v590ShootoutPerformance table{width:100%;border-collapse:collapse}.v590ShootoutPerformance th,.v590ShootoutPerformance td{padding:9px;border:1px solid #cfd4d7;text-align:left}.v590NoShootout{padding:14px;border:1px solid #cfd4d7;border-radius:10px;background:#f7f9fa}@media(max-width:760px){.v590ShootoutGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media print{.v589OtherGoalieRow,.v589OtherGoalieRow .v517TimelineDetail,.v589OtherGoalieRow .v517TimelineDetail b,.v589OtherGoalieRow .v517TimelineMuted,.v589AlternateLegend{color:#777!important}.v589MultiBadge{background:#eee!important;color:#333!important}.v590ShootoutGrid{grid-template-columns:repeat(3,1fr)}.v590ShootoutCard,.v590NoShootout{background:#fff!important}}';document.head.appendChild(style)}
 function preparePrintTables591(){
   const root=by517('reportOutput');if(!root)return;
