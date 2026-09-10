@@ -1,5 +1,19 @@
 Hockey Goalie Stats - Main App Package
 
+Version 5.88 corrects Match Timeline numbering and combines two-goalie match events.
+
+Version 5.88 changes:
+
+- End of Period markers no longer consume a shot number.
+- Shot numbering continues across the complete match while period markers remain unnumbered.
+- Primary and alternate-goalie shots now appear together in their shared chronological Match Timeline.
+- Primary-goalie timeline text is white and alternate-goalie timeline text is cyan.
+- Added a named goalie colour legend whenever alternate-goalie shots are present.
+- Outcome badge colours remain based on Save, Goal or Angle Closed Off rather than the goalkeeper.
+- Newly recorded alternate shots retain their exact position in the shared timeline.
+- Previously recorded alternate shots are merged using their saved period and recording time where available.
+- Refreshed the PWA cache so installed copies receive the corrected timeline.
+
 Version 5.87 restores Data Driven Development report generation while retaining corrected outcome icons.
 
 Version 5.87 changes:

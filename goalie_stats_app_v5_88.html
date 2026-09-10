@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Hockey Goalie Stats: Data Driven Development v5.87</title>
+<title>Hockey Goalie Stats: Data Driven Development v5.88</title>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#1f1f1f">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1806,7 +1806,7 @@ body.videoReviewMode main>.panel{height:auto;min-height:100%;overflow:visible}
 <nav id="v570Sidebar" class="tabs noPrint" aria-label="Main navigation">
 <button type="button" id="v570SidebarToggle" class="v570SidebarToggle" aria-expanded="true"><span class="v570Wide">Collapse Menu</span><span class="v570Narrow" aria-hidden="true">›</span></button>
 <button class="tab active" data-tab="home" data-short="H"><span>Home</span></button><button class="tab" data-tab="goalies" data-short="G"><span>Goalies</span></button><button class="tab" data-tab="match" data-short="M"><span>Match</span></button><button class="tab" data-tab="matchEditor" data-short="ME"><span>Match Editor</span></button><button class="tab" data-tab="stats" data-short="S"><span>Stats</span></button><button class="tab" data-tab="heat" data-short="HM"><span>Heat Maps</span></button><button class="tab" data-tab="reports" data-short="R"><span>Reports</span></button><button class="tab" data-tab="benchmarking" data-short="BM"><span>Benchmarking</span></button><button class="tab" data-tab="backup" data-short="BK"><span>Backup</span></button><button class="tab" data-tab="resources" data-short="?"><span>Resources</span></button><a class="tab v570ExternalTab" href="./recorder/index.html" target="_blank" rel="noopener" data-short="RA"><span>Recorder App</span></a>
-<div class="v573SidebarMeta"><span class="v573Full">Hockey Goalie Stats: Data Driven Development<br>Version 5.87</span><span class="v573Compact">v5.87</span></div>
+<div class="v573SidebarMeta"><span class="v573Full">Hockey Goalie Stats: Data Driven Development<br>Version 5.88</span><span class="v573Compact">v5.88</span></div>
 </nav>
 
 <section id="home" class="panel active">
@@ -1815,7 +1815,7 @@ body.videoReviewMode main>.panel{height:auto;min-height:100%;overflow:visible}
       <img src="assets/home-logo.png" alt="Hockey Goalie Stats Data Driven Development" class="homeLogo">
     </div>
     <div class="versionBox">
-      <b>Version 5.87</b>
+      <b>Version 5.88</b>
       <div class="small">Build Date: 2026-09-09</div>
     </div>
     <div id="homeSummary" class="hiddenHomeSummary"></div>
@@ -1965,7 +1965,7 @@ body.videoReviewMode main>.panel{height:auto;min-height:100%;overflow:visible}
 </main>
 
 <script>
-const APP_VERSION_566='5.87';
+const APP_VERSION_566='5.88';
 window.APP_VERSION=APP_VERSION_566;
 const STORAGE_KEY='hockeyGoalieStatsV3';
 const ratings=['Positioning','Communication','Rebound Control','Decision Making'];
@@ -2296,6 +2296,11 @@ function exportGoaliesTeams(){
   flex:1;
   min-width:150px;
 }
+.v588TimelineLegend{display:flex;flex-wrap:wrap;gap:10px 18px;margin:10px 0 14px;padding:10px 12px;border:1px solid #46545d;border-radius:12px;background:#10181d}
+.v588TimelineLegendItem{display:inline-flex;align-items:center;gap:8px;font-weight:800}
+.v588TimelineLegendDot{width:11px;height:11px;border-radius:50%;display:inline-block;background:currentColor}
+.v588PrimaryText{color:#f5f7fa}
+.v588AlternateText{color:#7de8f5}
 </style>
 
 <style>
@@ -2398,6 +2403,9 @@ function exportGoaliesTeams(){
 
   function shots(m){if(!m)return[]; if(!Array.isArray(m.shots))m.shots=[]; return m.shots;}
   function markers(m){if(!m)return[]; if(!Array.isArray(m.periodMarkers))m.periodMarkers=[]; return m.periodMarkers;}
+  function alternateTimelineShots(m){return Array.isArray(m?.alternateAppearance?.shots)?m.alternateAppearance.shots:[];}
+  function timelineShot(m,id){return shots(m).find(sh=>sh.id===id)||alternateTimelineShots(m).find(sh=>sh.id===id)||null;}
+  function timelineGoalieTarget(m,id){return alternateTimelineShots(m).some(sh=>sh.id===id)?"alternate":"primary";}
   function norm(o){o=String(o||"").trim(); if(/^goal$/i.test(o)||/^g$/i.test(o))return"Goal"; if(/^angle/i.test(o)||/^a$/i.test(o))return"Angle Closed Off"; return"Save";}
   function colour(o){o=norm(o); return o==="Goal"?"#ef5350":o==="Angle Closed Off"?"#ffca28":"#2fd17c";}
   function letter(o){o=norm(o); return o==="Goal"?"G":o==="Angle Closed Off"?"A":"S";}
@@ -2433,6 +2441,7 @@ function exportGoaliesTeams(){
     if(!m)return[];
     if(!Array.isArray(m.orderItems))m.orderItems=[];
     shots(m).forEach(normalizeShot);
+    alternateTimelineShots(m).forEach(normalizeShot);
     markers(m).forEach(normalizeMarker);
 
     // Pull period markers from older timeline records if periodMarkers is missing.
@@ -2442,7 +2451,9 @@ function exportGoaliesTeams(){
       });
     }
 
-    const shotIds=new Set(shots(m).map(s=>s.id));
+    const primaryShotIds=new Set(shots(m).map(s=>s.id));
+    const alternateShotIds=new Set(alternateTimelineShots(m).map(s=>s.id));
+    const shotIds=new Set([...primaryShotIds,...alternateShotIds]);
     const markerIds=new Set(markers(m).map(x=>x.id));
     const seen=new Set();
     m.orderItems=m.orderItems.filter(it=>{
@@ -2452,10 +2463,34 @@ function exportGoaliesTeams(){
       seen.add(key);
       return true;
     });
+    m.orderItems.forEach(it=>{if(it.kind==="shot")it.goalieTarget=alternateShotIds.has(it.id)?"alternate":"primary";});
     const ps=new Set(m.orderItems.filter(it=>it.kind==="shot").map(it=>it.id));
     const pm=new Set(m.orderItems.filter(it=>it.kind==="period").map(it=>it.id));
-    shots(m).forEach(sh=>{if(!ps.has(sh.id))m.orderItems.push({kind:"shot",id:sh.id});});
+    shots(m).forEach(sh=>{if(!ps.has(sh.id)){m.orderItems.push({kind:"shot",id:sh.id,goalieTarget:"primary"});ps.add(sh.id);}});
     markers(m).forEach(mk=>{if(!pm.has(mk.id))m.orderItems.push({kind:"period",id:mk.id});});
+    const shotTime=sh=>{const value=Date.parse(sh?.time||sh?.createdAt||sh?.recordedAt||"");return Number.isFinite(value)?value:null;};
+    const insertAlternate=sh=>{
+      const targetPeriod=Math.max(1,Number(sh.period||1));
+      let period=1,start=0,end=m.orderItems.length;
+      for(let i=0;i<m.orderItems.length;i++){
+        const it=m.orderItems[i];
+        if(it.kind!=="period")continue;
+        if(period===targetPeriod){end=i;break;}
+        period++;start=i+1;
+      }
+      if(targetPeriod>period){start=m.orderItems.length;end=m.orderItems.length;}
+      let insertAt=end,ownTime=shotTime(sh);
+      if(ownTime!==null){
+        for(let i=start;i<end;i++){
+          const it=m.orderItems[i];if(it.kind!=="shot")continue;
+          const otherTime=shotTime(timelineShot(m,it.id));
+          if(otherTime!==null&&otherTime>ownTime){insertAt=i;break;}
+        }
+      }
+      m.orderItems.splice(insertAt,0,{kind:"shot",id:sh.id,goalieTarget:"alternate"});
+      ps.add(sh.id);
+    };
+    alternateTimelineShots(m).slice().sort((a,b)=>Number(a.period||1)-Number(b.period||1)||(shotTime(a)??Number.MAX_SAFE_INTEGER)-(shotTime(b)??Number.MAX_SAFE_INTEGER)).forEach(sh=>{if(!ps.has(sh.id))insertAlternate(sh);});
     return m.orderItems;
   }
   function orderedShots(m){
@@ -2464,17 +2499,20 @@ function exportGoaliesTeams(){
   }
   function rebuildTimeline(m){
     if(!m)return;
-    const old=Array.isArray(m.timeline)?m.timeline:[];
+    const old=[...(Array.isArray(m.timeline)?m.timeline:[]),...(Array.isArray(m?.alternateAppearance?.timeline)?m.alternateAppearance.timeline:[])];
     const byShot=new Map(old.filter(e=>e.shotId).map(e=>[e.shotId,e]));
     const tl=[];
     ensureOrder(m).forEach(it=>{
       if(it.kind==="shot"){
-        const sh=normalizeShot(shots(m).find(x=>x.id===it.id));
+        const sh=timelineShot(m,it.id);
         if(!sh)return;
-        const ev=byShot.get(sh.id)||{id:makeId(),shotId:sh.id};
+        normalizeShot(sh);
+        const ev=Object.assign({},byShot.get(sh.id)||{id:makeId(),shotId:sh.id});
         ev.eventType="shot"; ev.label=letter(sh.outcome); ev.outcome=sh.outcome;
         ev.type=sh.type||""; ev.shotSituation=sh.shotSituation||""; ev.outnumbered=sh.outnumbered||"";
-        ev.rebound=sh.rebound||""; ev.note=sh.note||"";
+        ev.rebound=sh.rebound||""; ev.note=sh.note||""; ev.time=sh.time||ev.time||"";
+        ev.period=Number(sh.period||ev.period||1);ev.goalieTarget=timelineGoalieTarget(m,sh.id);
+        ev.goalieName=ev.goalieTarget==="alternate"?(m.alternateGoalieName||"Alternate goalie"):(currentGoalie()?.name||"Primary goalie");
         tl.push(ev);
       }else{
         const mk=normalizeMarker(markers(m).find(x=>x.id===it.id));
@@ -2679,15 +2717,22 @@ function exportGoaliesTeams(){
       return;
     }
     rebuildTimeline(m);
-    const rows=(m.timeline||[]).map((ev,i)=>{
+    let shotIndex=0;
+    const rows=(m.timeline||[]).map(ev=>{
       if(ev.eventType==="periodMarker"||ev.type==="End of Period"){
         return `<div class="v459TimelineRow"><span class="v459TimelineBadge" style="background:#48a8f0;color:#fff;">▲</span><div><b>End of Period ${esc(ev.period||"")}</b></div></div>`;
       }
-      const sh=shots(m).find(s=>s.id===ev.shotId) || ev;
+      const sh=timelineShot(m,ev.shotId) || ev;
       normalizeShot(sh);
-      return `<div class="v459TimelineRow"><span class="v459TimelineBadge" style="background:${colour(sh.outcome)}">${letter(sh.outcome)}</span><div><b>${i+1}. ${esc(norm(sh.outcome))}</b><div class="v459DetailLine">${esc(details(sh))}</div></div></div>`;
+      shotIndex++;
+      const target=ev.goalieTarget||timelineGoalieTarget(m,ev.shotId),isAlternate=target==="alternate";
+      const goalieName=isAlternate?(m.alternateGoalieName||"Alternate goalie"):(currentGoalie()?.name||"Primary goalie");
+      const textClass=isAlternate?"v588AlternateText":"v588PrimaryText";
+      return `<div class="v459TimelineRow" data-goalie-target="${target}" aria-label="Shot ${shotIndex} for ${esc(goalieName)}"><span class="v459TimelineBadge" style="background:${colour(sh.outcome)}">${letter(sh.outcome)}</span><div class="${textClass}"><b>${shotIndex}. ${esc(norm(sh.outcome))}</b><div class="v459DetailLine">${esc(details(sh))}</div></div></div>`;
     }).join("");
-    card.innerHTML=`<h2>Match Timeline</h2><p class="muted">Shots and End of Period markers recorded for the active match.</p>${rows||'<p class="muted">No active match timeline yet.</p>'}`;
+    const hasAlternate=alternateTimelineShots(m).length>0;
+    const legend=hasAlternate?`<div class="v588TimelineLegend" aria-label="Goalie colour legend"><span class="v588TimelineLegendItem v588PrimaryText"><span class="v588TimelineLegendDot"></span>${esc(currentGoalie()?.name||"Primary goalie")}</span><span class="v588TimelineLegendItem v588AlternateText"><span class="v588TimelineLegendDot"></span>${esc(m.alternateGoalieName||"Alternate goalie")}</span></div>`:"";
+    card.innerHTML=`<h2>Match Timeline</h2><p class="muted">Shots and End of Period markers recorded for the active match.</p>${legend}${rows||'<p class="muted">No active match timeline yet.</p>'}`;
   }
 
   function ensureOnePeriodButton(){

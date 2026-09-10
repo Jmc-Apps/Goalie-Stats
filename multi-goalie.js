@@ -1,8 +1,8 @@
-/* Hockey Goalie Stats v5.85 - two-goalie match support. */
+/* Hockey Goalie Stats v5.88 - two-goalie match support. */
 (function(){
 'use strict';
 
-const VERSION='5.85';
+const VERSION='5.88';
 const clone=value=>JSON.parse(JSON.stringify(value));
 const byId=id=>document.getElementById(id);
 const goalCount=shots=>(shots||[]).filter(s=>String(s?.outcome||'').toLowerCase()==='goal').length;
@@ -164,8 +164,12 @@ function moveNewestShotToAlternate(match,beforeIds){
   if(index<0)return false;
   const shot=match.shots.splice(index,1)[0];
   shot.period=shot.period||Math.max(1,(match.periodMarkers||[]).length+1);
+  shot.recordedAt=shot.recordedAt||shot.time||new Date().toISOString();
   alternateShots(match).push(shot);
-  match.orderItems=(match.orderItems||[]).filter(item=>!(item?.kind==='shot'&&item.id===shot.id));
+  match.orderItems=match.orderItems||[];
+  const sharedOrderItem=match.orderItems.find(item=>item?.kind==='shot'&&item.id===shot.id);
+  if(sharedOrderItem){sharedOrderItem.goalieTarget='alternate';sharedOrderItem.period=shot.period}
+  else match.orderItems.push({kind:'shot',id:shot.id,goalieTarget:'alternate',period:shot.period});
   match.timeline=(match.timeline||[]).filter(item=>item?.shotId!==shot.id);
   match.alternateAppearance.orderItems=match.alternateAppearance.orderItems||[];
   match.alternateAppearance.timeline=match.alternateAppearance.timeline||[];
