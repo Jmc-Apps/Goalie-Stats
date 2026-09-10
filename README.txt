@@ -1,5 +1,16 @@
 Hockey Goalie Stats - Main App Package
 
+Version 5.87 restores Data Driven Development report generation while retaining corrected outcome icons.
+
+Version 5.87 changes:
+
+- Removed the cross-script function dependency that prevented the Data Driven Development report from generating in version 5.86.
+- Data Driven Development timelines now normalise outcomes using their own report-scoped function.
+- The final timeline icon formatter is self-contained and cannot interrupt report generation.
+- Goals remain red G icons, saves remain green S icons and angles closed off remain yellow A icons.
+- Added full timeline-generation regression checks alongside the outcome-icon checks.
+- Refreshed the PWA cache so installed copies receive the corrected report generator.
+
 Version 5.86 corrects report timeline outcome icons.
 
 Version 5.86 changes:

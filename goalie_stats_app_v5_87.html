@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Hockey Goalie Stats: Data Driven Development v5.86</title>
+<title>Hockey Goalie Stats: Data Driven Development v5.87</title>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#1f1f1f">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1806,7 +1806,7 @@ body.videoReviewMode main>.panel{height:auto;min-height:100%;overflow:visible}
 <nav id="v570Sidebar" class="tabs noPrint" aria-label="Main navigation">
 <button type="button" id="v570SidebarToggle" class="v570SidebarToggle" aria-expanded="true"><span class="v570Wide">Collapse Menu</span><span class="v570Narrow" aria-hidden="true">›</span></button>
 <button class="tab active" data-tab="home" data-short="H"><span>Home</span></button><button class="tab" data-tab="goalies" data-short="G"><span>Goalies</span></button><button class="tab" data-tab="match" data-short="M"><span>Match</span></button><button class="tab" data-tab="matchEditor" data-short="ME"><span>Match Editor</span></button><button class="tab" data-tab="stats" data-short="S"><span>Stats</span></button><button class="tab" data-tab="heat" data-short="HM"><span>Heat Maps</span></button><button class="tab" data-tab="reports" data-short="R"><span>Reports</span></button><button class="tab" data-tab="benchmarking" data-short="BM"><span>Benchmarking</span></button><button class="tab" data-tab="backup" data-short="BK"><span>Backup</span></button><button class="tab" data-tab="resources" data-short="?"><span>Resources</span></button><a class="tab v570ExternalTab" href="./recorder/index.html" target="_blank" rel="noopener" data-short="RA"><span>Recorder App</span></a>
-<div class="v573SidebarMeta"><span class="v573Full">Hockey Goalie Stats: Data Driven Development<br>Version 5.86</span><span class="v573Compact">v5.86</span></div>
+<div class="v573SidebarMeta"><span class="v573Full">Hockey Goalie Stats: Data Driven Development<br>Version 5.87</span><span class="v573Compact">v5.87</span></div>
 </nav>
 
 <section id="home" class="panel active">
@@ -1815,7 +1815,7 @@ body.videoReviewMode main>.panel{height:auto;min-height:100%;overflow:visible}
       <img src="assets/home-logo.png" alt="Hockey Goalie Stats Data Driven Development" class="homeLogo">
     </div>
     <div class="versionBox">
-      <b>Version 5.86</b>
+      <b>Version 5.87</b>
       <div class="small">Build Date: 2026-09-09</div>
     </div>
     <div id="homeSummary" class="hiddenHomeSummary"></div>
@@ -1965,7 +1965,7 @@ body.videoReviewMode main>.panel{height:auto;min-height:100%;overflow:visible}
 </main>
 
 <script>
-const APP_VERSION_566='5.86';
+const APP_VERSION_566='5.87';
 window.APP_VERSION=APP_VERSION_566;
 const STORAGE_KEY='hockeyGoalieStatsV3';
 const ratings=['Positioning','Communication','Rebound Control','Decision Making'];
@@ -5067,7 +5067,7 @@ function timelineLetter517(s){return s.outcome==='Goal'?'G':(s.outcome==='Angle 
 function timelineStroke517(s){let v=String(s&&s.shotSituation||s&&s.situation||'Normal Game Play');if(v==='Penalty Corner')return {c:'#111111',w:3};if(v==='Penalty Stroke')return {c:'#2478ff',w:3};if(/8 Second 1v1/i.test(v))return {c:'#8e44ff',w:3};return {c:'#ffffff',w:1}}
 function timelineSvg517(s){let col=s.outcome==='Goal'?'#ef5350':s.outcome==='Angle Closed Off'?'#ffca28':'#2fd17c',st=timelineStroke517(s),letter=timelineLetter517(s);return '<svg class="v519TimelineSvg" viewBox="0 0 34 34" width="34" height="34" aria-label="'+esc506(letter)+'"><circle cx="17" cy="17" r="13.5" fill="'+col+'" stroke="'+st.c+'" stroke-width="'+st.w+'"></circle><text x="17" y="21" text-anchor="middle" font-size="14" font-weight="900" font-family="Arial, Helvetica, sans-serif" fill="#071014">'+esc506(letter)+'</text></svg>'}
 function timelineBadge517(s,label){return '<span class="v520TimelineIcon" data-v520-timeline-icon="1">'+timelineSvg517(s).replace('v519TimelineSvg','v519TimelineSvg v520TimelineSvg')+'</span>'}
-function timelineAddendum506(ms){let reportN=0,multi=(ms||[]).length>1;return '<div class="v472Addendum reportPageBreakBefore"><h1>Addendum: Match Timelines</h1><p class="muted">Full timelines for every match included in this Data Driven Development Report. In multi-match reports, the first number is the shot number in the full report and the number in brackets is the shot number inside that match.</p>'+(ms||[]).map(m=>{let rows=timelineItems506(m),shotN=0;return '<div class="v472TimelineMatch v517TimelineMatch"><h2>'+esc506((date506(m)||'')+' - '+(m.homeTeam||'')+' VS '+(m.opponentTeam||m.opponent||''))+'</h2>'+rows.map(ev=>{if(ev.kind==='period')return '<div class="v506TimelineRow v517TimelineRow"><span class="v506TimelineBadge v506Triangle v517TimelinePeriod">▲</span><div class="v517TimelineDetail"><b>End of Period '+esc506(ev.period)+'</b></div></div>';let s=ev.shot;shotN++;reportN++;let display=multi?(reportN+' ('+shotN+')'):String(shotN);return '<div class="v506TimelineRow v517TimelineRow" data-outcome="'+esc506(normOutcome517(s.outcome))+'" data-situation="'+esc506(s.shotSituation||s.situation||'Normal Game Play')+'"><span data-v517-timeline-shot="1">'+timelineBadge517(s,display)+'</span><div class="v517TimelineDetail"><b>Shot '+esc506(display)+' — '+esc506(s.outcome)+'</b><br><span class="muted v517TimelineMuted">'+esc506(halfLabel506(m,ev.period))+' • '+esc506(timelineDetail506(s))+'</span></div></div>'}).join('')+'</div>'}).join('')+'</div>'}
+function timelineAddendum506(ms){let reportN=0,multi=(ms||[]).length>1;return '<div class="v472Addendum reportPageBreakBefore"><h1>Addendum: Match Timelines</h1><p class="muted">Full timelines for every match included in this Data Driven Development Report. In multi-match reports, the first number is the shot number in the full report and the number in brackets is the shot number inside that match.</p>'+(ms||[]).map(m=>{let rows=timelineItems506(m),shotN=0;return '<div class="v472TimelineMatch v517TimelineMatch"><h2>'+esc506((date506(m)||'')+' - '+(m.homeTeam||'')+' VS '+(m.opponentTeam||m.opponent||''))+'</h2>'+rows.map(ev=>{if(ev.kind==='period')return '<div class="v506TimelineRow v517TimelineRow"><span class="v506TimelineBadge v506Triangle v517TimelinePeriod">▲</span><div class="v517TimelineDetail"><b>End of Period '+esc506(ev.period)+'</b></div></div>';let s=ev.shot;shotN++;reportN++;let display=multi?(reportN+' ('+shotN+')'):String(shotN);return '<div class="v506TimelineRow v517TimelineRow" data-outcome="'+esc506(normOutcome506(s.outcome))+'" data-situation="'+esc506(s.shotSituation||s.situation||'Normal Game Play')+'"><span data-v517-timeline-shot="1">'+timelineBadge517(s,display)+'</span><div class="v517TimelineDetail"><b>Shot '+esc506(display)+' — '+esc506(s.outcome)+'</b><br><span class="muted v517TimelineMuted">'+esc506(halfLabel506(m,ev.period))+' • '+esc506(timelineDetail506(s))+'</span></div></div>'}).join('')+'</div>'}).join('')+'</div>'}
 function shootoutCellGoal506(c){return ['Goal','Penalty Stroke Scored'].includes(String(c&&c.result||''))}
 function shootoutCellDef506(c){return ['Save','Miss / Wide / Out','Time Expired','Forced Wide','Penalty Stroke Saved / Missed'].includes(String(c&&c.result||''))}
 function shootoutCellTaken506(c){return !!(c&&c.result&&c.result!=='Not Taken')}
@@ -5732,7 +5732,11 @@ window.v519FixTimelineSvgDots=fixTimelineSvgDots519;
 (function(){
 function outcomeFromRow520(row){
   const stored=(row&&row.getAttribute('data-outcome'))||'';
-  if(stored)return normOutcome517(stored);
+  if(stored){
+    if(/^goal$/i.test(stored))return 'Goal';
+    if(/^angle/i.test(stored))return 'Angle Closed Off';
+    return 'Save';
+  }
   const iconLetter=row&&row.querySelector('svg[aria-label]')?.getAttribute('aria-label');
   if(iconLetter==='G')return 'Goal';
   if(iconLetter==='A')return 'Angle Closed Off';
