@@ -1,5 +1,18 @@
 Hockey Goalie Stats - Main App Package
 
+Version 5.91 fixes complete report printing and multiple-goalie report timelines.
+
+Version 5.91 changes:
+
+- Printed and PDF reports can now flow across every required page instead of stopping after page one.
+- Major report sections keep intentional page starts, heat maps remain together and long timelines can continue cleanly across pages.
+- Report tables repeat their column headings where supported and avoid splitting individual rows.
+- Multiple-goalie report timelines now merge both goalies' shots with shared End of Period markers in their correct chronological positions.
+- The selected goalie remains the Primary Goalie with normal numbered shot icons; the other goalie is shown as grey Alternate Goalie text without an icon and does not consume shot numbers.
+- Older saved two-goalie matches use shared order, saved period and recording time to reconstruct the combined timeline.
+- Report heat maps, totals and rate calculations continue to use only the selected goalie's shots.
+- Refreshed the PWA cache so installed copies receive the report printing and timeline fixes.
+
 Version 5.90 adds complete shootout performance details to every report type.
 
 Version 5.90 changes:

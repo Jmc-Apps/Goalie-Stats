@@ -1,8 +1,8 @@
-/* Hockey Goalie Stats v5.90 - two-goalie match support. */
+/* Hockey Goalie Stats v5.91 - two-goalie match support. */
 (function(){
 'use strict';
 
-const VERSION='5.90';
+const VERSION='5.91';
 const clone=value=>JSON.parse(JSON.stringify(value));
 const byId=id=>document.getElementById(id);
 const goalCount=shots=>(shots||[]).filter(s=>String(s?.outcome||'').toLowerCase()==='goal').length;
